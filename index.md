@@ -1,3 +1,3 @@
 # Useless Insights for Intentional Optimism
 
-[Fidoism 0001](Fido0001)
+[Fidoism 0001](Fido0001.md)
