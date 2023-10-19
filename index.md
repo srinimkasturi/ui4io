@@ -4,7 +4,7 @@
 <p></p>
 [Slideshow](https://srinimkasturi.github.io/ui4io/slideshow.html)
 <p></p>
-[Slideshow](https://srinimkasturi.github.io/ui4io/slideshowslider.html)
+[Slideshowslider](https://srinimkasturi.github.io/ui4io/slideshowslider.html)
 <p></p>
 <iframe src="https://srinimkasturi.github.io/ui4io/Fido0001.md" title="Fido0001"></iframe>
 <p></p>
