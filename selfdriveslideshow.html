@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  /* Add your styles here */
+</style>
+</head>
+<body>
+
+<div class="slideshow-container">
+
+<div class="mySlides fade">
+  <img src="img1.jpg" style="width:100%">
+</div>
+
+<div class="mySlides fade">
+  <img src="img2.jpg" style="width:100%">
+</div>
+
+<div class="mySlides fade">
+  <img src="img3.jpg" style="width:100%">
+</div>
+
+</div>
+<br>
+
+<div style="text-align:center">
+  <button onclick="plusSlides(-1)">❮ Prev</button>
+  <button onclick="plusSlides(1)">Next ❯</button>
+</div>
+<br>
+
+<div style="text-align:center">
+  <span class="dot" onclick="currentSlide(1)"></span> 
+  <span class="dot" onclick="currentSlide(2)"></span> 
+  <span class="dot" onclick="currentSlide(3)"></span> 
+</div>
+
+<div style="text-align:center; margin-top: 20px;">
+  <button onclick="startTimer()">Start Slideshow</button>
+  <button onclick="stopTimer()">Stop Slideshow</button>
+  <input type="number" id="delayInput" placeholder="Set Delay Time (ms)">
+  <button onclick="setDelay()">Set Delay</button>
+</div>
+
+<script>
+var slideIndex = 0;
+var timer;
+var delayTime = 2000;
+
+showSlides();
+
+function showSlides() {
+    var i;
+    var slides = document.getElementsByClassName("mySlides");
+    var dots = document.getElementsByClassName("dot");
+    for (i = 0; i < slides.length; i++) {
+        slides[i].style.display = "none";  
+    }
+    slideIndex++;
+    if (slideIndex > slides.length) {slideIndex = 1}    
+    for (i = 0; i < dots.length; i++) {
+        dots[i].className = dots[i].className.replace(" active", "");
+    }
+    slides[slideIndex-1].style.display = "block";  
+    dots[slideIndex-1].className += " active";
+    timer = setTimeout(showSlides, delayTime); // Change image every set delay time
+}
+
+function plusSlides(n) {
+  clearTimeout(timer);
+  showSlides(slideIndex += n);
+}
+
+function currentSlide(n) {
+  clearTimeout(timer);
+  showSlides(slideIndex = n);
+}
+
+function startTimer() {
+  clearTimeout(timer);
+  timer = setTimeout(showSlides, delayTime);
+}
+
+function stopTimer() {
+  clearTimeout(timer);
+}
+
+function setDelay() {
+  var input = document.getElementById("delayInput").value;
+  if(input && input > 0) {
+    delayTime = input;
+    startTimer();
+  }
+}
+</script>
+
+</body>
+</html>
