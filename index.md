@@ -12,6 +12,8 @@
 <p></p>
 [RandomControlSlideshow](https://srinimkasturi.github.io/ui4io/RandomTimercontrolSlideshow.html)
 <p></p>
+[S/L2](https://srinimkasturi.github.io/ui4io/s2l2.html)
+<p></p>
 <iframe src="https://srinimkasturi.github.io/ui4io/Fido0001.md" title="Fido0001"></iframe>
 <p></p>
 <iframe width="760px" height="500px" src="https://sway.office.com/s/PV2qCDVsGJsC2N75/embed" frameborder="0" marginheight="0" marginwidth="0" max-width="100%" sandbox="allow-forms allow-modals allow-orientation-lock allow-popups allow-same-origin allow-scripts" scrolling="no" style="border: none; max-width: 100%; max-height: 100vh" allowfullscreen mozallowfullscreen msallowfullscreen webkitallowfullscreen></iframe>
