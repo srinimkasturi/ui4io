@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Random Pictures</h2>
+
+<div id="imageContainer"></div>
+
+<script>
+  // Array of image sources
+  var images = [
+    "img1.jpg",
+    "img2.jpg",
+    "img3.jpg",
+    // Add more image sources as needed
+  ];
+
+  // Function to display random pictures in a loop
+  function displayRandomImage() {
+    var container = document.getElementById('imageContainer');
+    // Clear previous image
+    container.innerHTML = '';
+
+    // Get a random index from the images array
+    var randomIndex = Math.floor(Math.random() * images.length);
+
+    // Create an image element
+    var img = document.createElement('img');
+    img.src = images[randomIndex];
+    img.style.width = '300px'; // Adjust width as needed
+    img.style.height = '200px'; // Adjust height as needed
+
+    // Append the image to the container
+    container.appendChild(img);
+  }
+
+  // Call the function to display a random picture every 2 seconds
+  setInterval(displayRandomImage, 2000);
+</script>
+
+</body>
+</html>
