@@ -12,7 +12,7 @@
 <p></p>
 [RandomControlSlideshow](https://srinimkasturi.github.io/ui4io/RandomTimercontrolSlideshow.html)
 <p></p>
-[S/L2](https://srinimkasturi.github.io/ui4io/s2l2.html)
+[S2L2](https://srinimkasturi.github.io/ui4io/s2l2.html)
 <p></p>
 <iframe src="https://srinimkasturi.github.io/ui4io/Fido0001.md" title="Fido0001"></iframe>
 <p></p>
