@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .board {
+            width: 400px;
+            height: 400px;
+            border: 2px solid black;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .cell {
+            width: 20%;
+            height: 20%;
+            border: 1px solid black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="board" id="board"></div>
+<button onclick="rollDice()">Roll Dice</button>
+
+<script>
+    const board = document.getElementById('board');
+    let currentPlayer = 1;
+    let position = 1;
+    const snakes = { 16: 6, 47: 26, 49: 11, 56: 53, 62: 19, 64: 60, 87: 24, 93: 73, 95: 75, 98: 78 };
+    const ladders = { 1: 38, 4: 14, 9: 31, 21: 42, 28: 84, 36: 44, 51: 67, 71: 91, 80: 100 };
+
+    function createBoard() {
+        let cellCount = 1;
+        for (let i = 0; i < 10; i++) {
+            for (let j = 0; j < 10; j++) {
+                const cell = document.createElement('div');
+                cell.innerText = cellCount;
+                cell.classList.add('cell');
+                cell.id = 'cell' + cellCount;
+                board.appendChild(cell);
+                cellCount++;
+            }
+        }
+    }
+
+    function rollDice() {
+        const dice = Math.floor(Math.random() * 6) + 1;
+        movePlayer(dice);
+    }
+
+    function movePlayer(steps) {
+        const newPosition = position + steps;
+        if (newPosition <= 100) {
+            position = newPosition;
+            position = checkForSnakesAndLadders(position);
+            const cell = document.getElementById('cell' + position);
+            cell.innerText = 'Player ' + currentPlayer;
+            checkForWin();
+            if (steps !== 6) {
+                currentPlayer = currentPlayer === 1 ? 2 : 1;
+            }
+        }
+    }
+
+    function checkForSnakesAndLadders(pos) {
+        if (snakes[pos]) {
+            return snakes[pos];
+        }
+        if (ladders[pos]) {
+            return ladders[pos];
+        }
+        return pos;
+    }
+
+    function checkForWin() {
+        if (position === 100) {
+            alert('Player ' + currentPlayer + ' wins!');
+            resetGame();
+        }
+    }
+
+    function resetGame() {
+        position = 1;
+        currentPlayer = 1;
+        clearBoard();
+    }
+
+    function clearBoard() {
+        const cells = document.getElementsByClassName('cell');
+        for (let i = 0; i < cells.length; i++) {
+            cells[i].innerText = '';
+        }
+    }
+
+    createBoard();
+</script>
+</body>
+</html>
