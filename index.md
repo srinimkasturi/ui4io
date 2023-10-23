@@ -8,8 +8,6 @@
 <p></p>
 [SelfDriveSlideshow](https://srinimkasturi.github.io/ui4io/selfdriveslideshow.html)
 <p></p>
-[SelfDriveSlideshow](https://srinimkasturi.github.io/ui4io/selfdriveslideshow.html)
-<p></p>
 [RandomControlSlideshow](https://srinimkasturi.github.io/ui4io/RandomTimercontrolSlideshow.html)
 <p></p>
 [S2L2](https://srinimkasturi.github.io/ui4io/s2l2.html)
