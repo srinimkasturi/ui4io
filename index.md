@@ -5,6 +5,8 @@
 [UsertimingSystemrandomselecting](https://srinimkasturi.github.io/ui4io/UsertimingSystemrandomselecting.html)
 <p></p>
 <!---
+Next: make a call to say random.io, get a random number, then use it to get an image from Nasa for a space picture, and show the picture right below - with a tag-like space to be!
+
 [UI0001-FidoSays](https://srinimkasturi.github.io/ui4io/Fido0001.md)
 <p></p>
 [Slideshow](https://srinimkasturi.github.io/ui4io/slideshow.html)
