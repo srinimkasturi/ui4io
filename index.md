@@ -2,7 +2,8 @@
 <p></p>
 [SelfDriveSlideshow](https://srinimkasturi.github.io/ui4io/selfdriveslideshow.html)
 <p></p>
-
+[RandomControlSlideshow](https://srinimkasturi.github.io/ui4io/RandomTimercontrolSlideshow.html)
+<p></p>
 <!---
 [UI0001-FidoSays](https://srinimkasturi.github.io/ui4io/Fido0001.md)
 <p></p>
