@@ -12,6 +12,7 @@
 
 <div>
     <button onclick="prevSlide()">❮</button>
+    <button onclick="pauseSlide()">Pause</button>
     <button onclick="nextSlide()">❯</button>
     <br>
     Slide duration (in ms): <input type="text" id="durationInput" value="3000">
@@ -57,6 +58,10 @@ function showSlides() {
 function prevSlide() {
   clearTimeout(slideInterval);
   showSlides();
+}
+
+function pauseSlide() {
+  clearTimeout(slideInterval);
 }
 
 function nextSlide() {
