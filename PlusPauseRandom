@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  .slides { display: none; }
+</style>
+</head>
+<body>
+
+<div class="slideshow-container">
+  <div class="slides">
+    <img src="slide1.jpg" style="width:100%">
+  </div>
+
+  <div class="slides">
+    <img src="slide2.jpg" style="width:100%">
+  </div>
+
+  <div class="slides">
+    <img src="slide3.jpg" style="width:100%">
+  </div>
+
+  <!-- Add more slides as needed -->
+
+  <button onclick="prevSlide()">❮</button>
+  <button onclick="pauseSlide()">Pause</button>
+  <button onclick="nextSlide()">❯</button>
+  <br>
+
+  Slide duration (in ms): <input type="text" id="durationInput" value="3000">
+  <button onclick="changeTiming()">Change Timing</button>
+</div>
+
+<script>
+var slides = document.getElementsByClassName("slides");
+var slideInterval;
+
+showSlides();
+
+function showSlides() {
+  var randomIndex = Math.floor(Math.random() * slides.length);
+  for (var i = 0; i < slides.length; i++) {
+    slides[i].style.display = "none";  
+  }
+  slides[randomIndex].style.display = "block";  
+  slideInterval = setTimeout(showSlides, 3000); // Default slide duration is 3000ms
+}
+
+function prevSlide() {
+  clearTimeout(slideInterval);
+  showSlides();
+}
+
+function pauseSlide() {
+  clearTimeout(slideInterval);
+}
+
+function nextSlide() {
+  clearTimeout(slideInterval);
+  showSlides();
+}
+
+function changeTiming() {
+  var newDuration = document.getElementById('durationInput').value;
+  clearTimeout(slideInterval);
+  slideInterval = setTimeout(showSlides, newDuration);
+}
+</script>
+
+</body>
+</html>
