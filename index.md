@@ -2,9 +2,8 @@
 <p></p>
 [SelfDriveSlideshow](https://srinimkasturi.github.io/ui4io/selfdriveslideshow.html)
 <p></p>
-<p></p>
-<p></p>
-<p></p>
+
+<!---
 [UI0001-FidoSays](https://srinimkasturi.github.io/ui4io/Fido0001.md)
 <p></p>
 [Slideshow](https://srinimkasturi.github.io/ui4io/slideshow.html)
@@ -20,3 +19,4 @@
 <iframe width="760px" height="500px" src="https://sway.office.com/s/PV2qCDVsGJsC2N75/embed" frameborder="0" marginheight="0" marginwidth="0" max-width="100%" sandbox="allow-forms allow-modals allow-orientation-lock allow-popups allow-same-origin allow-scripts" scrolling="no" style="border: none; max-width: 100%; max-height: 100vh" allowfullscreen mozallowfullscreen msallowfullscreen webkitallowfullscreen></iframe>
 <p></p>
 <iframe width="760px" height="500px" src="https://sway.office.com/s/Wg2GJNudHKhCjEw9/embed" frameborder="0" marginheight="0" marginwidth="0" max-width="100%" sandbox="allow-forms allow-modals allow-orientation-lock allow-popups allow-same-origin allow-scripts" scrolling="no" style="border: none; max-width: 100%; max-height: 100vh" allowfullscreen mozallowfullscreen msallowfullscreen webkitallowfullscreen></iframe>
+--->
