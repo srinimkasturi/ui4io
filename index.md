@@ -1,12 +1,14 @@
 # Useless Insights for Intentional Optimism
-
-[UI0001-FidoSays](https://srinimkasturi.github.io/ui4io/Fido0001.md)
 <p></p>
 [SelfDriveSlideshow](https://srinimkasturi.github.io/ui4io/selfdriveslideshow.html)
 <p></p>
+<p></p>
+<p></p>
+<p></p>
+[UI0001-FidoSays](https://srinimkasturi.github.io/ui4io/Fido0001.md)
+<p></p>
 [Slideshow](https://srinimkasturi.github.io/ui4io/slideshow.html)
 <p></p>
-
 [Slideshowslider](https://srinimkasturi.github.io/ui4io/slideshowslider.html)
 <p></p>
 [RandomControlSlideshow](https://srinimkasturi.github.io/ui4io/RandomTimercontrolSlideshow.html)
