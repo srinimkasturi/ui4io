@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CSV File Reader</title>
+    <script>
+        function fetchCSVFileFromGitHub(fileURL) {
+            return fetch(fileURL)
+                .then(response => response.text())
+                .then(data => {
+                    const lines = data.split('\n');
+                    const array = lines.map(line => line.split(','));
+                    return array;
+                })
+                .catch(error => {
+                    console.error('Error fetching the file:', error);
+                });
+        }
+
+        // Example usage
+        const fileURL = 'https://raw.githubusercontent.com/username/repository/main/data.csv'; // Replace with the URL of your CSV file on GitHub
+
+        fetchCSVFileFromGitHub(fileURL)
+            .then(resultArray => {
+                if (resultArray) {
+                    console.log(resultArray);
+                    // Use the result array as needed
+                }
+            });
+    </script>
+</head>
+<body>
+    <!-- Your HTML content here -->
+</body>
+</html>
