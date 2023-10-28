@@ -2,6 +2,8 @@
 <p></p>
 [SelfDriveSlideshow](https://srinimkasturi.github.io/ui4io/selfdriveslideshow.html)
 <p></p>
+[UsrCtrlSysRandselectGitstorage](https://srinimkasturi.github.io/ui4io/UsrCtrlSysRandselectGitstorage.html)
+<p></p>
 [UsertimingSystemrandomselecting](https://srinimkasturi.github.io/ui4io/UsertimingSystemrandomselecting.html)
 <p></p>
 <!---
