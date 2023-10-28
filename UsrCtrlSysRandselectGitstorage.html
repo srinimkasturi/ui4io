@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  .slides { display: none; }
+  h1, p { text-align: center; }
+  div { text-align: center; }
+</style>
+</head>
+<body>
+
+<div>
+    <button onclick="prevSlide()">❮</button>
+    <button onclick="pauseSlide()">Pause</button>
+    <button onclick="nextSlide()">❯</button>
+    <br>
+    Slide duration (in ms): <input type="text" id="durationInput" value="3000">
+    <button onclick="changeTiming()">Change Timing</button>
+</div>  
+<div class="slideshow-container" id="slideshow-container">
+</div>
+
+<script>
+var slideData = []; // Store slide data from CSV
+var currentSlideIndex = 0;
+var slideInterval;
+
+// Function to load slide data from CSV file
+function loadSlideData() {
+  fetch('https://raw.githubusercontent.com/YourUsername/YourRepoName/YourBranch/slides.csv')
+    .then(response => response.text())
+    .then(data => {
+      var rows = data.split('\n');
+      for (var i = 1; i < rows.length; i++) {
+        var columns = rows[i].split(',');
+        slideData.push({
+          title: columns[0],
+          imageUrl: columns[1],
+          description: columns[2]
+        });
+      }
+      showSlides();
+    });
+}
+
+function showSlides() {
+  var container = document.getElementById('slideshow-container');
+  if (currentSlideIndex >= slideData.length) {
+    currentSlideIndex = 0;
+  }
+  container.innerHTML = `
+    <div class="slides">
+      <h1>${slideData[currentSlideIndex].title}</h1>
+      <img src="${slideData[currentSlideIndex].imageUrl}" width="414" height="414">
+      <p>${slideData[currentSlideIndex].description}</p>
+    </div>
+  `;
+  currentSlideIndex++;
+  slideInterval = setTimeout(showSlides, 3000); // Default slide duration is 3000ms
+}
+
+function prevSlide() {
+  currentSlideIndex -= 2; // Go back to the previous slide
+  if (currentSlideIndex < 0) {
+    currentSlideIndex = slideData.length - 1;
+  }
+  clearTimeout(slideInterval);
+  showSlides();
+}
+
+function pauseSlide() {
+  clearTimeout(slideInterval);
+}
+
+function nextSlide() {
+  clearTimeout(slideInterval);
+  showSlides();
+}
+
+function changeTiming() {
+  var newDuration = document.getElementById('durationInput').value;
+  clearTimeout(slideInterval);
+  slideInterval = setTimeout(showSlides, newDuration);
+}
+
+// Load slide data when the page loads
+loadSlideData();
+</script>
+
+</body>
+</html>
