@@ -27,7 +27,7 @@ var slideInterval;
 
 // Function to load slide data from CSV file
 function loadSlideData() {
-  fetch('https://srinimkasturi.github.io/ui4io/ui4io.csv')
+  fetch("https://srinimkasturi.github.io/ui4io/ui4io.csv")
     .then(response => response.text())
     .then(data => {
       var rows = data.split('\n');
