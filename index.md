@@ -1,6 +1,6 @@
 # Useless Insights for Intentional Optimism
 <p></p>
-[Elegant](https://srinimkasturi.github.io/ui4io/elegant.html)
+[Elegant](https://srinimkasturi.github.io/ui4io/Elegant.html)
 <p></p>
 [SelfDriveSlideshow](https://srinimkasturi.github.io/ui4io/selfdriveslideshow.html)
 <p></p>
