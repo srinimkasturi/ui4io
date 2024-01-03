@@ -26,6 +26,55 @@
       width: 100%;
     }
   </style>
+
+  <script>
+    let currentSlide = 0;
+    let slides = document.getElementsByClassName("slide");
+    let timerInterval;
+
+    function showSlide(index) {
+      for (let i = 0; i < slides.length; i++) {
+        slides[i].style.display = "none";
+      }
+
+      slides[index].style.display = "block";
+      setTimeout(() => {
+        document.getElementById(`title${index + 1}`).innerText = "Title";
+        setTimeout(() => {
+          document.getElementById(`subtitle${index + 1}`).innerText = "Subtitle";
+        }, 1000);
+      }, 1000);
+    }
+
+    function nextSlide() {
+      currentSlide = (currentSlide + 1) % slides.length;
+      showSlide(currentSlide);
+    }
+
+    function prevSlide() {
+      currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+      showSlide(currentSlide);
+    }
+
+    function pauseSlideshow() {
+      clearInterval(timerInterval);
+    }
+
+    function resumeSlideshow() {
+      timerInterval = setInterval(nextSlide, 3000); // Default interval: 3 seconds
+    }
+
+    function setTimer() {
+      let timerValue = parseInt(document.getElementById("timer").value, 10);
+      if (!isNaN(timerValue) && timerValue > 0) {
+        clearInterval(timerInterval);
+        timerInterval = setInterval(nextSlide, timerValue * 1000);
+      }
+    }
+
+    showSlide(currentSlide);
+    resumeSlideshow();
+  </script>
 </head>
 <body>
 
@@ -48,55 +97,6 @@
 <button onclick="nextSlide()">Next</button>
 <input type="number" id="timer" placeholder="Set Timer (seconds)">
 <button onclick="setTimer()">Set Timer</button>
-
-<script>
-  let currentSlide = 0;
-  let slides = document.getElementsByClassName("slide");
-  let timerInterval;
-
-  function showSlide(index) {
-    for (let i = 0; i < slides.length; i++) {
-      slides[i].style.display = "none";
-    }
-
-    slides[index].style.display = "block";
-    setTimeout(() => {
-      document.getElementById(`title${index + 1}`).innerText = "Title";
-      setTimeout(() => {
-        document.getElementById(`subtitle${index + 1}`).innerText = "Subtitle";
-      }, 1000);
-    }, 1000);
-  }
-
-  function nextSlide() {
-    currentSlide = (currentSlide + 1) % slides.length;
-    showSlide(currentSlide);
-  }
-
-  function prevSlide() {
-    currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-    showSlide(currentSlide);
-  }
-
-  function pauseSlideshow() {
-    clearInterval(timerInterval);
-  }
-
-  function resumeSlideshow() {
-    timerInterval = setInterval(nextSlide, 3000); // Default interval: 3 seconds
-  }
-
-  function setTimer() {
-    let timerValue = parseInt(document.getElementById("timer").value, 10);
-    if (!isNaN(timerValue) && timerValue > 0) {
-      clearInterval(timerInterval);
-      timerInterval = setInterval(nextSlide, timerValue * 1000);
-    }
-  }
-
-  showSlide(currentSlide);
-  resumeSlideshow();
-</script>
 
 </body>
 </html>
