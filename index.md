@@ -2,13 +2,14 @@
 <p></p>
 [Elegant](https://srinimkasturi.github.io/ui4io/Elegant.html)
 <p></p>
-[SelfDriveSlideshow](https://srinimkasturi.github.io/ui4io/selfdriveslideshow.html)
-<p></p>
 [UsrCtrlSysRandselectGitstorage](https://srinimkasturi.github.io/ui4io/UsrCtrlSysRandselectGitstorage.html)
 <p></p>
+<!---
 [UsertimingSystemrandomselecting](https://srinimkasturi.github.io/ui4io/UsertimingSystemrandomselecting.html)
 <p></p>
-<!---
+[SelfDriveSlideshow](https://srinimkasturi.github.io/ui4io/selfdriveslideshow.html)
+<p></p>
+
 Next: make a call to say random.io, get a random number, then use it to get an image from Nasa for a space picture, and show the picture right below - with a tag-like space to be!
 
 [UI0001-FidoSays](https://srinimkasturi.github.io/ui4io/Fido0001.md)
