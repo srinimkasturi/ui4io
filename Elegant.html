@@ -77,7 +77,13 @@
   </script>
 </head>
 <body>
-
+<button onclick="pauseSlideshow()">Pause</button>
+<button onclick="resumeSlideshow()">Resume</button>
+<button onclick="prevSlide()">Previous</button>
+<button onclick="nextSlide()">Next</button>
+<input type="number" id="timer" placeholder="Set Timer (seconds)">
+<button onclick="setTimer()">Set Timer</button>
+  
 <div id="slideshow-container">
   <div class="slide" id="slide1">
     <img src="https://srinimkasturi.github.io/ui4io/Fido0001image.png" alt="Slide 1">
@@ -90,13 +96,6 @@
     <div id="subtitle2"></div>
   </div>
 </div>
-
-<button onclick="pauseSlideshow()">Pause</button>
-<button onclick="resumeSlideshow()">Resume</button>
-<button onclick="prevSlide()">Previous</button>
-<button onclick="nextSlide()">Next</button>
-<input type="number" id="timer" placeholder="Set Timer (seconds)">
-<button onclick="setTimer()">Set Timer</button>
 
 </body>
 </html>
