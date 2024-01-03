@@ -1,142 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Slideshow with Settable Timer, Titles, and Fading Text</title>
-    <style>
-        #slideshow {
-            max-width: 800px;
-            margin: auto;
-            overflow: hidden;
-            position: relative;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    #slideshow {
+      position: relative;
+      max-width: 800px;
+      margin: auto;
+      overflow: hidden;
+      text-align: center;
+    }
 
-        .slide {
-            display: none;
-            width: 100%;
-            position: absolute;
-            text-align: center;
-        }
+    .slide {
+      display: none;
+      position: absolute;
+      width: 100%;
+      text-align: center;
+    }
 
-        .slide img {
-            width: 100%;
-            height: auto;
-        }
+    .slide img {
+      width: 100%;
+      height: auto;
+    }
 
-        .title {
-            position: absolute;
-            top: 10%;
-            left: 50%;
-            transform: translateX(-50%);
-            color: #fff;
-            font-size: 24px;
-            font-weight: bold;
-            opacity: 0;
-            transition: opacity 0.5s ease-in-out;
-        }
+    .text-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #fff;
+      font-size: 24px;
+      opacity: 0;
+      transition: opacity 0.5s;
+    }
 
-        .text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: #fff;
-            font-size: 16px;
-            opacity: 0;
-            transition: opacity 0.5s ease-in-out;
-        }
-
-        button {
-            margin: 5px;
-            cursor: pointer;
-        }
-    </style>
+    .text {
+      display: none;
+    }
+  </style>
 </head>
 <body>
 
 <div id="slideshow">
-    <div class="slide">
-        <img src="https://srinimkasturi.github.io/ui4io/Fido0001image.png" alt="Slide 1">
-        <div class="title" id="title1">Let a pooping dog poop in peace</div>
-        <div class="text" id="text1">Offloading makes a dog and humans happier and thus easier to be with</div>
+  <div class="slide">
+    <img src="https://srinimkasturi.github.io/ui4io/Fido0001image.png" alt="Slide 1">
+    <div class="text-container">
+      <h2 class="title">Slide 1 Title</h2>
+      <p class="subtitle">Subtitle after 1 second</p>
+      <p class="additional-text text">Additional text that fades in after 2 seconds.</p>
     </div>
-    <div class="slide">
-        <img src="https://srinimkasturi.github.io/ui4io/LaunchPad.jpg" alt="Slide 2">
-        <div class="title" id="title2">Launchpad soars too, but differently</div>
-        <div class="text" id="text2">Solid launch pad takes the kicks and still stays grounded! No launches without it!!</div>
+  </div>
+  <div class="slide">
+    <img src="https://srinimkasturi.github.io/ui4io/LaunchPad.jpg" alt="Slide 2">
+    <div class="text-container">
+      <h2 class="title">Slide 2 Title</h2>
+      <p class="subtitle">Subtitle after 1 second</p>
+      <p class="additional-text text">Additional text that fades in after 2 seconds.</p>
     </div>
-    <!-- Add more slides as needed -->
+  </div>
 </div>
 
-<button onclick="togglePause()">Pause/Play</button>
-<button onclick="prevSlide()">Previous</button>
-<button onclick="nextSlide()">Next</button>
-
-<!-- Settable Timer Duration (in milliseconds) -->
-<input type="number" id="timerDuration" placeholder="Set Timer Duration (ms)" />
-<button onclick="setTimer()">Set Timer</button>
-
 <script>
-    let currentIndex = 0;
-    let isPaused = false;
-    let interval;
-    let timerDuration = 3000; // Default timer duration (in milliseconds)
+  let currentSlide = 0;
+  let slideshowInterval;
+  const slides = document.querySelectorAll('.slide');
 
-    function showSlide(index) {
-        const slides = document.querySelectorAll('.slide');
-        const titles = document.querySelectorAll('.title');
-        const texts = document.querySelectorAll('.text');
+  function showSlide(index) {
+    slides.forEach((slide, i) => {
+      if (i === index) {
+        slide.style.display = 'block';
+        setTimeout(() => {
+          slide.querySelector('.text-container').style.opacity = 1;
+          slide.querySelector('.title').style.display = 'block';
+        }, 1000);
+        setTimeout(() => {
+          slide.querySelector('.subtitle').style.display = 'block';
+        }, 2000);
+        setTimeout(() => {
+          slide.querySelector('.text').style.display = 'block';
+        }, 3000);
+      } else {
+        slide.style.display = 'none';
+        slide.querySelector('.text-container').style.opacity = 0;
+        slide.querySelector('.title').style.display = 'none';
+        slide.querySelector('.subtitle').style.display = 'none';
+        slide.querySelector('.text').style.display = 'none';
+      }
+    });
+  }
 
-        slides.forEach((slide, i) => {
-            slide.style.display = i === index ? 'block' : 'none';
+  function nextSlide() {
+    currentSlide = (currentSlide + 1) % slides.length;
+    showSlide(currentSlide);
+  }
 
-            if (i === index) {
-                // Fade in the title immediately
-                titles[i].style.opacity = 1;
+  function prevSlide() {
+    currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+    showSlide(currentSlide);
+  }
 
-                // Fade in the text after 2 seconds
-                setTimeout(() => {
-                    texts[i].style.opacity = 1;
-                }, 2000);
-            } else {
-                titles[i].style.opacity = 0;
-                texts[i].style.opacity = 0;
-            }
-        });
-    }
+  function startSlideshow() {
+    slideshowInterval = setInterval(nextSlide, 5000); // Change the interval as needed (milliseconds)
+  }
 
-    function nextSlide() {
-        currentIndex = (currentIndex + 1) % document.querySelectorAll('.slide').length;
-        showSlide(currentIndex);
-    }
+  function pauseSlideshow() {
+    clearInterval(slideshowInterval);
+  }
 
-    function prevSlide() {
-        currentIndex = (currentIndex - 1 + document.querySelectorAll('.slide').length) % document.querySelectorAll('.slide').length;
-        showSlide(currentIndex);
-    }
+  document.getElementById('slideshow').addEventListener('mouseenter', pauseSlideshow);
+  document.getElementById('slideshow').addEventListener('mouseleave', startSlideshow);
 
-    function togglePause() {
-        isPaused = !isPaused;
-        if (isPaused) {
-            clearInterval(interval);
-        } else {
-            interval = setInterval(nextSlide, timerDuration);
-        }
-    }
-
-    function setTimer() {
-        timerDuration = parseInt(document.getElementById('timerDuration').value) || 3000;
-        if (!isPaused) {
-            clearInterval(interval);
-            interval = setInterval(nextSlide, timerDuration);
-        }
-    }
-
-    // Initialize slideshow
-    showSlide(currentIndex);
-    interval = setInterval(nextSlide, timerDuration);
+  startSlideshow();
 </script>
 
 </body>
 </html>
+
