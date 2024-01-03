@@ -1,136 +1,134 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      transition: background-color 1s;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slideshow with Titles and Fading Text</title>
+    <style>
+        #slideshow {
+            max-width: 800px;
+            margin: auto;
+            overflow: hidden;
+            position: relative;
+        }
 
-    .slideshow-container {
-      max-width: 800px;
-      position: relative;
-      margin: auto;
-      overflow: hidden;
-    }
+        .slide {
+            display: none;
+            width: 100%;
+            position: absolute;
+            text-align: center;
+        }
 
-    .mySlides {
-      display: none;
-      position: absolute;
-      width: 100%;
-      opacity: 0.7;
-      transition: opacity 0.5s;
-    }
+        .slide img {
+            width: 100%;
+            height: auto;
+        }
 
-    img {
-      width: 100%;
-      height: auto;
-    }
+        .title {
+            position: absolute;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
+            font-size: 24px;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
 
-    input.speed-slider {
-      width: 100px;
-      margin-top: 10px;
-    }
+        .text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            font-size: 16px;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
 
-    .controls {
-      text-align: center;
-    }
-
-    label {
-      font-size: 16px;
-      margin-right: 5px;
-    }
-  </style>
-  <title>JavaScript Slideshow</title>
+        button {
+            margin: 5px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-  <div class="slideshow-container">
-    <div class="mySlides fade">
-      <h1>Let a pooping dog poop in peace</h1>
-      <img src="https://srinimkasturi.github.io/ui4io/Fido0001image.png" width="414" height="414">
-      <h1>When well let go happens better friend or fido happens</h1> 
+
+<div id="slideshow">
+    <div class="slide">
+        <img src="image1.jpg" alt="Slide 1">
+        <div class="title" id="title1">Title 1</div>
+        <div class="text" id="text1">Additional Text 1</div>
     </div>
-
-    <div class="mySlides fade">
-      <img src="slide2.jpg" style="width:100%">
+    <div class="slide">
+        <img src="image2.jpg" alt="Slide 2">
+        <div class="title" id="title2">Title 2</div>
+        <div class="text" id="text2">Additional Text 2</div>
     </div>
-
-    <div class="mySlides fade">
-      <h1>Launchpad soars different</h1>
-      <img src="https://srinimkasturi.github.io/ui4io/LaunchPad.jpg"  width="414" height="414">
-      <h1>Solid launch pad takes the kicks and still stays grounded! That is its soaring achievement!!</h1>
-    </div>>
-
+    <div class="slide">
+        <img src="image3.jpg" alt="Slide 3">
+        <div class="title" id="title3">Title 3</div>
+        <div class="text" id="text3">Additional Text 3</div>
+    </div>
     <!-- Add more slides as needed -->
+</div>
 
-    <div class="controls">
-      <label for="speed">Speed: </label>
-      <input type="range" min="1" max="10" value="5" class="speed-slider" id="speed">
-    </div>
-  </div>
+<button onclick="togglePause()">Pause/Play</button>
+<button onclick="prevSlide()">Previous</button>
+<button onclick="nextSlide()">Next</button>
 
-  <script>
-    let slides = document.getElementsByClassName("mySlides");
-    let slideIndex = getRandomIndex();
-    let timer;
-    let speed = 5; // Default speed
+<script>
+    let currentIndex = 0;
+    let isPaused = false;
+    let interval;
 
-    function showSlides() {
-      for (let i = 0; i < slides.length; i++) {
-        slides[i].style.display = "none";
-      }
+    function showSlide(index) {
+        const slides = document.querySelectorAll('.slide');
+        const titles = document.querySelectorAll('.title');
+        const texts = document.querySelectorAll('.text');
 
-      slideIndex++;
-      
-      if (slideIndex >= slides.length) {
-        slideIndex = 0;
-        shuffleSlides();
-      }
+        slides.forEach((slide, i) => {
+            slide.style.display = i === index ? 'block' : 'none';
 
-      document.body.style.backgroundColor = getRandomColor();
-      
-      slides[slideIndex].style.display = "block";
-      setTimeout(() => {
-        slides[slideIndex].style.opacity = 1;
-      }, 10);
+            if (i === index) {
+                // Fade in the title immediately
+                titles[i].style.opacity = 1;
 
-      timer = setTimeout(() => {
-        slides[slideIndex].style.opacity = 0.7;
-        showSlides();
-      }, 1000 / speed);
+                // Fade in the text after 2 seconds
+                setTimeout(() => {
+                    texts[i].style.opacity = 1;
+                }, 2000);
+            } else {
+                titles[i].style.opacity = 0;
+                texts[i].style.opacity = 0;
+            }
+        });
     }
 
-    function getRandomColor() {
-      const letters = '0123456789ABCDEF';
-      let color = '#';
-      for (let i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
-      }
-      return color;
+    function nextSlide() {
+        currentIndex = (currentIndex + 1) % document.querySelectorAll('.slide').length;
+        showSlide(currentIndex);
     }
 
-    function getRandomIndex() {
-      return Math.floor(Math.random() * slides.length);
+    function prevSlide() {
+        currentIndex = (currentIndex - 1 + document.querySelectorAll('.slide').length) % document.querySelectorAll('.slide').length;
+        showSlide(currentIndex);
     }
 
-    function shuffleSlides() {
-      for (let i = slides.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [slides[i], slides[j]] = [slides[j], slides[i]];
-      }
+    function togglePause() {
+        isPaused = !isPaused;
+        if (isPaused) {
+            clearInterval(interval);
+        } else {
+            interval = setInterval(nextSlide, 3000); // Change the timer as needed (3000 milliseconds = 3 seconds)
+        }
     }
 
-    document.getElementById("speed").addEventListener("input", function() {
-      speed = this.value;
-      clearTimeout(timer);
-      showSlides();
-    });
+    // Initialize slideshow
+    showSlide(currentIndex);
+    interval = setInterval(nextSlide, 3000); // Change the timer as needed (3000 milliseconds = 3 seconds)
+</script>
 
-    showSlides();
-  </script>
 </body>
 </html>
