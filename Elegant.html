@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Slideshow with Titles and Fading Text</title>
+    <title>Slideshow with Settable Timer, Titles, and Fading Text</title>
     <style>
         #slideshow {
             max-width: 800px;
@@ -78,10 +78,15 @@
 <button onclick="prevSlide()">Previous</button>
 <button onclick="nextSlide()">Next</button>
 
+<!-- Settable Timer Duration (in milliseconds) -->
+<input type="number" id="timerDuration" placeholder="Set Timer Duration (ms)" />
+<button onclick="setTimer()">Set Timer</button>
+
 <script>
     let currentIndex = 0;
     let isPaused = false;
     let interval;
+    let timerDuration = 3000; // Default timer duration (in milliseconds)
 
     function showSlide(index) {
         const slides = document.querySelectorAll('.slide');
@@ -121,13 +126,21 @@
         if (isPaused) {
             clearInterval(interval);
         } else {
-            interval = setInterval(nextSlide, 3000); // Change the timer as needed (3000 milliseconds = 3 seconds)
+            interval = setInterval(nextSlide, timerDuration);
+        }
+    }
+
+    function setTimer() {
+        timerDuration = parseInt(document.getElementById('timerDuration').value) || 3000;
+        if (!isPaused) {
+            clearInterval(interval);
+            interval = setInterval(nextSlide, timerDuration);
         }
     }
 
     // Initialize slideshow
     showSlide(currentIndex);
-    interval = setInterval(nextSlide, 3000); // Change the timer as needed (3000 milliseconds = 3 seconds)
+    interval = setInterval(nextSlide, timerDuration);
 </script>
 
 </body>
