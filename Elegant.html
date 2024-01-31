@@ -11,6 +11,90 @@
       justify-content: center;
       height: 100vh;
       margin: 0;
+      transition: background-color 1s ease; /* Smooth transition for background color */
+    }
+    #slide-container {
+      text-align: center;
+    }
+    img {
+      max-width: 100%;
+      max-height: 300px;
+      margin: 20px 0;
+    }
+  </style>
+</head>
+<body>
+  <div id="slide-container">
+    <div id="text-box1"></div>
+    <div id="text-box2"></div>
+    <img id="slide-image" alt="Slide Image">
+  </div>
+
+  <button onclick="pauseSlideshow()">Pause</button>
+  <button onclick="resumeSlideshow()">Resume</button>
+
+  <script>
+    const slides = [
+      "Text1A,Text2A,https://srinimkasturi.github.io/ui4io/Fido0001image.png",
+      "Text1B,Text2B,https://srinimkasturi.github.io/ui4io/LaunchPad.jpg",
+      // Add more slides as needed
+    ];
+
+    let currentIndex = 0;
+    let intervalId;
+    let backgroundColors = ["#E6E6FA", "#F0FFF0", "#FFE4E1"]; // Add more colors as needed
+
+    function displaySlide(index) {
+      const [text1, text2, imagePath] = slides[index].split(',');
+
+      document.getElementById('text-box1').textContent = text1;
+      document.getElementById('text-box2').textContent = text2;
+      document.getElementById('slide-image').src = imagePath;
+
+      // Change background color for each slide
+      document.body.style.backgroundColor = backgroundColors[index % backgroundColors.length];
+    }
+
+    function startSlideshow(interval) {
+      intervalId = setInterval(() => {
+        displaySlide(currentIndex);
+        currentIndex = (currentIndex + 1) % slides.length;
+      }, interval);
+    }
+
+    function pauseSlideshow() {
+      clearInterval(intervalId);
+    }
+
+    function resumeSlideshow() {
+      const interval = parseInt(prompt("Enter slideshow interval in milliseconds:")) || 3000;
+      pauseSlideshow();
+      startSlideshow(interval);
+    }
+
+    startSlideshow(3000); // Default interval, you can change it
+  </script>
+</body>
+</html>
+
+<!--
+Single page app, in a single file, for a slideshow, displaying Random slides, with user controlled timing, with pause and resume buttons, each slide has two text boxes and one image, image is in the middle, with texts and image location coming from an array of strings, each string has the three comma separated fields, each slide refresh should change the background color to some peaceful color 
+-->
+
+<!--
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Random Slideshow</title>
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
     }
     #slide-container {
       text-align: center;
@@ -70,6 +154,9 @@
 
 <!--
 Single page app, in a single file, for a slideshow, displaying Random slides, with timing controlled by users, with pause and resume buttons, each slide either two text boxes and one image in the middle, with texts and image location coming from an array of strings, each string have the three comma fields 
+-->
+
+<!--
 <!DOCTYPE html>
 <html lang="en">
 <head>
