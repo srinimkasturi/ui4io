@@ -45,7 +45,38 @@
     let backgroundColors = ["#E6E6FA", "#F0FFF0", "#FFE4E1"]; // Add more colors as needed
 
     function displaySlide(index) {
-      const [text1, text2, imagePath] = slides[index]
+      const [text1, text2, imagePath] = slides[index].split(',');
+
+      document.getElementById('text-box1').textContent = text1;
+      document.getElementById('text-box2').textContent = text2;
+      document.getElementById('slide-image').src = imagePath;
+
+      // Change background color for each slide
+      document.body.style.backgroundColor = backgroundColors[index % backgroundColors.length];
+    }
+
+    function startSlideshow(interval) {
+      intervalId = setInterval(() => {
+        displaySlide(currentIndex);
+        currentIndex = (currentIndex + 1) % slides.length;
+      }, interval);
+    }
+
+    function pauseSlideshow() {
+      clearInterval(intervalId);
+    }
+
+    function resumeSlideshow() {
+      const interval = parseInt(prompt("Enter slideshow interval in milliseconds:")) || 3000;
+      pauseSlideshow();
+      startSlideshow(interval);
+    }
+
+    startSlideshow(3000); // Default interval, you can change it
+  </script>
+</body>
+</html>
+
 
 
 <!--
