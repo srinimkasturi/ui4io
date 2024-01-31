@@ -3,6 +3,77 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Random Slideshow</title>
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    #slide-container {
+      text-align: center;
+    }
+    img {
+      max-width: 100%;
+      max-height: 300px;
+    }
+  </style>
+</head>
+<body>
+  <div id="slide-container">
+    <div id="text-box1"></div>
+    <div id="text-box2"></div>
+    <img id="slide-image" alt="Slide Image">
+  </div>
+
+  <script>
+    const slides = [
+      "Text1A,Text2A,imageA.jpg",
+      "Text1B,Text2B,imageB.jpg",
+      // Add more slides as needed
+    ];
+
+    let currentIndex = 0;
+    let intervalId;
+
+    function displaySlide(index) {
+      const [text1, text2, imagePath] = slides[index].split(',');
+
+      document.getElementById('text-box1').textContent = text1;
+      document.getElementById('text-box2').textContent = text2;
+      document.getElementById('slide-image').src = imagePath;
+    }
+
+    function startSlideshow(interval) {
+      intervalId = setInterval(() => {
+        displaySlide(currentIndex);
+        currentIndex = (currentIndex + 1) % slides.length;
+      }, interval);
+    }
+
+    function pauseSlideshow() {
+      clearInterval(intervalId);
+    }
+
+    function resumeSlideshow(interval) {
+      pauseSlideshow();
+      startSlideshow(interval);
+    }
+
+    startSlideshow(3000); // Adjust the interval as needed
+  </script>
+</body>
+</html>
+
+
+<!--
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Elegant Slideshow</title>
   <style>
     body {
@@ -114,3 +185,4 @@
 
 </body>
 </html>
+-->
