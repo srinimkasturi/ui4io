@@ -35,8 +35,8 @@
 
   <script>
     const slides = [
-      "Let a pooping dog poop!, 'Helping loved ones fully let go, means they and you are happier together',https://srinimkasturi.github.io/ui4io/Fido0001image.png",
-      "Text1B,Text2B,https://srinimkasturi.github.io/ui4io/LaunchPad.jpg",
+      ["Text1A, with punctuation forms!", "https://srinimkasturi.github.io/ui4io/Fido0001image.png", "Text2A, with more punctuation forms!"],
+      ["Text1B, another slide", "https://srinimkasturi.github.io/ui4io/LaunchPad.jpg", "Text2B, and more text!"],
       // Add more slides as needed
     ];
 
@@ -45,7 +45,7 @@
     let backgroundColors = ["#E6E6FA", "#F0FFF0", "#FFE4E1"]; // Add more colors as needed
 
     function displaySlide(index) {
-      const [text1, text2, imagePath] = slides[index].split(',');
+      const [text1, imagePath, text2] = slides[index];
 
       document.getElementById('text-box1').innerHTML = escapeHTML(text1);
       document.getElementById('text-box2').innerHTML = escapeHTML(text2);
@@ -99,9 +99,9 @@
 
 
 
+
 <!--
-Single page app, in a single file, for a slideshow, displaying Random slides, with user controlled timing, with pause and resume buttons, each slide has one text box then an image and then one more text box below, with texts and image location coming from an array of strings, each string has the three comma separated fields, each slide refresh should change the background color to some peaceful color, use https://srinimkasturi.github.io/ui4io/Fido0001image.png as one image URL and https://srinimkasturi.github.io/ui4io/LaunchPad.jpg as a second sample image URLs, allow the text strings to contain common punctuation marks-->
--->
+Single page app, in a single file, for a slideshow, displaying Random slides, with user controlled timing, with pause and resume buttons, each slide has one text box then an image and then one more text box below, with texts and image location coming from an array of arrays, each array in the array has three value, first a string, second a URL, third a string. The string will have common punctuation forms. Each slide refresh should change the background color to some peaceful color, use https://srinimkasturi.github.io/ui4io/Fido0001image.png as one image URL and https://srinimkasturi.github.io/ui4io/LaunchPad.jpg as a second sample image URLs-->
 
 <!--
       "Let a pooping dog poop!, 'Helping loved ones fully let go, means they and you are happier together',https://srinimkasturi.github.io/ui4io/Fido0001image.png",
