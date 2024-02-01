@@ -35,7 +35,7 @@
 
   <script>
     const slides = [
-      "'Let a pooping dog poop!', 'Helping loved ones let go, fully, means they and you are happier together',https://srinimkasturi.github.io/ui4io/Fido0001image.png",
+      "Let a pooping dog poop!, 'Helping loved ones, fully let go fully means they and you are happier together',https://srinimkasturi.github.io/ui4io/Fido0001image.png",
       "Text1B,Text2B,https://srinimkasturi.github.io/ui4io/LaunchPad.jpg",
       // Add more slides as needed
     ];
@@ -47,8 +47,8 @@
     function displaySlide(index) {
       const [text1, text2, imagePath] = slides[index].split(',');
 
-      document.getElementById('text-box1').textContent = text1;
-      document.getElementById('text-box2').textContent = text2;
+      document.getElementById('text-box1').innerHTML = escapeHTML(text1);
+      document.getElementById('text-box2').innerHTML = escapeHTML(text2);
       document.getElementById('slide-image').src = imagePath;
 
       // Change background color for each slide
@@ -72,6 +72,18 @@
       startSlideshow(interval);
     }
 
+    function escapeHTML(text) {
+      const map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+      };
+
+      return text.replace(/[&<>"']/g, (m) => map[m]);
+    }
+
     startSlideshow(3000); // Default interval, you can change it
   </script>
 </body>
@@ -80,7 +92,13 @@
 
 
 <!--
-Single page app, in a single file, for a slideshow, displaying Random slides, with user controlled timing, with pause and resume buttons, each slide has one text box then an image and then one more text box below, with texts and image location coming from an array of strings, each string has the three comma separated fields, each slide refresh should change the background color to some peaceful color, use https://srinimkasturi.github.io/ui4io/LaunchPad.jpg as one image URL and https://srinimkasturi.github.io/ui4io/LaunchPad.jpg as a second sample image URL-->
+Single page app, in a single file, for a slideshow, displaying Random slides, with user controlled timing, with pause and resume buttons, each slide has one text box then an image and then one more text box below, with texts and image location coming from an array of strings, each string has the three comma separated fields, each slide refresh should change the background color to some peaceful color, use https://srinimkasturi.github.io/ui4io/LaunchPad.jpg as one image URL and https://srinimkasturi.github.io/ui4io/LaunchPad.jpg as a second sample image URLs, allow the text strings to contain common punctuation marks-->
+-->
+
+<!--
+      "Let a pooping dog poop!, Helping loved ones fully let go fully means they and you are happier together,https://srinimkasturi.github.io/ui4io/Fido0001image.png",
+      "Text1B,Text2B,https://srinimkasturi.github.io/ui4io/LaunchPad.jpg",
+-->
 
 <!--
 <!DOCTYPE html>
