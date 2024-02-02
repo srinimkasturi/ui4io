@@ -17,8 +17,6 @@
 
     #slideshow-container {
       text-align: center;
-      font-size: 20px;
-      text-size-adjust: auto;
     }
 
     .slide {
@@ -37,17 +35,30 @@
       height: auto;
       margin-top: 10px;
     }
+
+    #controls {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 10px;
+    }
   </style>
 </head>
 <body>
 
 <div id="slideshow-container"></div>
+<div id="controls">
+  <button id="playPauseButton">Play</button>
+  <input type="range" id="intervalRange" min="1000" max="10000" step="1000" value="5000">
+  <label for="intervalRange" id="intervalLabel">5000 ms</label>
+</div>
 
 <script>
   const slidesData = [
-      ["Let a pooping dog poop!", "https://srinimkasturi.github.io/ui4io/Fido0001image.png", "Help someone lighten their load, they will lighten the World’s load."],
-      ["Launchpad soars", "https://srinimkasturi.github.io/ui4io/LaunchPad.jpg", "Launchpad takes a beating but counts each launch as its success"],
-      ["What comes first chicken or egg?", "https://srinimkasturi.github.io/ui4io/eggnchicken.png", "Depends on what you’ve ordered. History impacts answers, so know history."],
+    ["Text 1", "https://srinimkasturi.github.io/ui4io/Fido0001image.png", "Text below 1"],
+    ["Text 2", "https://srinimkasturi.github.io/ui4io/LaunchPad.jpg", "Text below 2"],
     // Add more slides as needed
   ];
 
@@ -55,8 +66,8 @@
   let slideshowInterval;
   let isPaused = false;
 
-  function startSlideshow() {
-    slideshowInterval = setInterval(showNextSlide, 5000); // Change slide every 5 seconds
+  function startSlideshow(interval) {
+    slideshowInterval = setInterval(showNextSlide, interval);
   }
 
   function showNextSlide() {
@@ -98,17 +109,28 @@
 
   document.addEventListener("DOMContentLoaded", () => {
     showSlide(currentSlideIndex);
-    startSlideshow();
+    startSlideshow(5000); // Default interval
 
-    // Pause and Resume buttons
-    document.addEventListener("keydown", (event) => {
-      if (event.key === " ") { // Space key
-        isPaused = !isPaused;
-        if (isPaused) {
-          clearInterval(slideshowInterval);
-        } else {
-          startSlideshow();
-        }
+    const playPauseButton = document.getElementById("playPauseButton");
+    const intervalRange = document.getElementById("intervalRange");
+    const intervalLabel = document.getElementById("intervalLabel");
+
+    playPauseButton.addEventListener("click", () => {
+      isPaused = !isPaused;
+      playPauseButton.textContent = isPaused ? "Play" : "Pause";
+      if (isPaused) {
+        clearInterval(slideshowInterval);
+      } else {
+        startSlideshow(Number(intervalRange.value));
+      }
+    });
+
+    intervalRange.addEventListener("input", () => {
+      const intervalValue = Number(intervalRange.value);
+      intervalLabel.textContent = `${intervalValue} ms`;
+      if (!isPaused) {
+        clearInterval(slideshowInterval);
+        startSlideshow(intervalValue);
       }
     });
   });
@@ -122,7 +144,10 @@
 
 
 
+
 <!--
+single-page app in a single file for a responsive slideshow with random slides, user-controlled timing, pause and resume buttons, and each slide containing a text box, an image, and another text box. The data for each slide, including text and image URLs, comes from an array of arrays. The background color should change with each slide refresh. The images provided for testing are "https://srinimkasturi.github.io/ui4io/Fido0001image.png" and "https://srinimkasturi.github.io/ui4io/LaunchPad.jpg". The code should scale to meet the browser size, and you also requested timing controls for the slideshow.
+
 Single page app, in a single file, for a slideshow, displaying Random slides, with user controlled timing, with pause and resume buttons, each slide has one text box then an image and then one more text box below, with texts and image location coming from an array of arrays, each array in the array has three value, first a string, second a URL, third a string. The string will have common punctuation forms. Each slide refresh should change the background color to some peaceful color, use https://srinimkasturi.github.io/ui4io/Fido0001image.png as one image URL and https://srinimkasturi.github.io/ui4io/LaunchPad.jpg as a second sample image URLs. Scale the output to meet the browser size.-->
 
 <!--
