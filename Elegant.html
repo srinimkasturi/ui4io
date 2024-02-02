@@ -6,96 +6,105 @@
   <title>Random Slideshow</title>
   <style>
     body {
+      margin: 0;
+      overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
       height: 100vh;
-      margin: 0;
-      transition: background-color 1s ease; /* Smooth transition for background color */
+      background-color: #f0f0f0; /* Initial background color */
     }
-    #slide-container {
+    
+    #slideshow-container {
       text-align: center;
     }
+
+    .slide {
+      display: none;
+      padding: 20px;
+    }
+
     img {
       max-width: 100%;
-      max-height: 300px;
-      margin: 20px 0;
+      height: auto;
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
-  <div id="slide-container">
-    <div id="text-box1"></div>
-    <img id="slide-image" alt="Slide Image">
-    <div id="text-box2"></div>
-  </div>
 
-  <button onclick="pauseSlideshow()">Pause</button>
-  <button onclick="resumeSlideshow()">Resume</button>
+<div id="slideshow-container"></div>
 
-  <script>
-    const slides = [
+<script>
+  const slidesData = [
       ["Let a pooping dog poop!", "https://srinimkasturi.github.io/ui4io/Fido0001image.png", "Help someone lighten their load, they will lighten the World’s load."],
       ["Launchpad soars", "https://srinimkasturi.github.io/ui4io/LaunchPad.jpg", "Laundpad takes a beating but counts each launch as its own success"],
       ["What comes first chicken or egg?", "https://srinimkasturi.github.io/ui4io/eggnchicken.png", "Depends on what you’re ordered. History impacts answers, so know history."],
-      // Add more slides as needed
-    ];
+    // Add more slides as needed
+  ];
 
-    let currentIndex = 0;
-    let intervalId;
-    let backgroundColors = ["#E6E6FA", "#F0FFF0", "#FFE4E1"]; // Add more colors as needed
+  let currentSlideIndex = 0;
+  let slideshowInterval;
+  let isPaused = false;
 
-    function displaySlide(index) {
-      const [text1, imagePath, text2] = slides[index];
+  function startSlideshow() {
+    slideshowInterval = setInterval(showNextSlide, 5000); // Change slide every 5 seconds
+  }
 
-      document.getElementById('text-box1').innerHTML = escapeHTML(text1);
-      document.getElementById('text-box2').innerHTML = escapeHTML(text2);
-      document.getElementById('slide-image').src = imagePath;
-
-      // Change background color for each slide
-      document.body.style.backgroundColor = backgroundColors[index % backgroundColors.length];
+  function showNextSlide() {
+    if (!isPaused) {
+      currentSlideIndex = (currentSlideIndex + 1) % slidesData.length;
+      showSlide(currentSlideIndex);
     }
+  }
 
-    function startSlideshow(interval) {
-      intervalId = setInterval(() => {
-        displaySlide(currentIndex);
-        currentIndex = (currentIndex + 1) % slides.length;
-      }, interval);
+  function showSlide(index) {
+    const [textAbove, imageUrl, textBelow] = slidesData[index];
+    const slideshowContainer = document.getElementById("slideshow-container");
+
+    document.body.style.backgroundColor = getRandomColor(); // Change background color
+
+    const slideHTML = `
+      <div class="slide">
+        <div>${textAbove}</div>
+        <img src="${imageUrl}" alt="Slide Image">
+        <div>${textBelow}</div>
+      </div>
+    `;
+
+    slideshowContainer.innerHTML = slideHTML;
+  }
+
+  function getRandomColor() {
+    const letters = "0123456789ABCDEF";
+    let color = "#";
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
     }
+    return color;
+  }
 
-    function pauseSlideshow() {
-      clearInterval(intervalId);
-    }
+  document.addEventListener("DOMContentLoaded", () => {
+    showSlide(currentSlideIndex);
+    startSlideshow();
 
-    function resumeSlideshow() {
-      const interval = parseInt(prompt("Enter slideshow interval in milliseconds:")) || 3000;
-      pauseSlideshow();
-      startSlideshow(interval);
-    }
-
-    function escapeHTML(text) {
-      return text.replace(/[&<>"']/g, (match) => {
-        switch (match) {
-          case '&':
-            return '&amp;';
-          case '<':
-            return '&lt;';
-          case '>':
-            return '&gt;';
-          case '"':
-            return '&quot;';
-          case "'":
-            return '&#39;';
-          default:
-            return match;
+    // Pause and Resume buttons
+    document.addEventListener("keydown", (event) => {
+      if (event.key === " ") { // Space key
+        isPaused = !isPaused;
+        if (isPaused) {
+          clearInterval(slideshowInterval);
+        } else {
+          startSlideshow();
         }
-      });
-    }
+      }
+    });
+  });
+</script>
 
-    startSlideshow(3000); // Default interval, you can change it
-  </script>
 </body>
 </html>
+
 
 
 
