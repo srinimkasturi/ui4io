@@ -13,8 +13,8 @@
 
   #slideshow-container {
     position: relative;
-    width: auto;
-    height: auto;
+    width: 100%;
+    max-width: 800px;
     margin: auto;
     overflow: hidden;
     text-align: center;
@@ -22,22 +22,25 @@
 
   .slide {
     display: none;
-    width: auto;
-    height: auto;
-    padding: 20px;
+    width: 100%;
     box-sizing: border-box;
-  }
-
-  .slide img {
-    width: auto;
-    height: auto;
-    display: block;
-    margin: 0 auto;
-    border-radius: 10px;
+    padding: 20px;
   }
 
   .slide-content {
-    margin-top: 20px;
+    max-width: 100%; /* Ensure slide content doesn't exceed viewport width */
+    margin: 0 auto; /* Center the slide content */
+  }
+
+  .slide img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 10px;
+  }
+
+  .slide-content p {
+    margin: 0; /* Remove default margin for paragraphs */
   }
 
   #pause-resume-btn {
@@ -51,7 +54,6 @@
     border: none;
     border-radius: 5px;
     outline: none;
-    z-index: 100; /* Ensure it's above the slideshow */
   }
   
   #timer-slider {
@@ -74,8 +76,7 @@
       ["Let a pooping dog poop!", "https://srinimkasturi.github.io/ui4io/Fido0001image.png", "Help someone lighten their load, they will lighten the World’s load."],
       ["Launchpad soars", "https://srinimkasturi.github.io/ui4io/LaunchPad.jpg", "Launchpad takes a beating but counts each launch as its success"],
       ["What comes first chicken or egg?", "https://srinimkasturi.github.io/ui4io/eggnchicken.png", "Depends on what you’ve ordered. History impacts answers, so know history."],
-      ["Humor being live long :)", "https://srinimkasturi.github.io/ui4io/SolarFlaret.png", "I mean, you wouldn't be on this site if you did not know the value of humor right! Go on spread the word!!"],
-    // Add more slides as needed
+      // Add more slides as needed
   ];
 
   const slideshowContainer = document.getElementById('slideshow-container');
@@ -157,7 +158,7 @@
 
 
 <!--
-Create a responsive slideshow with random slides, user-controlled timing, pause and resume buttons, and each slide containing a text box, an image, and another text box. The data for each slide, including text and image URLs, comes from an array of arrays. The background color of each slide changes randomly with pale colors. Additionally, include a slider input element for users to adjust the timing of the slideshow. The code should scale to meet the browser size.
+Create a responsive slideshow with random slides, user-controlled timing, pause and resume buttons, and each slide containing a text box, an image, and another text box. The data for each slide, including text and image URLs, comes from an array of arrays. Each slide adjusts to the browser size. The background color of each slide changes randomly with pale colors. Additionally, include a slider input element for users to adjust the timing of the slideshow. Each slide should scale to meet the browser size at that time.
 
 single-page app in a single file for a responsive slideshow with random slides, user-controlled timing, pause and resume buttons, and each slide containing a text box, an image, and another text box. The data for each slide, including text and image URLs, comes from an array of arrays. The background color should be pale and pleasant, and change with each slide refresh. The images provided for testing are "https://srinimkasturi.github.io/ui4io/Fido0001image.png" and "https://srinimkasturi.github.io/ui4io/LaunchPad.jpg". The code should scale to meet the browser size, and you also requested timing controls for the slideshow.
 
