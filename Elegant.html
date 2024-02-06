@@ -22,6 +22,7 @@
     .slide {
       display: none;
       width: 100%;
+      background-color: #f9f9f9; /* Pale background color for slides */
     }
 
     .slide img {
@@ -34,7 +35,6 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background-color: rgba(255, 255, 255, 0.7); /* Semi-transparent white background for text */
       padding: 20px;
       border-radius: 10px;
     }
@@ -61,10 +61,10 @@
   <script>
     // Slide data
     const slidesData = [
-      ["Let a pooping dog poop!", "https://srinimkasturi.github.io/ui4io/Fido0001image.png", "Help someone lighten their load, they will lighten the World’s load."],
+        ["Let a pooping dog poop!", "https://srinimkasturi.github.io/ui4io/Fido0001image.png", "Help someone lighten their load, they will lighten the World’s load."],
       ["Launchpad soars", "https://srinimkasturi.github.io/ui4io/LaunchPad.jpg", "Launchpad takes a beating but counts each launch as its success"],
       ["What comes first chicken or egg?", "https://srinimkasturi.github.io/ui4io/eggnchicken.png", "Depends on what you’ve ordered. History impacts answers, so know history."],
-    ];
+  ];
 
     const slideshowContainer = document.getElementById('slideshow-container');
     const pauseResumeBtn = document.getElementById('pause-resume-btn');
@@ -74,16 +74,11 @@
     function createSlide(data) {
       const slide = document.createElement('div');
       slide.classList.add('slide');
-      slide.style.backgroundColor = getRandomColor();
-
-      const image = document.createElement('img');
-      image.src = data[1];
 
       const content = document.createElement('div');
       content.classList.add('slide-content');
       content.innerHTML = `<p>${data[0]}</p><img src="${data[1]}"><p>${data[2]}</p>`;
 
-      slide.appendChild(image);
       slide.appendChild(content);
       slideshowContainer.appendChild(slide);
     }
@@ -92,10 +87,6 @@
       const slides = document.querySelectorAll('.slide');
       slides.forEach(slide => slide.style.display = 'none');
       slides[index].style.display = 'block';
-    }
-
-    function getRandomColor() {
-      return '#' + Math.floor(Math.random()*16777215).toString(16);
     }
 
     function startSlideshow() {
@@ -136,12 +127,8 @@
 
 
 
-
-
-
 <!--
-Create a single-page app in a single file for a responsive slideshow with random slides, user-controlled timing, pause and resume buttons, and each slide containing a text box, an image, and another text box. The data for each slide, including text and image URLs, comes from an array of arrays. The background color should be pale and pleasant, and change with each slide refresh. The images provided for testing are "https://srinimkasturi.github.io/ui4io/Fido0001image.png" and "https://srinimkasturi.github.io/ui4io/LaunchPad.jpg". The code should scale to meet the browser size, and you also requested timing controls for the slideshow.
-
+Create a single-page app in a single file for a responsive slideshow with random slides, user-controlled timing, pause and resume buttons, and each slide containing a text box, an image, and another text box. The data for each slide, including text and image URLs, comes from an array of arrays. The background color should be pale and pleasant. The images provided for testing are "https://srinimkasturi.github.io/ui4io/Fido0001image.png" and "https://srinimkasturi.github.io/ui4io/LaunchPad.jpg". The code should scale to meet the browser size, and you also requested timing controls for the slideshow.
 
 single-page app in a single file for a responsive slideshow with random slides, user-controlled timing, pause and resume buttons, and each slide containing a text box, an image, and another text box. The data for each slide, including text and image URLs, comes from an array of arrays. The background color should be pale and pleasant, and change with each slide refresh. The images provided for testing are "https://srinimkasturi.github.io/ui4io/Fido0001image.png" and "https://srinimkasturi.github.io/ui4io/LaunchPad.jpg". The code should scale to meet the browser size, and you also requested timing controls for the slideshow.
 
