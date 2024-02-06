@@ -77,7 +77,7 @@
       ["Launchpad soars", "https://srinimkasturi.github.io/ui4io/LaunchPad.jpg", "Launchpad takes a beating but counts each launch as its success"],
       ["What comes first chicken or egg?", "https://srinimkasturi.github.io/ui4io/eggnchicken.png", "Depends on what you’ve ordered. History impacts answers, so know history."],
       ["Humor beings live longer!", "https://srinimkasturi.github.io/ui4io/SolarFlaret.png", "Humor is a good way to laugh through, so you can think through."],
-      // Add more slides as needed
+    // Add more slides as needed
   ];
 
   const slideshowContainer = document.getElementById('slideshow-container');
@@ -103,6 +103,7 @@
     const slides = document.querySelectorAll('.slide');
     slides.forEach(slide => slide.style.display = 'none');
     slides[index].style.display = 'block';
+    shuffleSlides(); // Shuffle slides each time a slide is shown
   }
 
   function getRandomColor() {
@@ -112,6 +113,13 @@
       color += letters[Math.floor(Math.random() * letters.length)];
     }
     return color;
+  }
+
+  function shuffleSlides() {
+    for (let i = slidesData.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [slidesData[i], slidesData[j]] = [slidesData[j], slidesData[i]];
+    }
   }
 
   function startSlideshow() {
@@ -159,7 +167,7 @@
 
 
 <!--
-Create a responsive slideshow with random slides, user-controlled timing, pause and resume buttons, and each slide containing a text box, an image, and another text box. The data for each slide, including text and image URLs, comes from an array of arrays. Each slide adjusts to the browser size. The background color of each slide changes randomly with pale colors. Additionally, include a slider input element for users to adjust the timing of the slideshow. Each slide should scale to meet the browser size at that time.
+Create a responsive slideshow with random slides, user-controlled timing, pause and resume buttons, and each slide containing a text box, an image, and another text box. The data for each slide, including text and image URLs, comes from an array of arrays. Each slide adjusts to the browser size. The background color of each slide changes randomly with pale colors. Additionally, include a slider input element for users to adjust the timing of the slideshow. Slides should be randomized each time any slide is shown.
 
 single-page app in a single file for a responsive slideshow with random slides, user-controlled timing, pause and resume buttons, and each slide containing a text box, an image, and another text box. The data for each slide, including text and image URLs, comes from an array of arrays. The background color should be pale and pleasant, and change with each slide refresh. The images provided for testing are "https://srinimkasturi.github.io/ui4io/Fido0001image.png" and "https://srinimkasturi.github.io/ui4io/LaunchPad.jpg". The code should scale to meet the browser size, and you also requested timing controls for the slideshow.
 
