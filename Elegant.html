@@ -101,19 +101,16 @@
     }
 
     function nextSlide() {
-      currentIndex = (currentIndex + 1) % slidesData.length;
-      showSlide(currentIndex);
-    }
-
-    function showSlide(index) {
       const slides = document.querySelectorAll('.slide');
+      slidesData.sort(() => Math.random() - 0.5); // Randomize slides
       slides.forEach((slide, i) => {
-        if (i === index) {
+        if (i === currentIndex) {
           slide.style.display = 'flex'; /* Ensure slide is displayed */
         } else {
           slide.style.display = 'none';
         }
       });
+      currentIndex = (currentIndex + 1) % slidesData.length;
     }
 
     function changeTiming(value) {
@@ -126,9 +123,8 @@
     }
 
     // Initial setup
-    slidesData.sort(() => Math.random() - 0.5); // Randomize slides
     slidesData.forEach(createSlide);
-    showSlide(currentIndex);
+    nextSlide();
     resumeSlideshow();
   </script>
 </body>
@@ -138,7 +134,7 @@
 
 
 <!--
-Create a responsive slideshow with user-controlled timing, pause and resume buttons, shown at the bottom the slides without overlapping. Each slide should consist of a text box, an image, another text box, and a last text below. The data for each slide, including text and image URLs, will be provided in an array of arrays. Ensure that each slide reacts to the browser size at the time of its display and that the background color of each slide changes randomly with pale colors. Additionally, include a slider input element for users to adjust the timing of the slideshow. Slides should be randomized. Make sure that each slide, including its contents, fits within the browser window without requiring scrolling, and that images maintain their aspect ratio without distortion. 
+Create a responsive slideshow with user-controlled timing, pause and resume buttons, shown at the bottom of the slides without overlapping. Each slide should consist of a text box, an image, another text box, and a last text below. The data for each slide, including text and image URLs, will be provided in an array of arrays. Ensure that each slide reacts to the browser size at the time of its display and that the background color of each slide changes randomly with pale colors. Additionally, include a slider input element for users to adjust the timing of the slideshow. Slides should be randomized each time they are shown during the slideshow, not just at page load time. Make sure that each slide, including its contents, fits within the browser window without requiring scrolling, and that images maintain their aspect ratio without distortion.
 
 single-page app in a single file for a responsive slideshow with random slides, user-controlled timing, pause and resume buttons, and each slide containing a text box, an image, and another text box. The data for each slide, including text and image URLs, comes from an array of arrays. The background color should be pale and pleasant, and change with each slide refresh. The images provided for testing are "https://srinimkasturi.github.io/ui4io/Fido0001image.png" and "https://srinimkasturi.github.io/ui4io/LaunchPad.jpg". The code should scale to meet the browser size, and you also requested timing controls for the slideshow.
 
