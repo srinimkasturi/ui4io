@@ -74,17 +74,6 @@
       return color;
     }
 
-    function showSlide(index) {
-      const slides = document.querySelectorAll('.slide');
-      slides.forEach((slide, i) => {
-        if (i === index) {
-          slide.style.display = 'block';
-        } else {
-          slide.style.display = 'none';
-        }
-      });
-    }
-
     function pauseSlideshow() {
       clearInterval(slideshowInterval);
     }
@@ -95,9 +84,18 @@
 
     function nextSlide() {
       currentIndex = (currentIndex + 1) % slidesData.length;
-      slideshowContainer.innerHTML = '';
-      createSlide(slidesData[currentIndex]);
       showSlide(currentIndex);
+    }
+
+    function showSlide(index) {
+      const slides = document.querySelectorAll('.slide');
+      slides.forEach((slide, i) => {
+        if (i === index) {
+          slide.style.display = 'block';
+        } else {
+          slide.style.display = 'none';
+        }
+      });
     }
 
     function changeTiming(value) {
@@ -111,7 +109,7 @@
 
     // Initial setup
     slidesData.sort(() => Math.random() - 0.5); // Randomize slides
-    createSlide(slidesData[currentIndex]);
+    slidesData.forEach(createSlide);
     showSlide(currentIndex);
     resumeSlideshow();
   </script>
@@ -121,8 +119,10 @@
 
 
 
+
 <!--
 Create a responsive slideshow with random slides, user-controlled timing, pause and resume buttons. Each slide contains a text box with a gap below, an image with a gap below, another text box with gap below, and a last text below the above. The data for each slide, including text and image URLs, comes from an array of arrays. Each slide should react to the browser size at the time of its display. The background color of each slide changes randomly with pale colors. Additionally, include a slider input element for users to adjust the timing of the slideshow. Slides should be randomized each time any slide is shown.
+
 
 single-page app in a single file for a responsive slideshow with random slides, user-controlled timing, pause and resume buttons, and each slide containing a text box, an image, and another text box. The data for each slide, including text and image URLs, comes from an array of arrays. The background color should be pale and pleasant, and change with each slide refresh. The images provided for testing are "https://srinimkasturi.github.io/ui4io/Fido0001image.png" and "https://srinimkasturi.github.io/ui4io/LaunchPad.jpg". The code should scale to meet the browser size, and you also requested timing controls for the slideshow.
 
