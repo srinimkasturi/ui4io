@@ -105,6 +105,7 @@
     }
 
     function nextSlide() {
+      currentIndex = (currentIndex + 1) % slidesData.length;
       const slides = document.querySelectorAll('.slide');
       slidesData.sort(() => Math.random() - 0.5); // Randomize slides
       slides.forEach((slide, i) => {
@@ -114,7 +115,6 @@
           slide.style.display = 'none';
         }
       });
-      currentIndex = (currentIndex + 1) % slidesData.length;
     }
 
     function changeTiming(value) {
