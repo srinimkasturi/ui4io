@@ -41,9 +41,6 @@
       padding: 10px;
       border-radius: 5px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
-      display: flex;
-      justify-content: center;
-      align-items: center;
     }
     .controls button {
       margin: 0 10px; /* Add space between buttons */
@@ -65,8 +62,8 @@
     const slidesData = [
       ["Let a pooping dog poop!", "https://srinimkasturi.github.io/ui4io/Fido0001image.png", "Help someone lighten their load, they will lighten the World’s load.", "Art by Sahaj Kasturi"],
       ["Launchpad soars", "https://srinimkasturi.github.io/ui4io/LaunchPad.jpg", "Launchpad takes a beating but counts each launch as its success", "Nasa launch pad"],
-      ["What comes first chicken or egg?", "https://srinimkasturi.github.io/ui4io/eggnchicken.png", "Depends on what you’ve ordered. History impacts answers, so know history.", "Thanks MS Copilot!"],
-      ["Humor beings live longer!", "https://srinimkasturi.github.io/ui4io/SolarFlaret.png", "Humor allows unique perspectives to occur."],
+      ["What comes first chicken or egg?", "https://srinimkasturi.github.io/ui4io/eggnchicken.png", "Depends on what you’ve ordered. History impacts answers, so know history.", "Thanks MS Copilot,and my prompt engineering!!"],
+      ["Humor beings live longer!", "https://srinimkasturi.github.io/ui4io/SolarFlaret.png", "Humor allows unique perspectives to occur.", "Thanks MS Copilot,and my prompt engineering!!"],
       // Add more slide data arrays as needed
     ];
 
@@ -76,7 +73,6 @@
     function createSlide(data) {
       const slide = document.createElement('div');
       slide.className = 'slide';
-      slide.style.backgroundColor = getRandomColor();
       slide.innerHTML = `
         <p>${data[0]}</p>
         <img src="${data[1]}" alt="Slide Image">
@@ -102,6 +98,9 @@
 
     function nextSlide() {
       const slides = document.querySelectorAll('.slide');
+      slides.forEach((slide) => {
+        slide.style.backgroundColor = getRandomColor(); // Change background color
+      });
       const currentIndex = Math.floor(Math.random() * slides.length); // Get random index
       slides.forEach((slide, i) => {
         if (i === currentIndex) {
@@ -131,7 +130,9 @@
 
 
 
+
 <!--
+creates a slideshow where each slide contains a text box, an image, another text box, and some empty space below. Random slides are shown, and the background color of each slide is randomized with a random hue. The slideshow fits within the browser window without requiring scrolling, and users can control the timing of the slideshow using the pause, resume, and timing adjustment buttons
 Create a slideshow where each slide contains a text box, an image, another text box, and some empty space below. Random slides are shown. The background color of each slide is randomized to a pale color with a random hue. The slideshow fits within the browser window without requiring scrolling, and images maintain their aspect ratio. Users can control the timing of the slideshow using the pause, resume, and timing adjustment buttons
 create a responsive randomized slideshow with user-controlled timing, pause, and resume buttons. Each slide contains a text box, an image, another text box, and some empty space below. Each time a slide is shown use a randomized pale color. The slideshow fits within the browser window without requiring scrolling, and images maintain their aspect ratio
 creates a responsive slideshow with user-controlled timing, pause, and resume buttons. Each slide contains a text box, an image, another text box, and some empty space below. The slide order, as well as background colors, are randomized each time a slide is shown. The slideshow fits within the browser window without requiring scrolling, and images maintain their aspect ratio
@@ -143,8 +144,8 @@ Single page app, in a single file, for a slideshow, displaying Random slides, wi
 
       ["Let a pooping dog poop!", "https://srinimkasturi.github.io/ui4io/Fido0001image.png", "Help someone lighten their load, they will lighten the World’s load.", "Art by Sahaj Kasturi"],
       ["Launchpad soars", "https://srinimkasturi.github.io/ui4io/LaunchPad.jpg", "Launchpad takes a beating but counts each launch as its success", "Nasa launch pad"],
-      ["What comes first chicken or egg?", "https://srinimkasturi.github.io/ui4io/eggnchicken.png", "Depends on what you’ve ordered. History impacts answers, so know history.", "Thanks MS Copilot!"],
-      ["Humor beings live longer!", "https://srinimkasturi.github.io/ui4io/SolarFlaret.png", "Humor allows unique perspectives to occur."],
+      ["What comes first chicken or egg?", "https://srinimkasturi.github.io/ui4io/eggnchicken.png", "Depends on what you’ve ordered. History impacts answers, so know history.", "Thanks MS Copilot,and my prompt engineering!!"],
+      ["Humor beings live longer!", "https://srinimkasturi.github.io/ui4io/SolarFlaret.png", "Humor allows unique perspectives to occur.", "Thanks MS Copilot,and my prompt engineering!!"],
 -->
 
 <!--
