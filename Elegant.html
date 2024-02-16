@@ -9,7 +9,7 @@
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
-      font-size: 120%; /* Adjusted font size for readability */
+      font-size: 16px; /* Initial font size */
     }
     .slideshow-container {
       position: relative;
@@ -46,10 +46,11 @@
     }
     .controls button {
       margin: 0 10px; /* Add space between buttons */
-      font-size: 16px; /* Adjusted font size for readability */
+      font-size: 16px; /* Font size for buttons */
     }
     .controls input[type="range"] {
       margin: 0 10px; /* Add space between slider and buttons */
+      width: 200px; /* Set width of slider */
     }
     .controls label {
       font-size: 16px; /* Font size for label */
@@ -62,10 +63,8 @@
   <div class="controls">
     <button onclick="pauseSlideshow()">Pause</button>
     <button onclick="resumeSlideshow()">Resume</button>
-    <input type="range" min="1000" max="10000" value="5000" step="100" onchange="changeTiming(this.value)">
     <label for="font-size-slider">Font Size:</label>
     <input id="font-size-slider" type="range" min="10" max="32" value="16" step="1" onchange="changeFontSize(this.value)">
-    <input type="range" min="10" max="32" value="16" step="1" onchange="changeFontSize(this.value)">
   </div>
 
   <script>
@@ -76,7 +75,7 @@
       ["0004:240205 Humor beings live longer!", "https://srinimkasturi.github.io/ui4io/Images/SolarFlaret.png", "Practice humor for perspective development!!", "Image prompt by and (c) of Srinivasa Kasturi"],
       ["0005:240215 Curtains create dark and bright lines", "https://srinimkasturi.github.io/ui4io/Images/CurtainsAndSunshine.jpg", "In Physics and Life, Interference creates dark areas and bright areas, look for both!!", "(c) Srinivasa Kasturi"],
       ["0006:240215 Up as a noun makes a difference", "https://srinimkasturi.github.io/ui4io/Images/UpArrow.png", "In giving up, up is an adverb. In giving Up, it is a Noun of your choice, God/Science/Nature.", "(c) Srinivasa Kasturi"],
-      ["0007:240216 Eye peace, it matters", "https://srinimkasturi.github.io/ui4io/Images/EyeOnPeace.png", "Emotions will cloud our vision unless we learn to keep an eye on opportunities for peace.", "Image prompt by and (c) of Srinivasa Kasturi"],      
+      ["0007:240216 Eye peace, it matters", "https://srinimkasturi.github.io/ui4io/Images/EyeOnPeace.png", "Emotions will cloud our vision unless we learn to keep an eye on opportunities for peace.", "Image prompt by and (c) of Srinivasa Kasturi"], 
       // Add more slide data arrays as needed
     ];
 
@@ -149,6 +148,8 @@
 
 
 <!--
+
+Create a responsive slideshow with user-controlled timing, pause, and resume buttons. Each slide contains a text box, an image, another text box, and some empty space below. Random slides are shown, with each slide having a randomized pale background color. The slideshow fits within the browser window without requiring scrolling, and images maintain their aspect ratio. Additionally, include a slider input element to allow users to adjust the font size for better readability.
 creates a slideshow where each slide contains a text box, an image, another text box, and some empty space below. Random slides are shown, and the background color of each slide is randomized with a random hue. The slideshow fits within the browser window without requiring scrolling, and users can control the timing of the slideshow using the pause, resume, and timing adjustment buttons
 Create a slideshow where each slide contains a text box, an image, another text box, and some empty space below. Random slides are shown. The background color of each slide is randomized to a pale color with a random hue. The slideshow fits within the browser window without requiring scrolling, and images maintain their aspect ratio. Users can control the timing of the slideshow using the pause, resume, and timing adjustment buttons
 create a responsive randomized slideshow with user-controlled timing, pause, and resume buttons. Each slide contains a text box, an image, another text box, and some empty space below. Each time a slide is shown use a randomized pale color. The slideshow fits within the browser window without requiring scrolling, and images maintain their aspect ratio
@@ -164,7 +165,7 @@ Single page app, in a single file, for a slideshow, displaying Random slides, wi
       ["0004:240205 Humor beings live longer!", "https://srinimkasturi.github.io/ui4io/Images/SolarFlaret.png", "Practice humor for perspective development!!", "Image prompt by and (c) of Srinivasa Kasturi"],
       ["0005:240215 Curtains create dark and bright lines", "https://srinimkasturi.github.io/ui4io/Images/CurtainsAndSunshine.jpg", "In Physics and Life, Interference creates dark areas and bright areas, look for both!!", "(c) Srinivasa Kasturi"],
       ["0006:240215 Up as a noun makes a difference", "https://srinimkasturi.github.io/ui4io/Images/UpArrow.png", "In giving up, up is an adverb. In giving Up, it is a Noun of your choice, God/Science/Nature.", "(c) Srinivasa Kasturi"],
-      ["0007:240216 Eye peace, it matters", "https://srinimkasturi.github.io/ui4io/Images/EyeOnPeace.png", "Emotions will cloud our vision unless we learn to keep an eye on opportunities for peace.", "Image prompt by and (c) of Srinivasa Kasturi"],  
+      ["0007:240216 Eye peace, it matters", "https://srinimkasturi.github.io/ui4io/Images/EyeOnPeace.png", "Emotions will cloud our vision unless we learn to keep an eye on opportunities for peace.", "Image prompt by and (c) of Srinivasa Kasturi"],    
 -->
 
 <!--
