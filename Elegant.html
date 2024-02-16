@@ -51,6 +51,10 @@
     .controls input[type="range"] {
       margin: 0 10px; /* Add space between slider and buttons */
     }
+    .controls label {
+      font-size: 16px; /* Font size for label */
+      margin-right: 10px; /* Add space between label and slider */
+    }
   </style>
 </head>
 <body>
@@ -59,6 +63,8 @@
     <button onclick="pauseSlideshow()">Pause</button>
     <button onclick="resumeSlideshow()">Resume</button>
     <input type="range" min="1000" max="10000" value="5000" step="100" onchange="changeTiming(this.value)">
+    <label for="font-size-slider">Font Size:</label>
+    <input id="font-size-slider" type="range" min="10" max="32" value="16" step="1" onchange="changeFontSize(this.value)">
     <input type="range" min="10" max="32" value="16" step="1" onchange="changeFontSize(this.value)">
   </div>
 
