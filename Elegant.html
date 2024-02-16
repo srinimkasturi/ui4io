@@ -58,6 +58,7 @@
     <button onclick="pauseSlideshow()">Pause</button>
     <button onclick="resumeSlideshow()">Resume</button>
     <input type="range" min="1000" max="10000" value="5000" step="100" onchange="changeTiming(this.value)">
+    <input type="range" min="10" max="32" value="16" step="1" onchange="changeFontSize(this.value)">
   </div>
 
   <script>
@@ -123,6 +124,10 @@
 
     function getCurrentTiming() {
       return parseInt(document.querySelector('input[type="range"]').value);
+    }
+
+    function changeFontSize(value) {
+      document.body.style.fontSize = value + 'px';
     }
 
     // Initial setup
