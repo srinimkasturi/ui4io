@@ -63,6 +63,8 @@
   <div class="controls">
     <button onclick="pauseSlideshow()">Pause</button>
     <button onclick="resumeSlideshow()">Resume</button>
+    <label for="timing-slider">Timing:</label>
+    <input id="timing-slider" type="range" min="1000" max="10000" value="3000" step="100" onchange="changeTiming(this.value)">
     <label for="font-size-slider">Font Size:</label>
     <input id="font-size-slider" type="range" min="10" max="32" value="16" step="1" onchange="changeFontSize(this.value)">
   </div>
@@ -75,7 +77,7 @@
       ["0004:240205 Humor beings live longer!", "https://srinimkasturi.github.io/ui4io/Images/SolarFlaret.png", "Practice humor for perspective development!!", "Image prompt by and (c) of Srinivasa Kasturi"],
       ["0005:240215 Curtains create dark and bright lines", "https://srinimkasturi.github.io/ui4io/Images/CurtainsAndSunshine.jpg", "In Physics and Life, Interference creates dark areas and bright areas, look for both!!", "(c) Srinivasa Kasturi"],
       ["0006:240215 Up as a noun makes a difference", "https://srinimkasturi.github.io/ui4io/Images/UpArrow.png", "In giving up, up is an adverb. In giving Up, it is a Noun of your choice, God/Science/Nature.", "(c) Srinivasa Kasturi"],
-      ["0007:240216 Eye peace, it matters", "https://srinimkasturi.github.io/ui4io/Images/EyeOnPeace.png", "Emotions will cloud our vision unless we learn to keep an eye on opportunities for peace.", "Image prompt by and (c) of Srinivasa Kasturi"], 
+      ["0007:240216 Eye peace, it matters", "https://srinimkasturi.github.io/ui4io/Images/EyeOnPeace.png", "Emotions will cloud our vision unless we learn to keep an eye on opportunities for peace.", "Image prompt by and (c) of Srinivasa Kasturi"],
       // Add more slide data arrays as needed
     ];
 
@@ -129,7 +131,7 @@
     }
 
     function getCurrentTiming() {
-      return parseInt(document.querySelector('input[type="range"]').value);
+      return parseInt(document.querySelector('#timing-slider').value);
     }
 
     function changeFontSize(value) {
