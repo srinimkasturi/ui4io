@@ -42,7 +42,7 @@
       padding: 10px;
       border-radius: 5px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
-      /* white-space: nowrap; */ /* Keep controls in one line */
+      white-space: nowrap; /* Keep controls in one line */
     }
     .controls button {
       margin: 0 10px; /* Add space between buttons */
@@ -61,10 +61,10 @@
 <body>
   <div class="slideshow-container"></div>
   <div class="controls">
-    <button onclick="toggleSlideshow()">Pause/Resume</button>
-    <label for="timing-slider">Timing:</label>
+    <button onclick="toggleSlideshow()">Pause/Go</button>
+    <label for="timing-slider">Speed:</label>
     <input id="timing-slider" type="range" min="1000" max="10000" value="3000" step="100" onchange="changeTiming(this.value)">
-    <label for="font-size-slider">Font Size:</label>
+    <label for="font-size-slider">TextSz:</label>
     <input id="font-size-slider" type="range" min="10" max="32" value="16" step="1" onchange="changeFontSize(this.value)">
   </div>
 
