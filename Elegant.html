@@ -61,8 +61,7 @@
 <body>
   <div class="slideshow-container"></div>
   <div class="controls">
-    <button onclick="pauseSlideshow()">Pause</button>
-    <button onclick="resumeSlideshow()">Resume</button>
+    <button onclick="toggleSlideshow()">Pause/Resume</button>
     <label for="timing-slider">Timing:</label>
     <input id="timing-slider" type="range" min="1000" max="10000" value="3000" step="100" onchange="changeTiming(this.value)">
     <label for="font-size-slider">Font Size:</label>
@@ -83,6 +82,7 @@
     ];
 
     let slideshowInterval;
+    let isPaused = false;
     const slideshowContainer = document.querySelector('.slideshow-container');
 
     function createSlide(data) {
@@ -101,6 +101,16 @@
     function getRandomColor() {
       const hue = Math.floor(Math.random() * 360); // Random hue value
       return `hsl(${hue}, 70%, 90%)`; // Pale color with random hue
+    }
+
+    function toggleSlideshow() {
+      if (isPaused) {
+        resumeSlideshow();
+        isPaused = false;
+      } else {
+        pauseSlideshow();
+        isPaused = true;
+      }
     }
 
     function pauseSlideshow() {
@@ -146,6 +156,7 @@
   </script>
 </body>
 </html>
+
 
 
 
