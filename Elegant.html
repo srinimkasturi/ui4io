@@ -61,11 +61,13 @@
 <body>
   <div class="slideshow-container"></div>
   <div class="controls">
-    <button onclick="toggleSlideshow()">Pause/Go</button>
-    <button onclick="toggleSlideMode()">Random/Sequential</button>
+    <button onclick="toggleSlideshow()">Go/No</button>
+    <button onclick="toggleSlideMode()">Random/No</button>
+    <label for="start-slide">Start Slide:</label>
+    <input id="start-slide" type="number" min="1" max="9" value="1">
     <label for="timing-slider">Speed:</label>
     <input id="timing-slider" type="range" min="1000" max="10000" value="3000" step="100" onchange="changeTiming(this.value)">
-    <label for="font-size-slider">TextSz:</label>
+    <label for="font-size-slider">TxtSz:</label>
     <input id="font-size-slider" type="range" min="10" max="32" value="16" step="1" onchange="changeFontSize(this.value)">
   </div>
 
@@ -86,7 +88,9 @@
     let slideshowInterval;
     let isPaused = false;
     let isRandomMode = true;
+    let currentSlideIndex = 0;
     const slideshowContainer = document.querySelector('.slideshow-container');
+    const startSlideInput = document.getElementById('start-slide');
 
     function createSlide(data) {
       const slide = document.createElement('div');
@@ -116,10 +120,6 @@
       }
     }
 
-    function toggleSlideMode() {
-      isRandomMode = !isRandomMode;
-    }
-
     function pauseSlideshow() {
       clearInterval(slideshowInterval);
     }
@@ -128,23 +128,28 @@
       slideshowInterval = setInterval(nextSlide, getCurrentTiming());
     }
 
+    function toggleSlideMode() {
+      isRandomMode = !isRandomMode;
+      currentSlideIndex = parseInt(startSlideInput.value) - 1;
+      nextSlide();
+    }
+
     function nextSlide() {
       const slides = document.querySelectorAll('.slide');
       slides.forEach((slide) => {
         slide.style.backgroundColor = getRandomColor(); // Change background color
       });
-      let currentIndex;
+
+      let nextIndex;
       if (isRandomMode) {
-        currentIndex = Math.floor(Math.random() * slides.length); // Get random index
+        nextIndex = Math.floor(Math.random() * slides.length); // Get random index
       } else {
-        const currentSlide = document.querySelector('.slide[style*="display: flex"]');
-        currentIndex = Array.from(slides).indexOf(currentSlide) + 1;
-        if (currentIndex >= slides.length) {
-          currentIndex = 0; // Restart from the first slide
-        }
+        nextIndex = currentSlideIndex;
+        currentSlideIndex = (currentSlideIndex + 1) % slides.length;
       }
+
       slides.forEach((slide, i) => {
-        if (i === currentIndex) {
+        if (i === nextIndex) {
           slide.style.display = 'flex'; /* Ensure slide is displayed */
         } else {
           slide.style.display = 'none';
@@ -179,6 +184,7 @@
 
 
 <!--
+Create a responsive slideshow with user-controlled timing, where the pause and resume functionalities are combined into one button. Additionally, include buttons for users to select between random and sequential slide display modes, and let users choose which slide number to start with when they choose sequential slides. Each slide should contain a text box, an image, another text box, and some empty space below. Random slides are shown, with each slide having a randomized pale background color. The slideshow should fit within the browser window without requiring scrolling, and images should maintain their aspect ratio. Users can adjust the slideshow speed and font size for better readability.
 Create a slideshow with user-controlled timing, where the pause and resume functionality are combined into one button. Additionally, include a button for users to select between random and sequential slide display modes. Each slide should contain a text box, an image, another text box, and some empty space below. Random slides are shown, with each slide having a randomized pale background color. The slideshow should fit within the browser window without requiring scrolling, and images should maintain their aspect ratio. Users can adjust the slideshow speed and font size for better readability.
 Create a responsive slideshow with user-controlled timing. The slideshow should contain a text box, an image, another text box, and some empty space below each slide. Random slides are shown, with each slide having a randomized pale background color. The slideshow should fit within the browser window without requiring scrolling, and images should maintain their aspect ratio. Additionally, include a slider input element to allow users to adjust the font size for better readability. Use a single button to toggle between pausing and resuming the slideshow.
 Create a responsive slideshow with user-controlled timing, pause, and resume buttons. Each slide contains a text box, an image, another text box, and some empty space below. Random slides are shown, with each slide having a randomized pale background color. The slideshow fits within the browser window without requiring scrolling, and images maintain their aspect ratio. Additionally, include a slider input element to allow users to adjust the font size for better readability.
