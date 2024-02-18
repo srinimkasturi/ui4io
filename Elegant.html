@@ -61,13 +61,13 @@
 <body>
   <div class="slideshow-container"></div>
   <div class="controls">
-    <button onclick="toggleSlideshow()">Go/No</button>
-    <button onclick="toggleSlideMode()">Random/No</button>
-    <label for="start-slide">Start Slide:</label>
+    <button onclick="toggleSlideshow()">Go?</button>
+    <button onclick="toggleSlideMode()">Random?</button>
+    <label for="start-slide">Start@</label>
     <input id="start-slide" type="number" min="1" max="9" value="1">
-    <label for="timing-slider">Speed:</label>
+    <label for="timing-slider">Speed</label>
     <input id="timing-slider" type="range" min="1000" max="10000" value="3000" step="100" onchange="changeTiming(this.value)">
-    <label for="font-size-slider">TxtSz:</label>
+    <label for="font-size-slider">TxtSz</label>
     <input id="font-size-slider" type="range" min="10" max="32" value="16" step="1" onchange="changeFontSize(this.value)">
   </div>
 
@@ -87,7 +87,7 @@
 
     let slideshowInterval;
     let isPaused = false;
-    let isRandomMode = true;
+    let isRandomMode = false;
     let currentSlideIndex = 0;
     const slideshowContainer = document.querySelector('.slideshow-container');
     const startSlideInput = document.getElementById('start-slide');
