@@ -130,7 +130,9 @@
 
     function toggleSlideMode() {
       isRandomMode = !isRandomMode;
-      currentSlideIndex = parseInt(startSlideInput.value) - 1;
+      if (!isRandomMode) {
+        currentSlideIndex = parseInt(startSlideInput.value) - 1;
+      }
       nextSlide();
     }
 
@@ -177,7 +179,6 @@
   </script>
 </body>
 </html>
-
 
 
 
