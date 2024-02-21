@@ -46,14 +46,14 @@
     }
     .controls button {
       margin: 0px; /* Add space between buttons */
-      font-size: 6px; /* Font size for buttons */
+      font-size: 8px; /* Font size for buttons */
     }
     .controls input[type="range"] {
       margin: 0px; /* Add space between slider and buttons */
       width: 40px; /* Set width of slider */
     }
     .controls label {
-      font-size: 6px; /* Font size for label */
+      font-size: 8px; /* Font size for label */
       margin-right: 0px; /* Add space between label and slider */
     }
   </style>
@@ -68,7 +68,7 @@
     <input id="start-slide" type="number" min="1" max="9" value="1" onchange="changeStartSlide(this.value)">
 
     <!-- Slide Show Controls -->
-    <button onclick="toggleSlideshow()">Play/||</button>
+    <button onclick="toggleSlideshow()">Play / ||</button>
     <label for="slideshow-speed">X</label>
     <input id="slideshow-speed" type="range" min="1000" max="10000" value="3000" step="100" onchange="changeTiming(this.value)">
     
