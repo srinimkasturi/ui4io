@@ -70,7 +70,9 @@
     <input id="start-slide" type="number" min="1" max="9" value="1" onchange="changeStartSlide(this.value)">
 
     <!-- Slide Show Controls -->
-    <button onclick="toggleSlideshow()">Play / ||</button>
+    <input type="checkbox" id="slideshow-toggle" onchange="toggleSlideshow()">
+    <label for="slideshow-toggle">||</label>
+    
     <label for="slideshow-speed">X</label>
     <input id="slideshow-speed" type="range" min="1000" max="10000" value="3000" step="100" onchange="changeTiming(this.value)">
     
@@ -123,12 +125,11 @@
     }
 
     function toggleSlideshow() {
+      isPaused = !isPaused;
       if (isPaused) {
-        resumeSlideshow();
-        isPaused = false;
+        clearInterval(slideshowInterval);
       } else {
-        pauseSlideshow();
-        isPaused = true;
+        resumeSlideshow();
       }
     }
 
@@ -199,6 +200,7 @@
   </script>
 </body>
 </html>
+
 
 
 
