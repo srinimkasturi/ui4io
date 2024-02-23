@@ -152,12 +152,13 @@
       nextSlide();
     }
 
+    // Update the function nextSlide() to update the cookie with the index of the next slide
     function nextSlide() {
       const slides = document.querySelectorAll('.slide');
       slides.forEach((slide) => {
         slide.style.backgroundColor = getRandomColor(); // Change background color
       });
-
+    
       let nextIndex;
       if (isRandomMode) {
         nextIndex = Math.floor(Math.random() * slides.length); // Get random index
@@ -165,7 +166,10 @@
         nextIndex = currentSlideIndex;
         currentSlideIndex = (currentSlideIndex + 1) % slides.length;
       }
-
+    
+      // Update cookie with the index of the next slide
+      document.cookie = `lastSlide=${currentSlideIndex}; path=/`; // Set cookie
+    
       slides.forEach((slide, i) => {
         if (i === nextIndex) {
           slide.style.display = 'flex'; /* Ensure slide is displayed */
@@ -173,10 +177,8 @@
           slide.style.display = 'none';
         }
       });
-
-      // Update cookie with current slide index
-      document.cookie = `lastSlide=${currentSlideIndex};`;
     }
+
 
     function prevSlide() {
       currentSlideIndex = (currentSlideIndex - 1 + slidesData.length) % slidesData.length;
