@@ -173,6 +173,9 @@
           slide.style.display = 'none';
         }
       });
+
+      // Update cookie with current slide index
+      document.cookie = `lastSlide=${currentSlideIndex};`;
     }
 
     function prevSlide() {
@@ -198,6 +201,22 @@
       document.body.style.fontSize = value + 'px';
     }
 
+    // Function to get cookie value by name
+    function getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
+    // Check if cookie exists, if not, create and store the default value
+    window.onload = function() {
+      const lastSlideCookie = getCookie('lastSlide');
+      if (lastSlideCookie !== undefined) {
+        currentSlideIndex = parseInt(lastSlideCookie);
+        nextSlide(); // Show the last shown slide
+      }
+    };
+
     // Initial setup
     slidesData.forEach(createSlide);
     nextSlide();
@@ -210,7 +229,10 @@
 
 
 
+
 <!--
+Update the provided code to include functionality for storing the last shown slide in a cookie on the browser side. Upon page load, if the cookie exists, use the value stored in it to display the last shown slide. If the cookie does not exist, create it and store the default value (0 in this case). Ensure that the cookie is updated with the index of the last shown slide every time a new slide is displayed. Additionally, adjust the layout to shrink the sliders by 50% so that all controls fit in one line even on a mobile phone.
++
 Create a responsive slideshow with user-controlled timing, where the pause and resume functionalities are combined into one button. Additionally, include buttons for users to select between random and sequential slide display modes, and let users choose which slide number to start with when they choose sequential slides. Each slide should contain a text box, an image, another text box, and some empty space below. Random slides are shown, with each slide having a randomized pale background color. The slideshow should fit within the browser window without requiring scrolling, and images should maintain their aspect ratio. Users can adjust the slideshow speed and font size for better readability.
 Create a slideshow with user-controlled timing, where the pause and resume functionality are combined into one button. Additionally, include a button for users to select between random and sequential slide display modes. Each slide should contain a text box, an image, another text box, and some empty space below. Random slides are shown, with each slide having a randomized pale background color. The slideshow should fit within the browser window without requiring scrolling, and images should maintain their aspect ratio. Users can adjust the slideshow speed and font size for better readability.
 Create a responsive slideshow with user-controlled timing. The slideshow should contain a text box, an image, another text box, and some empty space below each slide. Random slides are shown, with each slide having a randomized pale background color. The slideshow should fit within the browser window without requiring scrolling, and images should maintain their aspect ratio. Additionally, include a slider input element to allow users to adjust the font size for better readability. Use a single button to toggle between pausing and resuming the slideshow.
