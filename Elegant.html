@@ -39,8 +39,8 @@
       align-items: center;
       position: fixed;
       bottom: 10px;
-      left: 10px; /* Adjusted left padding */
-      right: 10px; /* Adjusted right padding */
+      left: 0;
+      right: 0;
       margin: 0 auto;
       background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent background for controls */
       padding: 5px;
@@ -59,9 +59,6 @@
       font-size: 8px; /* Font size for label */
       font-weight: bold; /* Font style for label */
       margin-right: 5px; /* Add space between label and slider */
-    }
-    .controls input[type="range"] {
-      width: calc(50% - 10px); /* Shrink the sliders by 50% */
     }
   </style>
 </head>
@@ -92,7 +89,6 @@
 
   <script>
     const slidesData = [
-      ["You will see Slide# then Useless Insight", "https://srinimkasturi.github.io/ui4io/Images/Fido0001image.png", "Help someone light hearted Usefull Insight.", "Then atrributions, enjoy!!"],
       ["0001:240205 Let a pooping dog poop!", "https://srinimkasturi.github.io/ui4io/Images/Fido0001image.png", "Help someone lighten their load, they will lighten the World’s load.", "Artwork (c) Sahaj Kasturi, content (c) Srinivasa Kasturi"],
       ["0002:240205 Launchpad soars", "https://srinimkasturi.github.io/ui4io/Images/LaunchPad.jpg", "Launchpad takes a beating, but each launch makes it soar!!", "Image credit: NASA/Joel Kowsky, (c) Srinivasa Kasturi"],
       ["0003:240205 What comes first chicken or egg?", "https://srinimkasturi.github.io/ui4io/Images/eggnchicken.png", "Depends on what you’ve ordered. History impacts answers!!", "Image prompt by and (c) Srinivasa Kasturi"],
@@ -153,13 +149,12 @@
       nextSlide();
     }
 
-    // Update the function nextSlide() to update the cookie with the index of the next slide
     function nextSlide() {
       const slides = document.querySelectorAll('.slide');
       slides.forEach((slide) => {
         slide.style.backgroundColor = getRandomColor(); // Change background color
       });
-    
+
       let nextIndex;
       if (isRandomMode) {
         nextIndex = Math.floor(Math.random() * slides.length); // Get random index
@@ -167,10 +162,13 @@
         nextIndex = currentSlideIndex;
         currentSlideIndex = (currentSlideIndex + 1) % slides.length;
       }
-    
+
       // Update cookie with the index of the next slide
       document.cookie = `lastSlide=${currentSlideIndex}; path=/`; // Set cookie
-    
+      
+      // Update URL with the slide number
+      window.history.replaceState({}, '', `?slide=${currentSlideIndex + 1}`);
+
       slides.forEach((slide, i) => {
         if (i === nextIndex) {
           slide.style.display = 'flex'; /* Ensure slide is displayed */
@@ -179,7 +177,6 @@
         }
       });
     }
-
 
     function prevSlide() {
       currentSlideIndex = (currentSlideIndex - 1 + slidesData.length) % slidesData.length;
@@ -204,22 +201,6 @@
       document.body.style.fontSize = value + 'px';
     }
 
-    // Function to get cookie value by name
-    function getCookie(name) {
-      const value = `; ${document.cookie}`;
-      const parts = value.split(`; ${name}=`);
-      if (parts.length === 2) return parts.pop().split(';').shift();
-    }
-
-    // Check if cookie exists, if not, create and store the default value
-    window.onload = function() {
-      const lastSlideCookie = getCookie('lastSlide');
-      if (lastSlideCookie !== undefined) {
-        currentSlideIndex = parseInt(lastSlideCookie);
-        nextSlide(); // Show the last shown slide
-      }
-    };
-
     // Initial setup
     slidesData.forEach(createSlide);
     nextSlide();
@@ -227,6 +208,7 @@
   </script>
 </body>
 </html>
+
 
 
 
