@@ -49,7 +49,6 @@
       white-space: nowrap; /* Keep controls in one line */
     }
     .controls button,
-    .controls input[type="range"],
     .controls label {
       margin: 3px; /* Add space between controls */
       font-size: 10px; /* Font size for controls */
@@ -60,26 +59,25 @@
       font-weight: bold; /* Font style for label */
       margin-right: 5px; /* Add space between label and slider */
     }
-    .controls input[type="range"] {
-      width: 20px; /* Shrink the sliders by 50% */
-    }
   </style>
 </head>
 <body>
   <div class="slideshow-container"></div>
   <div class="controls">
     <!-- Manual Slide Controls -->
-    <button onclick="prevSlide()"><</button>
-    <button onclick="nextSlide()">></button>
-    <label for="start-slide">Start@</label>
-    <input id="start-slide" type="number" min="1" max="9" value="1" onchange="changeStartSlide(this.value)">
+    <button onclick="changeSlide(-1)">-</button>
+    <label for="start-slide">Slide</label>
+    <span id="start-slide">1</span>
+    <button onclick="changeSlide(1)">+</button>
 
     <!-- Slide Show Controls -->
     <label for="slideshow-toggle">Pause</label>
     <input type="checkbox" id="slideshow-toggle" onchange="toggleSlideshow()">
     
     <label for="slideshow-speed">X</label>
-    <input id="slideshow-speed" type="range" min="1000" max="10000" value="3000" step="100" onchange="changeTiming(this.value)">
+    <button onclick="decreaseSpeed()">-</button>
+    <span id="slideshow-speed">3000</span>
+    <button onclick="increaseSpeed()">+</button>
     
     <!-- Random/Sequential Toggle -->
     <label for="slide-mode-toggle">Random</label>
@@ -87,7 +85,9 @@
     
     <!-- Text Size Control -->
     <label for="text-size-slider">TxtSz</label>
-    <input id="text-size-slider" type="range" min="10" max="32" value="16" step="1" onchange="changeFontSize(this.value)">
+    <button onclick="decreaseFontSize()">-</button>
+    <span id="text-size-slider">16</span>
+    <button onclick="increaseFontSize()">+</button>
   </div>
 
   <script>
@@ -109,7 +109,9 @@
     let isRandomMode = false;
     let currentSlideIndex = 0;
     const slideshowContainer = document.querySelector('.slideshow-container');
-    const startSlideInput = document.getElementById('start-slide'); 
+    const startSlideSpan = document.getElementById('start-slide');
+    const slideshowSpeedSpan = document.getElementById('slideshow-speed');
+    const textSizeSpan = document.getElementById('text-size-slider');
 
     function createSlide(data) {
       const slide = document.createElement('div');
@@ -148,7 +150,7 @@
 
     function toggleSlideMode() {
       isRandomMode = !isRandomMode;
-      currentSlideIndex = parseInt(startSlideInput.value) - 1;
+      currentSlideIndex = parseInt(startSlideSpan.innerText) - 1;
       nextSlide();
     }
 
@@ -173,7 +175,9 @@
           slide.style.display = 'none';
         }
       });
-      updateSlideIndexCookie(currentSlideIndex);
+
+      startSlideSpan.innerText = nextIndex + 1;
+      updateSlideIndexCookie(nextIndex);
     }
 
     function prevSlide() {
@@ -181,9 +185,54 @@
       nextSlide();
     }
 
-    function changeStartSlide(value) {
-      currentSlideIndex = parseInt(value) - 1;
+    function changeSlide(direction) {
+      currentSlideIndex += direction;
+      if (currentSlideIndex < 0) {
+        currentSlideIndex = slidesData.length - 1;
+      } else if (currentSlideIndex >= slidesData.length) {
+        currentSlideIndex = 0;
+      }
       nextSlide();
+    }
+
+    function decreaseSpeed() {
+      let speed = parseInt(slideshowSpeedSpan.innerText);
+      speed -= 100;
+      if (speed < 1000) {
+        speed = 1000;
+      }
+      slideshowSpeedSpan.innerText = speed;
+      changeTiming(speed);
+    }
+
+    function increaseSpeed() {
+      let speed = parseInt(slideshowSpeedSpan.innerText);
+      speed += 100;
+      if (speed > 10000) {
+        speed = 10000;
+      }
+      slideshowSpeedSpan.innerText = speed;
+      changeTiming(speed);
+    }
+
+    function decreaseFontSize() {
+      let textSize = parseInt(textSizeSpan.innerText);
+      textSize -= 1;
+      if (textSize < 10) {
+        textSize = 10;
+      }
+      textSizeSpan.innerText = textSize;
+      changeFontSize(textSize);
+    }
+
+    function increaseFontSize() {
+      let textSize = parseInt(textSizeSpan.innerText);
+      textSize += 1;
+      if (textSize > 32) {
+        textSize = 32;
+      }
+      textSizeSpan.innerText = textSize;
+      changeFontSize(textSize);
     }
 
     function changeTiming(value) {
@@ -217,19 +266,22 @@
 
     function initializeSlideIndex() {
       const urlParams = new URLSearchParams(window.location.search);
-      const slideNumberParam = urlParams.get('slide');
-      if (slideNumberParam !== null && !isNaN(parseInt(slideNumberParam))) {
-        return parseInt(slideNumberParam) - 1;
+      const slideNumberFromURL = parseInt(urlParams.get('slide'));
+      const slideIndexFromCookie = getSlideIndexFromCookie();
+      let slideIndex;
+      if (!isNaN(slideNumberFromURL)) {
+        slideIndex = slideNumberFromURL - 1;
+      } else if (!isNaN(slideIndexFromCookie)) {
+        slideIndex = slideIndexFromCookie;
       } else {
-        const cookieValue = getSlideIndexFromCookie();
-        return cookieValue !== null ? cookieValue : 0;
+        slideIndex = 0;
       }
+      return slideIndex;
     }
 
     // Initial setup
-    slidesData.forEach(createSlide);
     currentSlideIndex = initializeSlideIndex();
-    startSlideInput.value = currentSlideIndex + 1;
+    slidesData.forEach(createSlide);
     nextSlide();
     resumeSlideshow();
   </script>
