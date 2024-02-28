@@ -55,13 +55,13 @@
       font-weight: bold; /* Font style for controls */
       border: none;
       border-radius: 5px;
-      padding: 5px 10px;
+      padding: 5px;
       cursor: pointer;
     }
     .controls label {
       font-size: 8px; /* Font size for label */
       font-weight: bold; /* Font style for label */
-      margin-right: 5px; /* Add space between label and slider */
+      margin-right: 3px; /* Add space between label and slider */
     }
     /* Pleasant button colors */
     #prev-slide, #next-slide { background-color: #E0E0E0; color: #333; } /* Light Gray */
@@ -250,10 +250,6 @@
 
 
 
-
-
-
-
 <!--
 Update the provided code to include functionality for storing the last shown slide in a cookie on the browser side. Upon page load, if the cookie exists, use the value stored in it to display the last shown slide. If the cookie does not exist, create it and store the default value (0 in this case). Ensure that the cookie is updated with the index of the last shown slide every time a new slide is displayed. Additionally, adjust the layout to shrink the sliders by 50% so that all controls fit in one line even on a mobile phone.
 +
@@ -287,190 +283,246 @@ Single page app, in a single file, for a slideshow, displaying Random slides, wi
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Random Slideshow</title>
+  <title>Slideshow</title>
   <style>
     body {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
+      font-family: Arial, sans-serif;
       margin: 0;
+      padding: 0;
+      font-size: 12px; /* Initial font size */
     }
-    #slide-container {
-      text-align: center;
-    }
-    img {
+    .slideshow-container {
+      position: relative;
       max-width: 100%;
-      max-height: 300px;
+      overflow: hidden;
+      margin-bottom: 20px; /* Add space below the slideshow */
     }
+    .slide {
+      display: none;
+      text-align: center;
+      padding: 20px;
+      height: 100vh; /* Set slide height to 100% of viewport height */
+      display: flex; /* Use flexbox for layout */
+      flex-direction: column; /* Stack elements vertically */
+      justify-content: center; /* Center elements vertically */
+    }
+    .slide img {
+      max-width: 100%;
+      max-height: 70%; /* Limit image height to 70% of slide height */
+      height: auto;
+      width: auto;
+      margin: 0 auto; /* Center image horizontally */
+    }
+    .controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: fixed;
+      bottom: 10px;
+      left: 0;
+      right: 0;
+      margin: 0 auto;
+      background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent background for controls */
+      padding: 5px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+      white-space: nowrap; /* Keep controls in one line */
+    }
+    .controls button,
+    .controls label {
+      margin: 3px; /* Add space between controls */
+      font-size: 10px; /* Font size for controls */
+      font-weight: bold; /* Font style for controls */
+      border: none;
+      border-radius: 5px;
+      padding: 5px;
+      cursor: pointer;
+    }
+    .controls label {
+      font-size: 8px; /* Font size for label */
+      font-weight: bold; /* Font style for label */
+      margin-right: 3px; /* Add space between label and slider */
+    }
+    /* Pleasant button colors */
+    #prev-slide, #next-slide { background-color: #E0E0E0; color: #333; } /* Light Gray */
+    #start-slide, #start-slide-value { background-color: #ADD8E6; color: #333; } /* Light Blue */
+    #slideshow-toggle { background-color: #90EE90; color: #333; } /* Light Green */
+    #slideshow-speed-dec, #slideshow-speed-inc, #slideshow-speed { background-color: #FFD700; color: #333; } /* Gold */
+    #slide-mode-toggle { background-color: #FFA07A; color: #333; } /* Light Salmon */
+    #text-size-dec, #text-size-inc, #text-size-slider { background-color: #FFA07A; color: #333; } /* Light Salmon */
   </style>
 </head>
 <body>
-  <div id="slide-container">
-    <div id="text-box1"></div>
-    <div id="text-box2"></div>
-    <img id="slide-image" alt="Slide Image">
+  <div class="slideshow-container"></div>
+  <div class="controls">
+    <!-- Manual Slide Controls -->
+    <button id="prev-slide" onclick="prevSlide()">Prev</button>
+    <button id="next-slide" onclick="nextSlide()">Next</button>
+    <label id="start-slide" for="start-slide">Start@</label>
+    <span id="start-slide-value">1</span>
+
+    <!-- Slide Show Controls -->
+    <label id="slideshow-toggle" for="slideshow-toggle">||</label>
+    <input type="checkbox" id="slideshow-toggle" onchange="toggleSlideshow()">
+    
+    <button id="slideshow-speed-dec" onclick="decreaseSpeed()">-</button>
+    <label for="slideshow-speed">X</label>
+    <span id="slideshow-speed">3000</span>
+    <button id="slideshow-speed-inc" onclick="increaseSpeed()">+</button>
+    
+    <!-- Random/Sequential Toggle -->
+    <label id="slide-mode-toggle" for="slide-mode-toggle">Rand</label>
+    <input id="slide-mode-toggle" type="checkbox" onchange="toggleSlideMode()">
+    
+    <button id="text-size-dec" onclick="decreaseFontSize()">-</button>
+    <label for="text-size-slider">Text Size</label>
+    <span id="text-size-slider">12</span>
+    <button id="text-size-inc" onclick="increaseFontSize()">+</button>
   </div>
 
   <script>
-    const slides = [
-      "Text1A,Text2A,https://srinimkasturi.github.io/ui4io/Fido0001image.png",
-      "Text1B,Text2B,https://srinimkasturi.github.io/ui4io/LaunchPad.jpg",
-      // Add more slides as needed
+    const slidesData = [
+      ["0001:240205 Let a pooping dog poop!", "https://srinimkasturi.github.io/ui4io/Images/Fido0001image.png", "Help someone lighten their load, they will lighten the World’s load.", "Artwork (c) Sahaj Kasturi, content (c) Srinivasa Kasturi"],
+      ["0002:240205 Launchpad soars", "https://srinimkasturi.github.io/ui4io/Images/LaunchPad.jpg", "Launchpad takes a beating, but each launch makes it soar!!", "Image credit: NASA/Joel Kowsky, (c) Srinivasa Kasturi"],
+      ["0003:240205 What comes first chicken or egg?", "https://srinimkasturi.github.io/ui4io/Images/eggnchicken.png", "Depends on what you’ve ordered. History impacts answers!!", "Image prompt by and (c) Srinivasa Kasturi"],
+      ["0004:240205 Humor beings live longer!", "https://srinimkasturi.github.io/ui4io/Images/SolarFlaret.png", "Practice humor for perspective development!!", "Image prompt by and (c) Srinivasa Kasturi"],
+      ["0005:240215 Curtains create dark and bright lines", "https://srinimkasturi.github.io/ui4io/Images/CurtainsAndSunshine.jpg", "In Physics and Life, Interference creates dark areas and bright areas, look for both!!", "(c) Srinivasa Kasturi"],
+      ["0006:240215 Up as a noun makes a difference", "https://srinimkasturi.github.io/ui4io/Images/UpArrow.png", "In giving up, up is an adverb. In giving Up, it is a Noun of your choice, God/Science/Nature.", "(c) Srinivasa Kasturi"],
+      ["0007:240216 Eye peace, it matters", "https://srinimkasturi.github.io/ui4io/Images/EyeOnPeace.png", "Emotions will cloud our vision unless we learn to keep an eye on opportunities for peace.", "Image prompt by and (c) Srinivasa Kasturi"],
+      ["0008:240216 Hollow fallow makes shallow", "https://srinimkasturi.github.io/ui4io/Images/HollowFallowShallow.jpg", "Hollow distractions prevents deepening of fallowing time and leaves us with shallow restore", "(c) Srinivasa Kasturi"],
+      ["0009:240216 Change is inherent to currency", "https://srinimkasturi.github.io/ui4io/Images/ChangeAndCurrency.png", "All that is current will change, leverage it", "Image prompt by and (c) Srinivasa Kasturi"],
+      // Add more slide data arrays as needed
     ];
 
-    let currentIndex = 0;
-    let intervalId;
+    let slideshowInterval;
+    let isPaused = false;
+    let isRandomMode = false;
+    let currentSlideIndex = 0;
+    const slideshowContainer = document.querySelector('.slideshow-container');
+    const startSlideValue = document.getElementById('start-slide-value'); 
 
-    function displaySlide(index) {
-      const [text1, text2, imagePath] = slides[index].split(',');
-
-      document.getElementById('text-box1').textContent = text1;
-      document.getElementById('text-box2').textContent = text2;
-      document.getElementById('slide-image').src = imagePath;
+    function createSlide(data) {
+      const slide = document.createElement('div');
+      slide.className = 'slide';
+      slide.innerHTML = `
+        <p>${data[0]}</p>
+        <img src="${data[1]}" alt="Slide Image">
+        <p>${data[2]}</p>
+        <p>${data[3]}</p>
+        <div style="flex-grow: 1;"></div> <!-- Empty space below the content -->
+      `;
+      slideshowContainer.appendChild(slide);
     }
 
-    function startSlideshow(interval) {
-      intervalId = setInterval(() => {
-        displaySlide(currentIndex);
-        currentIndex = (currentIndex + 1) % slides.length;
-      }, interval);
+    function getRandomColor() {
+      const hue = Math.floor(Math.random() * 360); // Random hue value
+      return `hsl(${hue}, 70%, 90%)`; // Pale color with random hue
     }
 
-    function pauseSlideshow() {
-      clearInterval(intervalId);
-    }
-
-    function resumeSlideshow(interval) {
-      pauseSlideshow();
-      startSlideshow(interval);
-    }
-
-    startSlideshow(3000); // Adjust the interval as needed
-  </script>
-</body>
-</html>
-
-
-<!--
-Single page app, in a single file, for a slideshow, displaying Random slides, with timing controlled by users, with pause and resume buttons, each slide either two text boxes and one image in the middle, with texts and image location coming from an array of strings, each string have the three comma fields 
--->
-
-<!--
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Elegant Slideshow</title>
-  <style>
-    body {
-      text-align: center;
-    }
-
-    #slideshow-container {
-      position: relative;
-      max-width: 800px;
-      margin: auto;
-    }
-
-    .slide {
-      display: none;
-      position: absolute;
-      width: 100%;
-      opacity: 0.8;
-    }
-
-    .slide img {
-      width: 100%;
-    }
-  </style>
-
-  <script>
-    let currentSlide = 0;
-    let slides = document.getElementsByClassName("slide");
-    let timerInterval;
-
-    function showSlide(index) {
-      Array.from(slides).forEach(slide => slide.style.display = "none");
-
-      const currentSlideElem = slides[index];
-      currentSlideElem.style.display = "block";
-
-      setTimeout(() => {
-        setTitleAndSubtitle(currentSlideElem);
-      }, 1000);
-    }
-
-    function setTitleAndSubtitle(slide) {
-      const titleDiv = slide.querySelector('.title');
-      const subtitleDiv = slide.querySelector('.subtitle');
-      
-      titleDiv.innerText = titleDiv.dataset.title || "";
-      subtitleDiv.innerText = subtitleDiv.dataset.subtitle || "";
-
-      setTimeout(() => {
-        titleDiv.innerText = "Title";
-        setTimeout(() => {
-          subtitleDiv.innerText = "Subtitle";
-        }, 1000);
-      }, 1000);
-    }
-
-    function nextSlide() {
-      currentSlide = (currentSlide + 1) % slides.length;
-      showSlide(currentSlide);
-    }
-
-    function prevSlide() {
-      currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-      showSlide(currentSlide);
-    }
-
-    function pauseSlideshow() {
-      clearInterval(timerInterval);
-    }
-
-    function resumeSlideshow() {
-      timerInterval = setInterval(nextSlide, 3000); // Default interval: 3 seconds
-    }
-
-    function setTimer() {
-      const timerValue = parseInt(document.getElementById("timer").value, 10);
-      if (!isNaN(timerValue) && timerValue > 0) {
-        clearInterval(timerInterval);
-        timerInterval = setInterval(nextSlide, timerValue * 1000);
+    function toggleSlideshow() {
+      isPaused = !isPaused;
+      if (isPaused) {
+        clearInterval(slideshowInterval);
+      } else {
+        resumeSlideshow();
       }
     }
 
-    showSlide(currentSlide);
+    function pauseSlideshow() {
+      clearInterval(slideshowInterval);
+    }
+
+    function resumeSlideshow() {
+      slideshowInterval = setInterval(nextSlide, getCurrentTiming());
+    }
+
+    function toggleSlideMode() {
+      isRandomMode = !isRandomMode;
+      nextSlide();
+    }
+
+    function nextSlide() {
+      const slides = document.querySelectorAll('.slide');
+      slides.forEach((slide) => {
+        slide.style.backgroundColor = getRandomColor(); // Change background color
+      });
+
+      let nextIndex;
+      if (isRandomMode) {
+        nextIndex = Math.floor(Math.random() * slides.length); // Get random index
+      } else {
+        currentSlideIndex = (currentSlideIndex + 1) % slides.length;
+        nextIndex = currentSlideIndex;
+      }
+
+      slides.forEach((slide, i) => {
+        if (i === nextIndex) {
+          slide.style.display = 'flex'; /* Ensure slide is displayed */
+        } else {
+          slide.style.display = 'none';
+        }
+      });
+    }
+
+    function prevSlide() {
+      currentSlideIndex = (currentSlideIndex - 1 + slidesData.length) % slidesData.length;
+      nextSlide();
+    }
+
+    function changeTiming(value) {
+      clearInterval(slideshowInterval);
+      slideshowInterval = setInterval(nextSlide, value);
+    }
+
+    function getCurrentTiming() {
+      return parseInt(document.getElementById('slideshow-speed').innerText);
+    }
+
+    function increaseSpeed() {
+      const speedElement = document.getElementById('slideshow-speed');
+      let speed = parseInt(speedElement.innerText);
+      if (speed < 10000) {
+        speed += 100;
+        speedElement.innerText = speed;
+        changeTiming(speed);
+      }
+    }
+
+    function decreaseSpeed() {
+      const speedElement = document.getElementById('slideshow-speed');
+      let speed = parseInt(speedElement.innerText);
+      if (speed > 1000) {
+        speed -= 100;
+        speedElement.innerText = speed;
+        changeTiming(speed);
+      }
+    }
+
+    function increaseFontSize() {
+      const fontSizeElement = document.getElementById('text-size-slider');
+      let fontSize = parseInt(fontSizeElement.innerText);
+      if (fontSize < 32) {
+        fontSize += 1;
+        fontSizeElement.innerText = fontSize;
+        document.body.style.fontSize = fontSize + 'px';
+      }
+    }
+
+    function decreaseFontSize() {
+      const fontSizeElement = document.getElementById('text-size-slider');
+      let fontSize = parseInt(fontSizeElement.innerText);
+      if (fontSize > 10) {
+        fontSize -= 1;
+        fontSizeElement.innerText = fontSize;
+        document.body.style.fontSize = fontSize + 'px';
+      }
+    }
+
+    // Initial setup
+    slidesData.forEach(createSlide);
+    nextSlide();
     resumeSlideshow();
   </script>
-</head>
-<body>
-<button onclick="pauseSlideshow()">Pause</button>
-<button onclick="resumeSlideshow()">Resume</button>
-<button onclick="prevSlide()">Previous</button>
-<button onclick="nextSlide()">Next</button>
-<input type="number" id="timer" placeholder="Set Timer (seconds)">
-<button onclick="setTimer()">Set Timer</button>
-<p></p>
-  
-<div id="slideshow-container">
-  <div class="slide" id="slide1">
-    <img src="https://srinimkasturi.github.io/ui4io/Fido0001image.png" alt="Slide 1">
-    <div class="title" data-title="Custom Title 1" data-subtitle="Custom Subtitle 1"></div>
-    <div class="subtitle"></div>
-  </div>
-  <div class="slide" id="slide2">
-    <img src="https://srinimkasturi.github.io/ui4io/LaunchPad.jpg" alt="Slide 2">
-    <div class="title" data-title="Custom Title 2" data-subtitle="Custom Subtitle 2"></div>
-    <div class="subtitle"></div>
-  </div>
-</div>
-
-
-
 </body>
 </html>
 -->
