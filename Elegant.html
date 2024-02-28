@@ -60,6 +60,9 @@
       font-weight: bold; /* Font style for label */
       margin-right: 5px; /* Add space between label and slider */
     }
+    .controls input[type="range"] {
+      width: 20px; /* Shrink the sliders by 50% */
+    }
   </style>
 </head>
 <body>
@@ -196,51 +199,39 @@
       document.body.style.fontSize = value + 'px';
     }
 
-    function getLastSlideFromCookie() {
-      const cookieName = "lastSlideIndex";
-      const decodedCookie = decodeURIComponent(document.cookie);
-      const cookieArray = decodedCookie.split(';');
-      for(let i = 0; i < cookieArray.length; i++) {
-        let cookie = cookieArray[i];
-        while (cookie.charAt(0) == ' ') {
-          cookie = cookie.substring(1);
-        }
-        if (cookie.indexOf(cookieName) == 0) {
-          return parseInt(cookie.substring(cookieName.length + 1));
+    function updateSlideIndexCookie(index) {
+      document.cookie = `lastSlideIndex=${index}; secure; samesite=strict; path=/`;
+    }
+
+    function getSlideIndexFromCookie() {
+      const cookieString = document.cookie;
+      const cookies = cookieString.split(';').map(cookie => cookie.trim());
+      for (const cookie of cookies) {
+        const [name, value] = cookie.split('=');
+        if (name === 'lastSlideIndex' && !isNaN(parseInt(value))) {
+          return parseInt(value);
         }
       }
       return null;
     }
 
-    function updateSlideIndexCookie(index) {
-      const cookieName = "lastSlideIndex";
-      document.cookie = `${cookieName}=${index}; path=/; Secure; SameSite=Strict`;
-    }
-
-    function initializeSlideshow() {
-      const lastSlideCookie = getLastSlideFromCookie();
+    function initializeSlideIndex() {
       const urlParams = new URLSearchParams(window.location.search);
-      const slideFromUrl = urlParams.get('slide');
-      let startingSlideIndex = 0;
-
-      if (!isNaN(lastSlideCookie)) {
-        startingSlideIndex = parseInt(lastSlideCookie);
-      } else if (!isNaN(slideFromUrl)) {
-        startingSlideIndex = parseInt(slideFromUrl);
+      const slideNumberParam = urlParams.get('slide');
+      if (slideNumberParam !== null && !isNaN(parseInt(slideNumberParam))) {
+        return parseInt(slideNumberParam) - 1;
+      } else {
+        const cookieValue = getSlideIndexFromCookie();
+        return cookieValue !== null ? cookieValue : 0;
       }
-
-      if (startingSlideIndex < 1 || startingSlideIndex > slidesData.length) {
-        startingSlideIndex = 1; // Default to 1 if out of bounds
-      }
-
-      currentSlideIndex = startingSlideIndex - 1; // Adjust for zero-based index
-      startSlideInput.value = currentSlideIndex + 1;
-      slidesData.forEach(createSlide);
-      nextSlide();
-      resumeSlideshow();
     }
 
-    initializeSlideshow();
+    // Initial setup
+    slidesData.forEach(createSlide);
+    currentSlideIndex = initializeSlideIndex();
+    startSlideInput.value = currentSlideIndex + 1;
+    nextSlide();
+    resumeSlideshow();
   </script>
 </body>
 </html>
