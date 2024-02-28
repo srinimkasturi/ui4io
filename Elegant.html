@@ -88,6 +88,34 @@
   </div>
 
   <script>
+    // Function to set the value of a cookie with proper security flags
+    function setCookie(name, value) {
+      const secureFlag = location.protocol === 'https:' ? '; Secure' : '';
+      document.cookie = `${name}=${value}; path=/; SameSite=Strict${secureFlag}`;
+    }
+
+    // Function to retrieve the value of a cookie by name
+    function getCookie(name) {
+      const cookies = document.cookie.split(';');
+      for (let cookie of cookies) {
+        const [cookieName, cookieValue] = cookie.split('=').map(c => c.trim());
+        if (cookieName === name) {
+          return cookieValue;
+        }
+      }
+      return null;
+    }
+
+    // Function to update the last shown slide in the cookie
+    function updateLastSlideCookie(slideNumber) {
+      setCookie('lastSlide', slideNumber);
+    }
+
+    // Function to retrieve the last shown slide from the cookie
+    function getLastSlideFromCookie() {
+      return getCookie('lastSlide');
+    }
+
     const slidesData = [
       ["0001:240205 Let a pooping dog poop!", "https://srinimkasturi.github.io/ui4io/Images/Fido0001image.png", "Help someone lighten their load, they will lighten the World’s load.", "Artwork (c) Sahaj Kasturi, content (c) Srinivasa Kasturi"],
       ["0002:240205 Launchpad soars", "https://srinimkasturi.github.io/ui4io/Images/LaunchPad.jpg", "Launchpad takes a beating, but each launch makes it soar!!", "Image credit: NASA/Joel Kowsky, (c) Srinivasa Kasturi"],
@@ -106,37 +134,8 @@
     let isRandomMode = false;
     let currentSlideIndex = 0;
     const slideshowContainer = document.querySelector('.slideshow-container');
-    const startSlideInput = document.getElementById('start-slide');
+    const startSlideInput = document.getElementById('start-slide'); 
 
-    // Function to get the value of a URL parameter
-    function getUrlParameter(name) {
-      name = name.replace(/[\[\]]/g, '\\$&');
-      const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)');
-      const results = regex.exec(window.location.href);
-      if (!results) return null;
-      if (!results[2]) return '';
-      return decodeURIComponent(results[2].replace(/\+/g, ' '));
-    }
-
-    // Function to set the value of a cookie
-    function setCookie(name, value) {
-      document.cookie = `${name}=${value}; path=/`;
-    }
-
-    // Function to get the value of a cookie
-    function getCookie(name) {
-      const cookieName = `${name}=`;
-      const cookies = document.cookie.split(';');
-      for (let i = 0; i < cookies.length; i++) {
-        let cookie = cookies[i].trim();
-        if (cookie.indexOf(cookieName) === 0) {
-          return cookie.substring(cookieName.length, cookie.length);
-        }
-      }
-      return null;
-    }
-
-    // Function to create a slide
     function createSlide(data) {
       const slide = document.createElement('div');
       slide.className = 'slide';
@@ -150,7 +149,11 @@
       slideshowContainer.appendChild(slide);
     }
 
-    // Function to toggle slideshow
+    function getRandomColor() {
+      const hue = Math.floor(Math.random() * 360); // Random hue value
+      return `hsl(${hue}, 70%, 90%)`; // Pale color with random hue
+    }
+
     function toggleSlideshow() {
       isPaused = !isPaused;
       if (isPaused) {
@@ -160,24 +163,20 @@
       }
     }
 
-    // Function to pause slideshow
     function pauseSlideshow() {
       clearInterval(slideshowInterval);
     }
 
-    // Function to resume slideshow
     function resumeSlideshow() {
       slideshowInterval = setInterval(nextSlide, getCurrentTiming());
     }
 
-    // Function to toggle random mode
     function toggleSlideMode() {
       isRandomMode = !isRandomMode;
       currentSlideIndex = parseInt(startSlideInput.value) - 1;
       nextSlide();
     }
 
-    // Function to move to the next slide
     function nextSlide() {
       const slides = document.querySelectorAll('.slide');
       slides.forEach((slide) => {
@@ -192,12 +191,6 @@
         currentSlideIndex = (currentSlideIndex + 1) % slides.length;
       }
 
-      // Update cookie with the index of the next slide
-      setCookie('lastSlide', currentSlideIndex);
-
-      // Update URL with the slide number
-      window.history.replaceState({}, '', `?slide=${currentSlideIndex + 1}`);
-
       slides.forEach((slide, i) => {
         if (i === nextIndex) {
           slide.style.display = 'flex'; /* Ensure slide is displayed */
@@ -205,56 +198,58 @@
           slide.style.display = 'none';
         }
       });
+
+      updateLastSlideCookie(currentSlideIndex + 1); // Update last shown slide in the cookie
     }
 
-    // Function to move to the previous slide
     function prevSlide() {
       currentSlideIndex = (currentSlideIndex - 1 + slidesData.length) % slidesData.length;
       nextSlide();
     }
 
-    // Function to change the starting slide
     function changeStartSlide(value) {
       currentSlideIndex = parseInt(value) - 1;
       nextSlide();
     }
 
-    // Function to change the timing of the slideshow
     function changeTiming(value) {
       clearInterval(slideshowInterval);
       slideshowInterval = setInterval(nextSlide, value);
     }
 
-    // Function to get the current timing of the slideshow
     function getCurrentTiming() {
       return parseInt(document.querySelector('#slideshow-speed').value);
     }
 
-    // Function to change the font size
     function changeFontSize(value) {
       document.body.style.fontSize = value + 'px';
     }
 
-    // Function to get a random color
-    function getRandomColor() {
-      const hue = Math.floor(Math.random() * 360); // Random hue value
-      return `hsl(${hue}, 70%, 90%)`; // Pale color with random hue
+    // Function to initialize the slideshow
+    function initializeSlideshow() {
+      slidesData.forEach(createSlide);
+
+      const lastSlideCookie = getLastSlideFromCookie();
+      const urlParams = new URLSearchParams(window.location.search);
+      const slideFromUrl = urlParams.get('slide');
+
+      if (!isNaN(lastSlideCookie)) {
+        currentSlideIndex = parseInt(lastSlideCookie);
+      } else if (!isNaN(slideFromUrl)) {
+        currentSlideIndex = parseInt(slideFromUrl);
+      }
+
+      startSlideInput.value = currentSlideIndex + 1;
+      nextSlide();
+      resumeSlideshow();
     }
 
     // Initial setup
-    document.addEventListener('DOMContentLoaded', () => {
-      // Read slide number from cookie or URL parameter
-      const slideFromCookie = getCookie('lastSlide');
-      const slideFromUrl = getUrlParameter('slide');
-      currentSlideIndex = slideFromCookie !== null ? parseInt(slideFromCookie) : (slideFromUrl !== null ? parseInt(slideFromUrl) - 1 : 0);
-      startSlideInput.value = currentSlideIndex + 1;
-      slidesData.forEach(createSlide);
-      nextSlide();
-      resumeSlideshow();
-    });
+    initializeSlideshow();
   </script>
 </body>
 </html>
+
 
 
 
