@@ -70,6 +70,7 @@
     #slideshow-speed-dec, #slideshow-speed-inc, #slideshow-speed { background-color: #FFD700; color: #333; } /* Gold */
     #slide-mode-toggle { background-color: #FFA07A; color: #333; } /* Light Salmon */
     #text-size-dec, #text-size-inc, #text-size-slider { background-color: #FFA07A; color: #333; } /* Light Salmon */
+    #slide-mode-toggle { background-color: #87CEEB; color: #333; } /* Sky Blue */
   </style>
 </head>
 <body>
@@ -79,7 +80,7 @@
     <button id="prev-slide" onclick="prevSlide()">Prev</button>
     <button id="next-slide" onclick="nextSlide()">Next</button>
     <label id="start-slide" for="start-slide">Start@</label>
-    <span id="start-slide-value">1</span>
+    <input id="start-slide-value" type="number" min="1" max="9" value="1" onchange="changeStartSlide(this.value)">
 
     <!-- Slide Show Controls -->
     <label id="slideshow-toggle" for="slideshow-toggle">||</label>
@@ -189,6 +190,11 @@
       nextSlide();
     }
 
+    function changeStartSlide(value) {
+      currentSlideIndex = parseInt(value) - 1;
+      nextSlide();
+    }
+
     function changeTiming(value) {
       clearInterval(slideshowInterval);
       slideshowInterval = setInterval(nextSlide, value);
@@ -245,6 +251,7 @@
   </script>
 </body>
 </html>
+
 
 
 
