@@ -88,34 +88,6 @@
   </div>
 
   <script>
-    // Function to set the value of a cookie with proper security flags
-    function setCookie(name, value) {
-      const secureFlag = location.protocol === 'https:' ? '; Secure' : '';
-      document.cookie = `${name}=${value}; path=/; SameSite=Strict${secureFlag}`;
-    }
-
-    // Function to retrieve the value of a cookie by name
-    function getCookie(name) {
-      const cookies = document.cookie.split(';');
-      for (let cookie of cookies) {
-        const [cookieName, cookieValue] = cookie.split('=').map(c => c.trim());
-        if (cookieName === name) {
-          return cookieValue;
-        }
-      }
-      return null;
-    }
-
-    // Function to update the last shown slide in the cookie
-    function updateLastSlideCookie(slideNumber) {
-      setCookie('lastSlide', slideNumber);
-    }
-
-    // Function to retrieve the last shown slide from the cookie
-    function getLastSlideFromCookie() {
-      return getCookie('lastSlide');
-    }
-
     const slidesData = [
       ["0001:240205 Let a pooping dog poop!", "https://srinimkasturi.github.io/ui4io/Images/Fido0001image.png", "Help someone lighten their load, they will lighten the World’s load.", "Artwork (c) Sahaj Kasturi, content (c) Srinivasa Kasturi"],
       ["0002:240205 Launchpad soars", "https://srinimkasturi.github.io/ui4io/Images/LaunchPad.jpg", "Launchpad takes a beating, but each launch makes it soar!!", "Image credit: NASA/Joel Kowsky, (c) Srinivasa Kasturi"],
@@ -198,8 +170,7 @@
           slide.style.display = 'none';
         }
       });
-
-      updateLastSlideCookie(currentSlideIndex + 1); // Update last shown slide in the cookie
+      updateSlideIndexCookie(currentSlideIndex);
     }
 
     function prevSlide() {
@@ -225,10 +196,28 @@
       document.body.style.fontSize = value + 'px';
     }
 
-    // Function to initialize the slideshow
-    function initializeSlideshow() {
-      slidesData.forEach(createSlide);
+    function getLastSlideFromCookie() {
+      const cookieName = "lastSlideIndex";
+      const decodedCookie = decodeURIComponent(document.cookie);
+      const cookieArray = decodedCookie.split(';');
+      for(let i = 0; i < cookieArray.length; i++) {
+        let cookie = cookieArray[i];
+        while (cookie.charAt(0) == ' ') {
+          cookie = cookie.substring(1);
+        }
+        if (cookie.indexOf(cookieName) == 0) {
+          return parseInt(cookie.substring(cookieName.length + 1));
+        }
+      }
+      return null;
+    }
 
+    function updateSlideIndexCookie(index) {
+      const cookieName = "lastSlideIndex";
+      document.cookie = `${cookieName}=${index}; path=/; Secure; SameSite=Strict`;
+    }
+
+    function initializeSlideshow() {
       const lastSlideCookie = getLastSlideFromCookie();
       const urlParams = new URLSearchParams(window.location.search);
       const slideFromUrl = urlParams.get('slide');
@@ -240,11 +229,11 @@
       }
 
       startSlideInput.value = currentSlideIndex + 1;
+      slidesData.forEach(createSlide);
       nextSlide();
       resumeSlideshow();
     }
 
-    // Initial setup
     initializeSlideshow();
   </script>
 </body>
