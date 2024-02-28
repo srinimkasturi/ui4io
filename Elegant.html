@@ -221,13 +221,19 @@
       const lastSlideCookie = getLastSlideFromCookie();
       const urlParams = new URLSearchParams(window.location.search);
       const slideFromUrl = urlParams.get('slide');
+      let startingSlideIndex = 0;
 
       if (!isNaN(lastSlideCookie)) {
-        currentSlideIndex = parseInt(lastSlideCookie);
+        startingSlideIndex = parseInt(lastSlideCookie);
       } else if (!isNaN(slideFromUrl)) {
-        currentSlideIndex = parseInt(slideFromUrl);
+        startingSlideIndex = parseInt(slideFromUrl);
       }
 
+      if (startingSlideIndex < 1 || startingSlideIndex > slidesData.length) {
+        startingSlideIndex = 1; // Default to 1 if out of bounds
+      }
+
+      currentSlideIndex = startingSlideIndex - 1; // Adjust for zero-based index
       startSlideInput.value = currentSlideIndex + 1;
       slidesData.forEach(createSlide);
       nextSlide();
@@ -238,6 +244,7 @@
   </script>
 </body>
 </html>
+
 
 
 
