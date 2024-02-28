@@ -9,7 +9,7 @@
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
-      font-size: 16px; /* Initial font size */
+      font-size: 12px; /* Initial font size */
     }
     .slideshow-container {
       position: relative;
@@ -49,6 +49,7 @@
       white-space: nowrap; /* Keep controls in one line */
     }
     .controls button,
+    .controls input[type="range"],
     .controls label {
       margin: 3px; /* Add space between controls */
       font-size: 10px; /* Font size for controls */
@@ -65,17 +66,17 @@
   <div class="slideshow-container"></div>
   <div class="controls">
     <!-- Manual Slide Controls -->
-    <button onclick="changeSlide(-1)">-</button>
-    <label for="start-slide">Slide</label>
+    <button onclick="prevSlide()"><</button>
+    <button onclick="nextSlide()">></button>
+    <label for="start-slide">Start@</label>
     <span id="start-slide">1</span>
-    <button onclick="changeSlide(1)">+</button>
 
     <!-- Slide Show Controls -->
     <label for="slideshow-toggle">Pause</label>
     <input type="checkbox" id="slideshow-toggle" onchange="toggleSlideshow()">
     
-    <label for="slideshow-speed">X</label>
     <button onclick="decreaseSpeed()">-</button>
+    <label for="slideshow-speed">X</label>
     <span id="slideshow-speed">3000</span>
     <button onclick="increaseSpeed()">+</button>
     
@@ -83,10 +84,9 @@
     <label for="slide-mode-toggle">Random</label>
     <input id="slide-mode-toggle" type="checkbox" onchange="toggleSlideMode()">
     
-    <!-- Text Size Control -->
-    <label for="text-size-slider">TxtSz</label>
     <button onclick="decreaseFontSize()">-</button>
-    <span id="text-size-slider">16</span>
+    <label for="text-size-slider">TxtSz</label>
+    <span id="text-size-slider">12</span>
     <button onclick="increaseFontSize()">+</button>
   </div>
 
@@ -109,9 +109,6 @@
     let isRandomMode = false;
     let currentSlideIndex = 0;
     const slideshowContainer = document.querySelector('.slideshow-container');
-    const startSlideSpan = document.getElementById('start-slide');
-    const slideshowSpeedSpan = document.getElementById('slideshow-speed');
-    const textSizeSpan = document.getElementById('text-size-slider');
 
     function createSlide(data) {
       const slide = document.createElement('div');
@@ -150,7 +147,6 @@
 
     function toggleSlideMode() {
       isRandomMode = !isRandomMode;
-      currentSlideIndex = parseInt(startSlideSpan.innerText) - 1;
       nextSlide();
     }
 
@@ -164,8 +160,8 @@
       if (isRandomMode) {
         nextIndex = Math.floor(Math.random() * slides.length); // Get random index
       } else {
-        nextIndex = currentSlideIndex;
         currentSlideIndex = (currentSlideIndex + 1) % slides.length;
+        nextIndex = currentSlideIndex;
       }
 
       slides.forEach((slide, i) => {
@@ -175,64 +171,11 @@
           slide.style.display = 'none';
         }
       });
-
-      startSlideSpan.innerText = nextIndex + 1;
-      updateSlideIndexCookie(nextIndex);
     }
 
     function prevSlide() {
       currentSlideIndex = (currentSlideIndex - 1 + slidesData.length) % slidesData.length;
       nextSlide();
-    }
-
-    function changeSlide(direction) {
-      currentSlideIndex += direction;
-      if (currentSlideIndex < 0) {
-        currentSlideIndex = slidesData.length - 1;
-      } else if (currentSlideIndex >= slidesData.length) {
-        currentSlideIndex = 0;
-      }
-      nextSlide();
-    }
-
-    function decreaseSpeed() {
-      let speed = parseInt(slideshowSpeedSpan.innerText);
-      speed -= 100;
-      if (speed < 1000) {
-        speed = 1000;
-      }
-      slideshowSpeedSpan.innerText = speed;
-      changeTiming(speed);
-    }
-
-    function increaseSpeed() {
-      let speed = parseInt(slideshowSpeedSpan.innerText);
-      speed += 100;
-      if (speed > 10000) {
-        speed = 10000;
-      }
-      slideshowSpeedSpan.innerText = speed;
-      changeTiming(speed);
-    }
-
-    function decreaseFontSize() {
-      let textSize = parseInt(textSizeSpan.innerText);
-      textSize -= 1;
-      if (textSize < 10) {
-        textSize = 10;
-      }
-      textSizeSpan.innerText = textSize;
-      changeFontSize(textSize);
-    }
-
-    function increaseFontSize() {
-      let textSize = parseInt(textSizeSpan.innerText);
-      textSize += 1;
-      if (textSize > 32) {
-        textSize = 32;
-      }
-      textSizeSpan.innerText = textSize;
-      changeFontSize(textSize);
     }
 
     function changeTiming(value) {
@@ -241,46 +184,50 @@
     }
 
     function getCurrentTiming() {
-      return parseInt(document.querySelector('#slideshow-speed').value);
+      return parseInt(document.getElementById('slideshow-speed').innerText);
     }
 
-    function changeFontSize(value) {
-      document.body.style.fontSize = value + 'px';
-    }
-
-    function updateSlideIndexCookie(index) {
-      document.cookie = `lastSlideIndex=${index}; secure; samesite=strict; path=/`;
-    }
-
-    function getSlideIndexFromCookie() {
-      const cookieString = document.cookie;
-      const cookies = cookieString.split(';').map(cookie => cookie.trim());
-      for (const cookie of cookies) {
-        const [name, value] = cookie.split('=');
-        if (name === 'lastSlideIndex' && !isNaN(parseInt(value))) {
-          return parseInt(value);
-        }
+    function increaseSpeed() {
+      const speedElement = document.getElementById('slideshow-speed');
+      let speed = parseInt(speedElement.innerText);
+      if (speed < 10000) {
+        speed += 100;
+        speedElement.innerText = speed;
+        changeTiming(speed);
       }
-      return null;
     }
 
-    function initializeSlideIndex() {
-      const urlParams = new URLSearchParams(window.location.search);
-      const slideNumberFromURL = parseInt(urlParams.get('slide'));
-      const slideIndexFromCookie = getSlideIndexFromCookie();
-      let slideIndex;
-      if (!isNaN(slideNumberFromURL)) {
-        slideIndex = slideNumberFromURL - 1;
-      } else if (!isNaN(slideIndexFromCookie)) {
-        slideIndex = slideIndexFromCookie;
-      } else {
-        slideIndex = 0;
+    function decreaseSpeed() {
+      const speedElement = document.getElementById('slideshow-speed');
+      let speed = parseInt(speedElement.innerText);
+      if (speed > 1000) {
+        speed -= 100;
+        speedElement.innerText = speed;
+        changeTiming(speed);
       }
-      return slideIndex;
+    }
+
+    function increaseFontSize() {
+      const fontSizeElement = document.getElementById('text-size-slider');
+      let fontSize = parseInt(fontSizeElement.innerText);
+      if (fontSize < 32) {
+        fontSize += 1;
+        fontSizeElement.innerText = fontSize;
+        document.body.style.fontSize = fontSize + 'px';
+      }
+    }
+
+    function decreaseFontSize() {
+      const fontSizeElement = document.getElementById('text-size-slider');
+      let fontSize = parseInt(fontSizeElement.innerText);
+      if (fontSize > 10) {
+        fontSize -= 1;
+        fontSizeElement.innerText = fontSize;
+        document.body.style.fontSize = fontSize + 'px';
+      }
     }
 
     // Initial setup
-    currentSlideIndex = initializeSlideIndex();
     slidesData.forEach(createSlide);
     nextSlide();
     resumeSlideshow();
