@@ -71,6 +71,16 @@
     #slide-mode-toggle { background-color: #FFA07A; color: #333; } /* Light Salmon */
     #text-size-dec, #text-size-inc, #text-size-slider { background-color: #FFA07A; color: #333; } /* Light Salmon */
     #slide-mode-toggle { background-color: #87CEEB; color: #333; } /* Sky Blue */
+    /* Media query for adjusting spacing based on browser width */
+    @media only screen and (max-width: 600px) {
+      .controls button,
+      .controls label {
+        margin: 1px; /* Adjusted space between controls */
+      }
+      .controls label {
+        margin-right: 1px; /* Adjusted space between label and slider */
+      }
+    }
   </style>
 </head>
 <body>
