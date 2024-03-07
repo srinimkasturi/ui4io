@@ -60,17 +60,30 @@
       font-weight: bold; /* Font style for label */
       margin-right: 5px; /* Add space between label and slider */
     }
+    .prev-slide,
+    .next-slide {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      padding: 10px;
+      background-color: rgba(255, 255, 255, 0.7);
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .prev-slide {
+      left: 10px;
+    }
+    .next-slide {
+      right: 10px;
+    }
   </style>
 </head>
 <body>
   <div class="slideshow-container"></div>
   <div class="controls">
-    <!-- Previous Slide Control -->
-    <button onclick="prevSlide()" style="margin-left: 10px;"><< Prev</button>
-
     <!-- Manual Slide Controls -->
-    <button onclick="prevSlide()">Previous</button>
-    <button onclick="nextSlide()">Next</button>
     <label for="start-slide">Start@</label>
     <input id="start-slide" type="number" min="1" max="9" value="1" onchange="changeStartSlide(this.value)">
     
@@ -90,6 +103,8 @@
     <label for="text-size-slider">TxtSz</label>
     <button onclick="increaseFontSize()">+</button>
   </div>
+  <button class="prev-slide" onclick="prevSlide()"><<</button>
+  <button class="next-slide" onclick="nextSlide()">>></button>
 
   <script>
     const slidesData = [
@@ -232,7 +247,6 @@
   </script>
 </body>
 </html>
-
 
 
 
