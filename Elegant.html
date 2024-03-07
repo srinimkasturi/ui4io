@@ -38,9 +38,10 @@
       justify-content: space-between;
       align-items: center;
       position: fixed;
-      bottom: 10px;
-      left: 0;
-      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      left: 10px; /* Adjust position to the left */
+      right: 10px; /* Adjust position to the right */
       margin: 0 auto;
       background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent background for controls */
       padding: 5px;
@@ -66,25 +67,25 @@
   <div class="slideshow-container"></div>
   <div class="controls">
     <!-- Manual Slide Controls -->
-    <button onclick="prevSlide()">Prev</button>
+    <button onclick="prevSlide()" style="background-color: #c1e1ff;">Prev</button>
     <label for="start-slide">Start@</label>
     <input id="start-slide" type="number" min="1" max="9" value="1" onchange="changeStartSlide(this.value)">
-    <button onclick="nextSlide()">Next</button>
+    <button onclick="nextSlide()" style="background-color: #c1e1ff;">Next</button>
 
     <!-- Slide Show Controls -->
-    <label for="slideshow-toggle">||</label>
+    <label for="slideshow-toggle" style="color: #555;">||</label>
     <input type="checkbox" id="slideshow-toggle" onchange="toggleSlideshow()">
-    <label for="slideshow-speed">X</label>
+    <label for="slideshow-speed" style="color: #555;">X</label>
     <input id="slideshow-speed" type="range" min="1000" max="10000" value="3000" step="100" onchange="changeTiming(this.value)">
     
     <!-- Random/Sequential Toggle -->
-    <label for="slide-mode-toggle">Rand</label>
+    <label for="slide-mode-toggle" style="color: #555;">Rand</label>
     <input id="slide-mode-toggle" type="checkbox" onchange="toggleSlideMode()">
     
     <!-- Text Size Control -->
-    <button onclick="decreaseFontSize()">-</button>
-    <label for="text-size-slider">TxtSz</label>
-    <button onclick="increaseFontSize()">+</button>
+    <button onclick="decreaseFontSize()" style="background-color: #c1e1ff;">-</button>
+    <label for="text-size-slider" style="color: #555;">TxtSz</label>
+    <button onclick="increaseFontSize()" style="background-color: #c1e1ff;">+</button>
   </div>
 
   <script>
@@ -210,6 +211,7 @@
   </script>
 </body>
 </html>
+
 
 
 
