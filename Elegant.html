@@ -56,11 +56,6 @@
       font-size: 10px; /* Font size for controls */
       font-weight: bold; /* Font style for controls */
     }
-    .controls label {
-      font-size: 8px; /* Font size for label */
-      font-weight: bold; /* Font style for label */
-      margin-right: 5px; /* Add space between label and slider */
-    }
     .prev-controls-left {
       position: fixed;
       top: 50%;
@@ -82,9 +77,9 @@
     <!-- Slide Show Controls -->
     <label for="start-slide">@</label>
     <input id="start-slide" type="number" min="1" max="9" value="1" onchange="changeStartSlide(this.value)">
-    <label for="slideshow-toggle" style="color: #555;">||</label>
+    <label for="slideshow-toggle" style="color: #555;">    ||</label>
     <input type="checkbox" id="slideshow-toggle" onchange="toggleSlideshow()">
-    <label for="slideshow-speed" style="color: #555;">X</label>
+    <label for="slideshow-speed" style="color: #555;">    X</label>
     <input id="slideshow-speed" type="range" min="1000" max="19000" value="3000" step="100" onchange="changeTiming(this.value)">
     
     <!-- Random/Sequential Toggle -->
@@ -263,4 +258,10 @@ Single page app, in a single file, for a slideshow, displaying Random slides, wi
       ["0008:240216 Hollow fallow makes shallow", "https://srinimkasturi.github.io/ui4io/Images/HollowFallowShallow.jpg", "Hollow distractions prevents deepening of fallowing time and leaves us with shallow restore", "(c) Srinivasa Kasturi"],
       ["0009:240216 Change is inherent to currency", "https://srinimkasturi.github.io/ui4io/Images/ChangeAndCurrency.png", "All that is current will change, leverage it", "Image prompt by and (c) Srinivasa Kasturi"],     
 -->
-
+<!--
+    .controls label {
+      font-size: 8px; /* Font size for label */
+      font-weight: bold; /* Font style for label */
+      margin-right: 5px; /* Add space between label and slider */
+    }
+-->
