@@ -80,26 +80,26 @@
   <div class="slideshow-container"></div>
   <div class="controls">
     <!-- Slide Show Controls -->
-    <label for="start-slide">Start@</label>
+    <label for="start-slide">@</label>
     <input id="start-slide" type="number" min="1" max="9" value="1" onchange="changeStartSlide(this.value)">
-    <label for="slideshow-toggle" style="color: #555;">Pause</label>
+    <label for="slideshow-toggle" style="color: #555;">||</label>
     <input type="checkbox" id="slideshow-toggle" onchange="toggleSlideshow()">
-    <label for="slideshow-speed" style="color: #555;">Speed</label>
-    <input id="slideshow-speed" type="range" min="1000" max="5000" value="3000" step="100" onchange="changeTiming(this.value)">
+    <label for="slideshow-speed" style="color: #555;">X</label>
+    <input id="slideshow-speed" type="range" min="1000" max="19000" value="3000" step="100" onchange="changeTiming(this.value)">
     
     <!-- Random/Sequential Toggle -->
     <label for="slide-mode-toggle" style="color: #555;">Rand</label>
     <input id="slide-mode-toggle" type="checkbox" onchange="toggleSlideMode()">
     
     <!-- Text Size Control -->
-    <label for="text-size-slider" style="color: #555;">TxtSz</label>
+    <label for="text-size-slider" style="color: #555;">TxtSZ</label>
     <button onclick="decreaseFontSize()" style="background-color: #c1e1ff;">-</button>
     <button onclick="increaseFontSize()" style="background-color: #c1e1ff;">+</button>
   </div>
   <div class="prev-controls-left">
     <!-- Manual Slide Controls -->
     <button onclick="prevSlide()" style="background-color: #c1e1ff;">Prev</button>
-    </div>
+  </div>
   <div class="next-controls-right">
     <!-- Manual Slide Controls -->
     <button onclick="nextSlide()" style="background-color: #c1e1ff;">Next</button>
@@ -192,7 +192,7 @@
     }
 
     function prevSlide() {
-      currentSlideIndex = (currentSlideIndex - 1 + slidesData.length) % slidesData.length;
+      currentSlideIndex = (currentSlideIndex - 2 + slidesData.length) % slidesData.length;
       nextSlide();
     }
 
