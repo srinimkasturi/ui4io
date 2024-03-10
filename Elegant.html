@@ -61,21 +61,30 @@
       font-weight: bold; /* Font style for label */
       margin-right: 5px; /* Add space between label and slider */
     }
-    .prev-next-controls {
+    .prev-controls-left {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      left: 10px; /* Adjust position to the right */
+    }
+   .next-controls-right {
       position: fixed;
       top: 50%;
       transform: translateY(-50%);
       right: 10px; /* Adjust position to the right */
     }
+
   </style>
 </head>
 <body>
   <div class="slideshow-container"></div>
   <div class="controls">
     <!-- Slide Show Controls -->
-    <label for="slideshow-toggle" style="color: #555;">||</label>
+    <label for="start-slide">Start@</label>
+    <input id="start-slide" type="number" min="1" max="9" value="1" onchange="changeStartSlide(this.value)">
+    <label for="slideshow-toggle" style="color: #555;">Pause</label>
     <input type="checkbox" id="slideshow-toggle" onchange="toggleSlideshow()">
-    <label for="slideshow-speed" style="color: #555;">X</label>
+    <label for="slideshow-speed" style="color: #555;">Speed</label>
     <input id="slideshow-speed" type="range" min="1000" max="10000" value="3000" step="100" onchange="changeTiming(this.value)">
     
     <!-- Random/Sequential Toggle -->
@@ -87,11 +96,12 @@
     <label for="text-size-slider" style="color: #555;">TxtSz</label>
     <button onclick="increaseFontSize()" style="background-color: #c1e1ff;">+</button>
   </div>
-  <div class="prev-next-controls">
+  <div class="prev-controls-left">
     <!-- Manual Slide Controls -->
     <button onclick="prevSlide()" style="background-color: #c1e1ff;">Prev</button>
-    <label for="start-slide">Start@</label>
-    <input id="start-slide" type="number" min="1" max="9" value="1" onchange="changeStartSlide(this.value)">
+    </div>
+  <div class="next-controls-right">
+    <!-- Manual Slide Controls -->
     <button onclick="nextSlide()" style="background-color: #c1e1ff;">Next</button>
   </div>
 
