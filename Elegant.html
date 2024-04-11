@@ -41,7 +41,6 @@
       position: fixed;
       bottom: 10px; /* Adjust position to the bottom */
       left: 10px; /* Adjust position to the left */
-      right: 10px; /* Adjust position to the right */
       margin: 0 auto;
       background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent background for controls */
       padding: 5px;
@@ -89,6 +88,14 @@
 <body>
   <div class="slideshow-container"></div>
   <div class="controls">
+    <!-- Previous/Next/Start Controls -->
+    <div class="prev-next-start-controls">
+      <button onclick="prevSlideAndResetPause()" style="background-color: #c1e1ff;">Prev</button>
+      <label for="start-slide">Start@</label>
+      <input id="start-slide" type="number" min="1" max="9" value="1" onchange="changeStartSlideAndResetPause(this.value)">
+      <button onclick="nextSlideAndResetPause()" style="background-color: #c1e1ff;">Next</button>
+    </div>
+
     <!-- Slide Show Controls -->
     <button class="pause-button" onclick="toggleSlideshow()">Pause</button>
     <label for="slideshow-speed" style="color: #555;">X</label>
@@ -101,16 +108,6 @@
     <button onclick="decreaseFontSize()" style="background-color: #c1e1ff;">-</button>
     <label for="text-size-slider" style="color: #555;">TxtSz</label>
     <button onclick="increaseFontSize()" style="background-color: #c1e1ff;">+</button>
-    
-    <!-- Previous/Next Controls -->
-    <div class="prev-next-controls">
-      <button onclick="prevSlideAndResetPause()" style="background-color: #c1e1ff;">Prev</button>
-      <button onclick="nextSlideAndResetPause()" style="background-color: #c1e1ff;">Next</button>
-    </div>
-    
-    <!-- Start Control -->
-    <label for="start-slide">Start@</label>
-    <input id="start-slide" type="number" min="1" max="9" value="1" onchange="changeStartSlideAndResetPause(this.value)">
   </div>
 
   <script>
@@ -252,7 +249,6 @@
   </script>
 </body>
 </html>
-
 
 
 
