@@ -103,10 +103,10 @@
   </div>
   <div class="prev-next-controls">
     <!-- Manual Slide Controls -->
-    <button onclick="prevSlide()" style="background-color: #c1e1ff;">Prev</button>
+    <button onclick="prevSlideAndResetPause()" style="background-color: #c1e1ff;">Prev</button>
     <label for="start-slide">Start@</label>
-    <input id="start-slide" type="number" min="1" max="9" value="1" onchange="changeStartSlide(this.value)">
-    <button onclick="nextSlide()" style="background-color: #c1e1ff;">Next</button>
+    <input id="start-slide" type="number" min="1" max="9" value="1" onchange="changeStartSlideAndResetPause(this.value)">
+    <button onclick="nextSlideAndResetPause()" style="background-color: #c1e1ff;">Next</button>
   </div>
 
   <script>
@@ -129,6 +129,7 @@
     let currentSlideIndex = 0;
     const slideshowContainer = document.querySelector('.slideshow-container');
     const startSlideInput = document.getElementById('start-slide'); 
+    const pauseButton = document.querySelector('.pause-button'); // Select the pause button element
 
     function createSlide(data) {
       const slide = document.createElement('div');
@@ -194,14 +195,21 @@
       });
     }
 
-    function prevSlide() {
+    function prevSlideAndResetPause() {
       currentSlideIndex = (currentSlideIndex - 1 + slidesData.length) % slidesData.length;
       nextSlide();
+      resetPauseButton(); // Reset pause button
     }
 
-    function changeStartSlide(value) {
+    function nextSlideAndResetPause() {
+      nextSlide();
+      resetPauseButton(); // Reset pause button
+    }
+
+    function changeStartSlideAndResetPause(value) {
       currentSlideIndex = parseInt(value) - 1;
       nextSlide();
+      resetPauseButton(); // Reset pause button
     }
 
     function changeTiming(value) {
@@ -225,6 +233,11 @@
       document.body.style.fontSize = currentFontSize + 'px';
     }
 
+    function resetPauseButton() {
+      isPaused = true;
+      pauseButton.classList.remove('active'); // Remove active class to change color to grey
+    }
+
     // Initial setup
     slidesData.forEach(createSlide);
     nextSlide();
@@ -232,6 +245,7 @@
   </script>
 </body>
 </html>
+
 
 
 
