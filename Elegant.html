@@ -68,12 +68,11 @@
     /* Custom styles for Rand and Pause buttons */
     .rand-button,
     .pause-button {
-      background-color: #ccc; /* Default button color */
-      border: none;
       padding: 5px 10px;
       font-size: 10px;
       font-weight: bold;
       border-radius: 5px;
+      transition: background-color 0.3s ease; /* Smooth transition for color change */
     }
     .rand-button:hover,
     .pause-button:hover {
@@ -81,6 +80,9 @@
     }
     .rand-button.active {
       background-color: #4CAF50; /* Green button color when active */
+    }
+    .pause-button.active {
+      background-color: #FF0000; /* Red button color when active */
     }
   </style>
 </head>
@@ -129,6 +131,7 @@
     const slideshowContainer = document.querySelector('.slideshow-container');
     const startSlideInput = document.getElementById('start-slide'); 
     const pauseButton = document.querySelector('.pause-button'); // Select the pause button element
+    const randButton = document.querySelector('.rand-button'); // Select the rand button element
 
     function createSlide(data) {
       const slide = document.createElement('div');
@@ -170,6 +173,7 @@
       isRandomMode = !isRandomMode;
       currentSlideIndex = parseInt(startSlideInput.value) - 1;
       nextSlide();
+      randButton.classList.toggle('active'); // Toggle active class to change button color
     }
 
     function nextSlide() {
@@ -245,6 +249,7 @@
   </script>
 </body>
 </html>
+
 
 
 
