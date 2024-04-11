@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Slideshow</title>
   <style>
-    /* CSS styles for the slideshow and controls */
     body {
       font-family: Arial, sans-serif;
       margin: 0;
@@ -28,8 +27,8 @@
       justify-content: center; /* Center elements vertically */
     }
     .slide img {
-      max-width: 80%;
-      max-height: 60%; /* Limit image height to 70% of slide height */
+      max-width: 100%;
+      max-height: 70%; /* Limit image height to 70% of slide height */
       height: auto;
       width: auto;
       margin: 0 auto; /* Center image horizontally */
@@ -50,81 +49,77 @@
       white-space: nowrap; /* Keep controls in one line */
     }
     .controls button,
-    .controls input[type="range"] {
-    }
+    .controls input[type="range"],
     .controls label {
       margin: 3px; /* Add space between controls */
       font-size: 10px; /* Font size for controls */
       font-weight: bold; /* Font style for controls */
     }
-    .prev-controls-left {
+    .controls label {
+      font-size: 8px; /* Font size for label */
+      font-weight: bold; /* Font style for label */
+      margin-right: 5px; /* Add space between label and slider */
+    }
+    .prev-next-controls {
       position: fixed;
       top: 50%;
       transform: translateY(-50%);
-      left: 10px; /* Adjust position to the right */
     }
-   .next-controls-right {
-      position: fixed;
-      top: 50%;
-      transform: translateY(-50%);
-      right: 10px; /* Adjust position to the right */
+    /* Custom styles for Rand and Pause buttons */
+    .rand-button,
+    .pause-button {
+      background-color: #ccc; /* Default button color */
+      border: none;
+      padding: 5px 10px;
+      font-size: 10px;
+      font-weight: bold;
+      border-radius: 5px;
     }
-
+    .rand-button:hover,
+    .pause-button:hover {
+      cursor: pointer;
+    }
+    .rand-button.active {
+      background-color: #4CAF50; /* Green button color when active */
+    }
   </style>
 </head>
 <body>
   <div class="slideshow-container"></div>
   <div class="controls">
     <!-- Slide Show Controls -->
-    <!-- Random/Sequential Toggle -->
-    <label for="slide-mode-toggle" style="color: #1A85FF;">Rand</label>
-    <input id="slide-mode-toggle" type="checkbox" onchange="toggleSlideMode()">
-
-    <!-- Start at slide # -->
-    <label for="start-slide" style="color: #E1BE6A;">@</label>
-    <input id="start-slide" type="number" min="1" max="9" value="1" onchange="changeStartSlide(this.value)">
-
-    <!-- Pause or Go -->
-    <label for="slideshow-toggle" style="color: #D41159;"> ||</label>
+    <label for="slideshow-toggle" style="color: #555;">||</label>
     <input type="checkbox" id="slideshow-toggle" onchange="toggleSlideshow()">
-
-    <!-- Set Speed -->
-    <label for="slideshow-speed" style="color: #40B0A6;"> X</label>
+    <label for="slideshow-speed" style="color: #555;">X</label>
     <input id="slideshow-speed" type="range" min="1000" max="10000" value="3000" step="100" onchange="changeTiming(this.value)">
-       
-    <!-- Text Size Control, https://www.w3schools.com/colors/colors_palettes.asp, Flower Palettes -->
-    <label for="text-size-slider" style="color: #E1BE6A;">TxtSZ</label>
-    <button onclick="decreaseFontSize()" style="background-color: #40B0A6;">-</button>
-    <button onclick="increaseFontSize()" style="background-color: #E1BE6A;">+</button>
+    
+    <!-- Random/Sequential Toggle -->
+    <button class="rand-button" onclick="toggleSlideMode()">Rand</button>
+    
+    <!-- Text Size Control -->
+    <button onclick="decreaseFontSize()" style="background-color: #c1e1ff;">-</button>
+    <label for="text-size-slider" style="color: #555;">TxtSz</label>
+    <button onclick="increaseFontSize()" style="background-color: #c1e1ff;">+</button>
   </div>
-  <div class="prev-controls-left">
+  <div class="prev-next-controls">
     <!-- Manual Slide Controls -->
-    <button onclick="prevSlide()" style="background-color: #E1BE6A;">Prev</button>
-  </div>
-  <div class="next-controls-right">
-    <!-- Manual Slide Controls -->
-    <button onclick="nextSlide()" style="background-color: #40B0A6;">Next</button>
+    <button onclick="prevSlide()" style="background-color: #c1e1ff;">Prev</button>
+    <label for="start-slide">Start@</label>
+    <input id="start-slide" type="number" min="1" max="9" value="1" onchange="changeStartSlide(this.value)">
+    <button onclick="nextSlide()" style="background-color: #c1e1ff;">Next</button>
   </div>
 
   <script>
-    // JavaScript code for slideshow functionality
     const slidesData = [
-      ["0000:240205 Let a pooping dog poop!", "https://srinimkasturi.github.io/ui4io/Images/Fido0001image.png", "Help someone lighten their load, they will lighten the World’s load.", "Artwork (c) Sahaj Kasturi, content (c) Srinivasa Kasturi"],
-      ["0012:240321 The leaf chaser Puppy Guru", "https://srinimkasturi.github.io/ui4io/Images/PuppyGuru.png", "Puppies chase leaves but dont hoard them, enjoy the pursuit for a change", "Image prompt by and (c) Srinivasa Kasturi"],
-      ["0011:240319 !!puncture a paint can?", "https://srinimkasturi.github.io/ui4io/Images/SprayPaintAndPerson.png", "To see what is inside, using may suffice before surgery.", "Image prompt by and (c) Srinivasa Kasturi"],      
-      ["0010:240318 Crack Wisdom?", "https://srinimkasturi.github.io/ui4io/Images/WalkOnCracksToNotCrackOnWalk.jpg", "Learn to walk on cracks, so when smooth road cracks, you are still walking!!", "Photo and content (c) Srinivasa Kasturi"],
-      ["0009:240310 Worm moderation is a thing! ", "https://srinimkasturi.github.io/ui4io/Images/WormLiquidWisdom.jpg", "Too little you dry and die, too much you soak and croak, Master Wrigglers, they moderate", "Image prompt by and (c) Srinivasa Kasturi"],
-      ["0008:240216 Change is inherent to currency", "https://srinimkasturi.github.io/ui4io/Images/ChangeAndCurrency.png", "All that is current will change, leverage it", "Image prompt by and (c) Srinivasa Kasturi"],
-      ["0007:240216 Hollow fallow make shallow (?_?)", "https://srinimkasturi.github.io/ui4io/Images/HollowFallowShallow.jpg", "During fallow times, hollow distractions prevent deep relaxation and leave us shallow", "(c) Srinivasa Kasturi"],
-      ["0006:240216 Eye peace, it matters", "https://srinimkasturi.github.io/ui4io/Images/EyeOnPeace.png", "Emotions cloud us unless we keep an eye on opportunities for peace.", "Image prompt by and (c) Srinivasa Kasturi"],
-      ["0005:240215 Up as a noun works!", "https://srinimkasturi.github.io/ui4io/Images/UpArrow.png", "In giving up, up is an adverb. In giving UP, it is a Noun, be it, God/Science/Nature.", "(c) Srinivasa Kasturi"],
-      ["0004:240215 Curtains create dark and bright lines", "https://srinimkasturi.github.io/ui4io/Images/CurtainsAndSunshine.jpg", "In Physics and Life, Interference creates dark areas and bright areas, look for both!!", "(c) Srinivasa Kasturi"],
-      ["0003:240205 Solar fare or Solar fart!", "https://srinimkasturi.github.io/ui4io/Images/SolarFlaret.png", "Everything throws up, no worries keep going!", "Image prompt by and (c) Srinivasa Kasturi"],
-      ["0002:240205 What comes first chicken or egg?", "https://srinimkasturi.github.io/ui4io/Images/eggnchicken.png", "Depends on what you ordered. History impacts answers!!", "Image prompt by and (c) Srinivasa Kasturi"],
-      ["0001:240205 Launchpad soars", "https://srinimkasturi.github.io/ui4io/Images/LaunchPad.jpg", "Launchpad takes a beating, but each launch makes it soar!!", "Image credit: NASA/Joel Kowsky, (c) Srinivasa Kasturi"],
-
-
-
+      ["0001:240205 Let a pooping dog poop!", "https://srinimkasturi.github.io/ui4io/Images/Fido0001image.png", "Help someone lighten their load, they will lighten the World’s load.", "Artwork (c) Sahaj Kasturi, content (c) Srinivasa Kasturi"],
+      ["0002:240205 Launchpad soars", "https://srinimkasturi.github.io/ui4io/Images/LaunchPad.jpg", "Launchpad takes a beating, but each launch makes it soar!!", "Image credit: NASA/Joel Kowsky, (c) Srinivasa Kasturi"],
+      ["0003:240205 What comes first chicken or egg?", "https://srinimkasturi.github.io/ui4io/Images/eggnchicken.png", "Depends on what you’ve ordered. History impacts answers!!", "Image prompt by and (c) Srinivasa Kasturi"],
+      ["0004:240205 Humor beings live longer!", "https://srinimkasturi.github.io/ui4io/Images/SolarFlaret.png", "Practice humor for perspective development!!", "Image prompt by and (c) Srinivasa Kasturi"],
+      ["0005:240215 Curtains create dark and bright lines", "https://srinimkasturi.github.io/ui4io/Images/CurtainsAndSunshine.jpg", "In Physics and Life, Interference creates dark areas and bright areas, look for both!!", "(c) Srinivasa Kasturi"],
+      ["0006:240215 Up as a noun makes a difference", "https://srinimkasturi.github.io/ui4io/Images/UpArrow.png", "In giving up, up is an adverb. In giving Up, it is a Noun of your choice, God/Science/Nature.", "(c) Srinivasa Kasturi"],
+      ["0007:240216 Eye peace, it matters", "https://srinimkasturi.github.io/ui4io/Images/EyeOnPeace.png", "Emotions will cloud our vision unless we learn to keep an eye on opportunities for peace.", "Image prompt by and (c) Srinivasa Kasturi"],
+      ["0008:240216 Hollow fallow makes shallow", "https://srinimkasturi.github.io/ui4io/Images/HollowFallowShallow.jpg", "Hollow distractions prevents deepening of fallowing time and leaves us with shallow restore", "(c) Srinivasa Kasturi"],
+      ["0009:240216 Change is inherent to currency", "https://srinimkasturi.github.io/ui4io/Images/ChangeAndCurrency.png", "All that is current will change, leverage it", "Image prompt by and (c) Srinivasa Kasturi"],
       // Add more slide data arrays as needed
     ];
 
@@ -179,12 +174,12 @@
     function nextSlide() {
       const slides = document.querySelectorAll('.slide');
       slides.forEach((slide) => {
-        slide.style.backgroundColor = getRandomColor(); // Change background color
+        slide.style.backgroundColor = getRandomColor();
       });
 
       let nextIndex;
       if (isRandomMode) {
-        nextIndex = Math.floor(Math.random() * slides.length); // Get random index
+        nextIndex = Math.floor(Math.random() * slides.length);
       } else {
         nextIndex = currentSlideIndex;
         currentSlideIndex = (currentSlideIndex + 1) % slides.length;
@@ -192,7 +187,7 @@
 
       slides.forEach((slide, i) => {
         if (i === nextIndex) {
-          slide.style.display = 'flex'; /* Ensure slide is displayed */
+          slide.style.display = 'flex';
         } else {
           slide.style.display = 'none';
         }
@@ -200,7 +195,7 @@
     }
 
     function prevSlide() {
-      currentSlideIndex = (currentSlideIndex - 2 + slidesData.length) % slidesData.length;
+      currentSlideIndex = (currentSlideIndex - 1 + slidesData.length) % slidesData.length;
       nextSlide();
     }
 
@@ -237,8 +232,6 @@
   </script>
 </body>
 </html>
-
-
 
 
 
