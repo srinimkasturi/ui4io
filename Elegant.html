@@ -35,12 +35,12 @@
     }
     .controls {
       display: flex;
-      flex-wrap: wrap;
-      justify-content: flex-start;
+      justify-content: space-between;
       align-items: center;
       position: fixed;
       bottom: 10px; /* Adjust position to the bottom */
       left: 10px; /* Adjust position to the left */
+      right: 10px; /* Adjust position to the right */
       margin: 0 auto;
       background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent background for controls */
       padding: 5px;
@@ -61,37 +61,36 @@
       margin-right: 5px; /* Add space between label and slider */
     }
     .prev-next-controls {
-      display: flex;
-      align-items: center;
+      position: fixed;
+      top: 50%;
+      left: 10px;
+      transform: translateY(-50%);
     }
-    /* Custom styles for Rand and Pause buttons */
-    .rand-button,
-    .pause-button,
-    .speed-button,
-    .text-size-button {
-      padding: 5px 10px;
-      font-size: 10px;
-      font-weight: bold;
-      border-radius: 5px;
-      transition: background-color 0.3s ease; /* Smooth transition for color change */
-    }
-    .rand-button:hover,
-    .pause-button:hover,
-    .speed-button:hover,
-    .text-size-button:hover {
+    .prev-next-controls button {
+      background-color: #c1e1ff;
+      border: none;
+      color: #555;
+      padding: 8px 16px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 4px 2px;
       cursor: pointer;
+      border-radius: 8px;
     }
-    .rand-button.active {
-      background-color: #4CAF50; /* Green button color when active */
-    }
-    .pause-button.active {
-      background-color: #FF0000; /* Red button color when active */
-    }
-    .speed-button {
+    .pause-button {
       background-color: #c1e1ff;
-    }
-    .text-size-button {
-      background-color: #c1e1ff;
+      border: none;
+      color: #555;
+      padding: 8px 16px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 4px 2px;
+      cursor: pointer;
+      border-radius: 8px;
     }
   </style>
 </head>
@@ -101,16 +100,24 @@
     <!-- Slide Show Controls -->
     <button class="pause-button" onclick="toggleSlideshow()">Pause</button>
     <label for="start-slide">Start@</label>
-    <input id="start-slide" type="number" min="1" max="9" value="1" onchange="changeStartSlideAndResetPause(this.value)">
-    <button class="prev-button" onclick="prevSlideAndResetPause()">Prev</button>
-    <button class="next-button" onclick="nextSlideAndResetPause()">Next</button>
-    <button class="rand-button" onclick="toggleSlideMode()">Rand</button>
-    <button class="speed-button" onclick="decreaseSpeed()">-</button>
-    <label for="speed" style="color: #555;">Speed</label>
-    <button class="speed-button" onclick="increaseSpeed()">+</button>
-    <button class="text-size-button" onclick="decreaseFontSize()">-</button>
-    <label for="text-size-slider" style="color: #555;">TxtSz</label>
-    <button class="text-size-button" onclick="increaseFontSize()">+</button>
+    <input id="start-slide" type="number" min="1" max="9" value="1" onchange="changeStartSlide(this.value)">
+  </div>
+  <div class="prev-next-controls">
+    <!-- Manual Slide Controls -->
+    <button onclick="prevSlide()">Previous</button>
+    <button onclick="nextSlide()">Next</button>
+  </div>
+  <div class="controls">
+    <!-- Speed Control -->
+    <button onclick="decreaseSpeed()" style="background-color: #c1e1ff;">-</button>
+    <label for="slideshow-speed">Speed</label>
+    <button onclick="increaseSpeed()" style="background-color: #c1e1ff;">+</button>
+    <input id="slideshow-speed" type="hidden" min="1000" max="10000" value="3000" step="100" onchange="changeTiming(this.value)">
+    
+    <!-- Text Size Control -->
+    <button onclick="decreaseFontSize()" style="background-color: #c1e1ff;">-</button>
+    <label for="text-size-slider">TxtSz</label>
+    <button onclick="increaseFontSize()" style="background-color: #c1e1ff;">+</button>
   </div>
 
   <script>
@@ -131,10 +138,12 @@
     let isPaused = false;
     let isRandomMode = false;
     let currentSlideIndex = 0;
+    let slideshowSpeed = 3000;
+    let fontSize = 16;
     const slideshowContainer = document.querySelector('.slideshow-container');
     const startSlideInput = document.getElementById('start-slide'); 
-    const pauseButton = document.querySelector('.pause-button'); // Select the pause button element
-    const randButton = document.querySelector('.rand-button'); // Select the rand button element
+    const speedSlider = document.getElementById('slideshow-speed');
+    const textSizeSlider = document.getElementById('text-size-slider');
 
     function createSlide(data) {
       const slide = document.createElement('div');
@@ -161,7 +170,6 @@
       } else {
         resumeSlideshow();
       }
-      pauseButton.classList.toggle('active'); // Toggle active class to change button color
     }
 
     function pauseSlideshow() {
@@ -169,25 +177,24 @@
     }
 
     function resumeSlideshow() {
-      slideshowInterval = setInterval(nextSlide, getCurrentTiming());
+      slideshowInterval = setInterval(nextSlide, slideshowSpeed);
     }
 
     function toggleSlideMode() {
       isRandomMode = !isRandomMode;
       currentSlideIndex = parseInt(startSlideInput.value) - 1;
       nextSlide();
-      randButton.classList.toggle('active'); // Toggle active class to change button color
     }
 
     function nextSlide() {
       const slides = document.querySelectorAll('.slide');
       slides.forEach((slide) => {
-        slide.style.backgroundColor = getRandomColor();
+        slide.style.backgroundColor = getRandomColor(); // Change background color
       });
 
       let nextIndex;
       if (isRandomMode) {
-        nextIndex = Math.floor(Math.random() * slides.length);
+        nextIndex = Math.floor(Math.random() * slides.length); // Get random index
       } else {
         nextIndex = currentSlideIndex;
         currentSlideIndex = (currentSlideIndex + 1) % slides.length;
@@ -195,70 +202,53 @@
 
       slides.forEach((slide, i) => {
         if (i === nextIndex) {
-          slide.style.display = 'flex';
+          slide.style.display = 'flex'; /* Ensure slide is displayed */
         } else {
           slide.style.display = 'none';
         }
       });
     }
 
-    function prevSlideAndResetPause() {
+    function prevSlide() {
       currentSlideIndex = (currentSlideIndex - 1 + slidesData.length) % slidesData.length;
       nextSlide();
-      resetPauseButton(); // Reset pause button
     }
 
-    function nextSlideAndResetPause() {
-      nextSlide();
-      resetPauseButton(); // Reset pause button
-    }
-
-    function changeStartSlideAndResetPause(value) {
+    function changeStartSlide(value) {
       currentSlideIndex = parseInt(value) - 1;
       nextSlide();
-      resetPauseButton(); // Reset pause button
     }
 
     function changeTiming(value) {
+      slideshowSpeed = parseInt(value);
       clearInterval(slideshowInterval);
-      slideshowInterval = setInterval(nextSlide, value);
+      resumeSlideshow();
     }
 
     function getCurrentTiming() {
-      return parseInt(document.querySelector('#slideshow-speed').value);
+      return slideshowSpeed;
     }
 
     function increaseFontSize() {
-      let currentFontSize = parseInt(document.body.style.fontSize) || 16;
-      currentFontSize += 2;
-      document.body.style.fontSize = currentFontSize + 'px';
+      fontSize += 2;
+      document.body.style.fontSize = fontSize + 'px';
     }
 
     function decreaseFontSize() {
-      let currentFontSize = parseInt(document.body.style.fontSize) || 16;
-      currentFontSize -= 2;
-      document.body.style.fontSize = currentFontSize + 'px';
+      fontSize -= 2;
+      document.body.style.fontSize = fontSize + 'px';
     }
 
     function increaseSpeed() {
-      let speedInput = document.getElementById('slideshow-speed');
-      let currentSpeed = parseInt(speedInput.value);
-      currentSpeed -= 100;
-      speedInput.value = currentSpeed;
-      changeTiming(currentSpeed);
+      slideshowSpeed += 100;
+      speedSlider.value = slideshowSpeed;
+      changeTiming(slideshowSpeed);
     }
 
     function decreaseSpeed() {
-      let speedInput = document.getElementById('slideshow-speed');
-      let currentSpeed = parseInt(speedInput.value);
-      currentSpeed += 100;
-      speedInput.value = currentSpeed;
-      changeTiming(currentSpeed);
-    }
-
-    function resetPauseButton() {
-      isPaused = true;
-      pauseButton.classList.remove('active'); // Remove active class to change color to grey
+      slideshowSpeed -= 100;
+      speedSlider.value = slideshowSpeed;
+      changeTiming(slideshowSpeed);
     }
 
     // Initial setup
