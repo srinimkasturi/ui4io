@@ -67,7 +67,9 @@
     /* Custom styles for Rand and Pause buttons */
     .rand-button,
     .pause-button,
-    .speed-button {
+    .speed-button,
+    .prev-button,
+    .next-button {
       padding: 5px 10px;
       font-size: 10px;
       font-weight: bold;
@@ -76,7 +78,9 @@
     }
     .rand-button:hover,
     .pause-button:hover,
-    .speed-button:hover {
+    .speed-button:hover,
+    .prev-button:hover,
+    .next-button:hover {
       cursor: pointer;
     }
     .rand-button.active {
@@ -88,6 +92,9 @@
     .speed-button {
       background-color: #c1e1ff;
     }
+    .text-size-button {
+      background-color: #c1e1ff;
+    }
   </style>
 </head>
 <body>
@@ -97,15 +104,15 @@
     <button class="pause-button" onclick="toggleSlideshow()">Pause</button>
     <label for="start-slide">Start@</label>
     <input id="start-slide" type="number" min="1" max="9" value="1" onchange="changeStartSlideAndResetPause(this.value)">
-    <button onclick="prevSlideAndResetPause()" style="background-color: #c1e1ff;">Prev</button>
-    <button onclick="nextSlideAndResetPause()" style="background-color: #c1e1ff;">Next</button>
+    <button class="prev-button" onclick="prevSlideAndResetPause()">Prev</button>
+    <button class="next-button" onclick="nextSlideAndResetPause()">Next</button>
     <button class="rand-button" onclick="toggleSlideMode()">Rand</button>
     <button class="speed-button" onclick="decreaseSpeed()">-</button>
     <label for="speed" style="color: #555;">Speed</label>
     <button class="speed-button" onclick="increaseSpeed()">+</button>
-    <button onclick="decreaseFontSize()" style="background-color: #c1e1ff;">-</button>
+    <button class="text-size-button" onclick="decreaseFontSize()">-</button>
     <label for="text-size-slider" style="color: #555;">TxtSz</label>
-    <button onclick="increaseFontSize()" style="background-color: #c1e1ff;">+</button>
+    <button class="text-size-button" onclick="increaseFontSize()">+</button>
   </div>
 
   <script>
