@@ -39,8 +39,8 @@
       align-items: center;
       position: fixed;
       bottom: 10px; /* Adjust position to the bottom */
-      left: 10px; /* Adjust position to the left */
-      right: 10px; /* Adjust position to the right */
+      left: 50%;
+      transform: translateX(-50%);
       margin: 0 auto;
       background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent background for controls */
       padding: 5px;
@@ -61,10 +61,11 @@
       margin-right: 5px; /* Add space between label and slider */
     }
     .prev-next-controls {
-      position: fixed;
-      top: 50%;
-      left: 10px;
-      transform: translateY(-50%);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 300px;
+      margin: 0 auto;
     }
     .prev-next-controls button {
       background-color: #c1e1ff;
