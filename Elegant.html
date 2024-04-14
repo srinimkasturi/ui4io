@@ -66,7 +66,8 @@
     }
     /* Custom styles for Rand and Pause buttons */
     .rand-button,
-    .pause-button {
+    .pause-button,
+    .speed-button {
       padding: 5px 10px;
       font-size: 10px;
       font-weight: bold;
@@ -74,7 +75,8 @@
       transition: background-color 0.3s ease; /* Smooth transition for color change */
     }
     .rand-button:hover,
-    .pause-button:hover {
+    .pause-button:hover,
+    .speed-button:hover {
       cursor: pointer;
     }
     .rand-button.active {
@@ -82,6 +84,9 @@
     }
     .pause-button.active {
       background-color: #FF0000; /* Red button color when active */
+    }
+    .speed-button {
+      background-color: #c1e1ff;
     }
   </style>
 </head>
@@ -95,8 +100,9 @@
     <button onclick="prevSlideAndResetPause()" style="background-color: #c1e1ff;">Prev</button>
     <button onclick="nextSlideAndResetPause()" style="background-color: #c1e1ff;">Next</button>
     <button class="rand-button" onclick="toggleSlideMode()">Rand</button>
-    <label for="slideshow-speed" style="color: #555;">Speed</label>
-    <input id="slideshow-speed" type="range" min="1000" max="10000" value="3000" step="100" onchange="changeTiming(this.value)">
+    <button class="speed-button" onclick="decreaseSpeed()">-</button>
+    <label for="speed" style="color: #555;">Speed</label>
+    <button class="speed-button" onclick="increaseSpeed()">+</button>
     <button onclick="decreaseFontSize()" style="background-color: #c1e1ff;">-</button>
     <label for="text-size-slider" style="color: #555;">TxtSz</label>
     <button onclick="increaseFontSize()" style="background-color: #c1e1ff;">+</button>
@@ -229,6 +235,22 @@
       document.body.style.fontSize = currentFontSize + 'px';
     }
 
+    function increaseSpeed() {
+      let speedInput = document.getElementById('slideshow-speed');
+      let currentSpeed = parseInt(speedInput.value);
+      currentSpeed -= 100;
+      speedInput.value = currentSpeed;
+      changeTiming(currentSpeed);
+    }
+
+    function decreaseSpeed() {
+      let speedInput = document.getElementById('slideshow-speed');
+      let currentSpeed = parseInt(speedInput.value);
+      currentSpeed += 100;
+      speedInput.value = currentSpeed;
+      changeTiming(currentSpeed);
+    }
+
     function resetPauseButton() {
       isPaused = true;
       pauseButton.classList.remove('active'); // Remove active class to change color to grey
@@ -241,7 +263,6 @@
   </script>
 </body>
 </html>
-
 
 
 
