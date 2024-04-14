@@ -65,7 +65,7 @@
       justify-content: space-between;
       align-items: center;
       width: 300px;
-      margin: 0 auto;
+      margin: 20px auto; /* Add margin between the two divs */
     }
     .prev-next-controls button {
       background-color: #c1e1ff;
@@ -97,7 +97,7 @@
 </head>
 <body>
   <div class="slideshow-container"></div>
-  <div class="controls">
+  <div class="controls" style="margin-bottom: 20px;"> <!-- Add margin-bottom to create space -->
     <!-- Slide Show Controls -->
     <button class="pause-button" onclick="toggleSlideshow()">Pause</button>
     <label for="start-slide">Start@</label>
@@ -259,7 +259,6 @@
   </script>
 </body>
 </html>
-
 
 
 
