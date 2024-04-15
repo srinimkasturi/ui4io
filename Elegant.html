@@ -99,20 +99,20 @@
   <div class="slideshow-container"></div>
   <div class="controls"> <!-- Add margin-bottom to create space -->
     <!-- Slide Show Controls -->
-    <button class="pause-button" onclick="toggleSlideshow()">Pause</button>
+    <button class="pause-button" onclick="toggleSlideshow()">||</button>
     <button class="pause-button" onclick="toggleSlideMode()">Rand</button>
-    <label for="start-slide">Start@</label>
+    <label for="start-slide">@</label>
     <input id="start-slide" type="number" min="1" max="9" value="1" onchange="changeStartSlide(this.value)">
     <!-- Manual Slide Controls -->
-    <button onclick="prevSlide()">Previous</button>
-    <button onclick="nextSlide()">Next</button>
+    <button onclick="prevSlide()"><</button>
+    <button onclick="nextSlide()">></button>
     <!-- Speed Control -->
     <button onclick="decreaseSpeed()" style="background-color: #c1e1ff;">-</button>
-    <label for="slideshow-speed">Speed</label>
+    <label for="slideshow-speed">X</label>
     <button onclick="increaseSpeed()" style="background-color: #c1e1ff;">+</button>
     <!-- Text Size Control -->
     <button onclick="decreaseFontSize()" style="background-color: #c1e1ff;">-</button>
-    <label for="text-size-slider">TxtSz</label>
+    <label for="text-size-slider">Txt</label>
     <button onclick="increaseFontSize()" style="background-color: #c1e1ff;">+</button>
   </div>
 
@@ -235,13 +235,11 @@
 
     function increaseSpeed() {
       slideshowSpeed += 100;
-      speedSlider.value = slideshowSpeed;
       changeTiming(slideshowSpeed);
     }
 
     function decreaseSpeed() {
       slideshowSpeed -= 100;
-      speedSlider.value = slideshowSpeed;
       changeTiming(slideshowSpeed);
     }
 
@@ -252,6 +250,7 @@
   </script>
 </body>
 </html>
+
 
 
 
