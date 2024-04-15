@@ -93,6 +93,9 @@
       cursor: pointer;
       border-radius: 8px;
     }
+    .active {
+      background-color: #b4f1b0 !important; /* Pale green color */
+    }
   </style>
 </head>
 <body>
@@ -164,20 +167,24 @@
       } else {
         resumeSlideshow();
       }
+      updateButtonStyles();
     }
 
     function pauseSlideshow() {
       clearInterval(slideshowInterval);
+      updateButtonStyles();
     }
 
     function resumeSlideshow() {
       slideshowInterval = setInterval(nextSlide, slideshowSpeed);
+      updateButtonStyles();
     }
 
     function toggleSlideMode() {
       isRandomMode = !isRandomMode;
       currentSlideIndex = parseInt(startSlideInput.value) - 1;
       nextSlide();
+      updateButtonStyles();
     }
 
     function nextSlide() {
@@ -206,17 +213,20 @@
     function prevSlide() {
       currentSlideIndex = (currentSlideIndex - 1 + slidesData.length) % slidesData.length;
       nextSlide();
+      updateButtonStyles();
     }
 
     function changeStartSlide(value) {
       currentSlideIndex = parseInt(value) - 1;
       nextSlide();
+      updateButtonStyles();
     }
 
     function changeTiming(value) {
       slideshowSpeed = parseInt(value);
       clearInterval(slideshowInterval);
       resumeSlideshow();
+      updateButtonStyles();
     }
 
     function getCurrentTiming() {
@@ -243,6 +253,21 @@
       changeTiming(slideshowSpeed);
     }
 
+    function updateButtonStyles() {
+      const pauseButton = document.querySelector('.pause-button');
+      const randButton = document.querySelector('.rand-button');
+      if (isPaused) {
+        pauseButton.classList.remove('active');
+      } else {
+        pauseButton.classList.add('active');
+      }
+      if (isRandomMode) {
+        randButton.classList.add('active');
+      } else {
+        randButton.classList.remove('active');
+      }
+    }
+
     // Initial setup
     slidesData.forEach(createSlide);
     nextSlide();
@@ -250,6 +275,7 @@
   </script>
 </body>
 </html>
+
 
 
 
