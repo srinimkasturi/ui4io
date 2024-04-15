@@ -39,8 +39,8 @@
       align-items: center;
       position: fixed;
       bottom: 10px; /* Adjust position to the bottom */
-      left: 50%;
-      transform: translateX(-50%);
+      left: 10px; /* Adjust position to the left */
+      right: 10px; /* Adjust position to the right */
       margin: 0 auto;
       background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent background for controls */
       padding: 5px;
@@ -61,62 +61,60 @@
       margin-right: 5px; /* Add space between label and slider */
     }
     .prev-next-controls {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 300px;
-      margin: 0 auto; /* Add margin between the two divs */
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
     }
-    .prev-next-controls button {
+    .button-pause,
+    .button-rand {
       background-color: #c1e1ff;
       border: none;
-      color: #555;
-      padding: 8px 16px;
+      color: white;
+      padding: 10px 20px;
       text-align: center;
       text-decoration: none;
       display: inline-block;
       font-size: 16px;
       margin: 4px 2px;
       cursor: pointer;
-      border-radius: 8px;
+      border-radius: 5px;
     }
-    .pause-button {
+    .button-pause.active,
+    .button-rand.active {
+      background-color: #8dc78d;
+    }
+    .button-prev,
+    .button-next {
       background-color: #c1e1ff;
       border: none;
-      color: #555;
-      padding: 8px 16px;
+      color: white;
+      padding: 10px 20px;
       text-align: center;
       text-decoration: none;
       display: inline-block;
       font-size: 16px;
       margin: 4px 2px;
       cursor: pointer;
-      border-radius: 8px;
-    }
-    .active {
-      background-color: #b4f1b0 !important; /* Pale green color */
+      border-radius: 50%;
     }
   </style>
 </head>
 <body>
   <div class="slideshow-container"></div>
-  <div class="controls"> <!-- Add margin-bottom to create space -->
+  <div class="controls">
     <!-- Slide Show Controls -->
-    <button class="pause-button" onclick="toggleSlideshow()">||</button>
-    <button class="pause-button" onclick="toggleSlideMode()">Rand</button>
-    <label for="start-slide">@</label>
+    <button class="button-pause" onclick="toggleSlideshow()">Pause</button>
+    <label for="start-slide">Start@</label>
     <input id="start-slide" type="number" min="1" max="9" value="1" onchange="changeStartSlide(this.value)">
-    <!-- Manual Slide Controls -->
-    <button onclick="prevSlide()"><</button>
-    <button onclick="nextSlide()">></button>
-    <!-- Speed Control -->
-    <button onclick="decreaseSpeed()" style="background-color: #c1e1ff;">-</button>
-    <label for="slideshow-speed">X</label>
-    <button onclick="increaseSpeed()" style="background-color: #c1e1ff;">+</button>
-    <!-- Text Size Control -->
-    <button onclick="decreaseFontSize()" style="background-color: #c1e1ff;">-</button>
+    <button class="button-prev" onclick="prevSlide()"><</button>
+    <button class="button-next" onclick="nextSlide()">></button>
+    <button class="button-rand" onclick="toggleSlideMode()">Rand</button>
+    <label for="slideshow-speed">Speed</label>
+    <button onclick="decreaseSpeed()">-</button>
+    <button onclick="increaseSpeed()">+</button>
     <label for="text-size-slider">Txt</label>
-    <button onclick="increaseFontSize()" style="background-color: #c1e1ff;">+</button>
+    <button onclick="decreaseFontSize()">-</button>
+    <button onclick="increaseFontSize()">+</button>
   </div>
 
   <script>
@@ -137,10 +135,8 @@
     let isPaused = false;
     let isRandomMode = false;
     let currentSlideIndex = 0;
-    let slideshowSpeed = 3000;
-    let fontSize = 16;
     const slideshowContainer = document.querySelector('.slideshow-container');
-    const startSlideInput = document.getElementById('start-slide'); 
+    const startSlideInput = document.getElementById('start-slide');
 
     function createSlide(data) {
       const slide = document.createElement('div');
@@ -162,29 +158,29 @@
 
     function toggleSlideshow() {
       isPaused = !isPaused;
+      const pauseButton = document.querySelector('.button-pause');
+      pauseButton.classList.toggle('active', isPaused);
       if (isPaused) {
         clearInterval(slideshowInterval);
       } else {
         resumeSlideshow();
       }
-      updateButtonStyles();
     }
 
     function pauseSlideshow() {
       clearInterval(slideshowInterval);
-      updateButtonStyles();
     }
 
     function resumeSlideshow() {
-      slideshowInterval = setInterval(nextSlide, slideshowSpeed);
-      updateButtonStyles();
+      slideshowInterval = setInterval(nextSlide, getCurrentTiming());
     }
 
     function toggleSlideMode() {
       isRandomMode = !isRandomMode;
+      const randButton = document.querySelector('.button-rand');
+      randButton.classList.toggle('active', isRandomMode);
       currentSlideIndex = parseInt(startSlideInput.value) - 1;
       nextSlide();
-      updateButtonStyles();
     }
 
     function nextSlide() {
@@ -213,59 +209,46 @@
     function prevSlide() {
       currentSlideIndex = (currentSlideIndex - 1 + slidesData.length) % slidesData.length;
       nextSlide();
-      updateButtonStyles();
     }
 
     function changeStartSlide(value) {
       currentSlideIndex = parseInt(value) - 1;
       nextSlide();
-      updateButtonStyles();
     }
 
     function changeTiming(value) {
-      slideshowSpeed = parseInt(value);
       clearInterval(slideshowInterval);
-      resumeSlideshow();
-      updateButtonStyles();
+      slideshowInterval = setInterval(nextSlide, value);
     }
 
     function getCurrentTiming() {
-      return slideshowSpeed;
+      return parseInt(document.querySelector('#slideshow-speed').value);
     }
 
     function increaseFontSize() {
-      fontSize += 2;
-      document.body.style.fontSize = fontSize + 'px';
+      let currentFontSize = parseInt(document.body.style.fontSize) || 16;
+      currentFontSize += 2;
+      document.body.style.fontSize = currentFontSize + 'px';
     }
 
     function decreaseFontSize() {
-      fontSize -= 2;
-      document.body.style.fontSize = fontSize + 'px';
-    }
-
-    function increaseSpeed() {
-      slideshowSpeed += 100;
-      changeTiming(slideshowSpeed);
+      let currentFontSize = parseInt(document.body.style.fontSize) || 16;
+      currentFontSize -= 2;
+      document.body.style.fontSize = currentFontSize + 'px';
     }
 
     function decreaseSpeed() {
-      slideshowSpeed -= 100;
-      changeTiming(slideshowSpeed);
+      let currentSpeed = parseInt(document.querySelector('#slideshow-speed').value);
+      currentSpeed -= 100;
+      document.querySelector('#slideshow-speed').value = currentSpeed;
+      changeTiming(currentSpeed);
     }
 
-    function updateButtonStyles() {
-      const pauseButton = document.querySelector('.pause-button');
-      const randButton = document.querySelector('.rand-button');
-      if (isPaused) {
-        pauseButton.classList.remove('active');
-      } else {
-        pauseButton.classList.add('active');
-      }
-      if (isRandomMode) {
-        randButton.classList.add('active');
-      } else {
-        randButton.classList.remove('active');
-      }
+    function increaseSpeed() {
+      let currentSpeed = parseInt(document.querySelector('#slideshow-speed').value);
+      currentSpeed += 100;
+      document.querySelector('#slideshow-speed').value = currentSpeed;
+      changeTiming(currentSpeed);
     }
 
     // Initial setup
