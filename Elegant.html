@@ -38,9 +38,9 @@
       justify-content: space-between;
       align-items: center;
       position: fixed;
-      bottom: 10px; /* Adjust position to the bottom */
-      left: 10px; /* Adjust position to the left */
-      right: 10px; /* Adjust position to the right */
+      bottom: 10px;
+      left: 10px;
+      right: 10px;
       margin: 0 auto;
       background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent background for controls */
       padding: 5px;
@@ -60,61 +60,32 @@
       font-weight: bold; /* Font style for label */
       margin-right: 5px; /* Add space between label and slider */
     }
-    .prev-next-controls {
-      position: fixed;
-      top: 50%;
-      transform: translateY(-50%);
-    }
-    .button-pause,
-    .button-rand {
-      background-color: #c1e1ff;
-      border: none;
-      color: white;
-      padding: 10px 20px;
-      text-align: center;
-      text-decoration: none;
-      display: inline-block;
-      font-size: 16px;
-      margin: 4px 2px;
-      cursor: pointer;
-      border-radius: 5px;
-    }
-    .button-pause.active,
-    .button-rand.active {
-      background-color: #8dc78d;
-    }
-    .button-prev,
-    .button-next {
-      background-color: #c1e1ff;
-      border: none;
-      color: white;
-      padding: 10px 20px;
-      text-align: center;
-      text-decoration: none;
-      display: inline-block;
-      font-size: 16px;
-      margin: 4px 2px;
-      cursor: pointer;
-      border-radius: 50%;
-    }
   </style>
 </head>
 <body>
   <div class="slideshow-container"></div>
   <div class="controls">
     <!-- Slide Show Controls -->
-    <button class="button-pause" onclick="toggleSlideshow()">Pause</button>
+    <label for="slideshow-toggle">||</label>
+    <input type="checkbox" id="slideshow-toggle" onchange="toggleSlideshow()">
+    <label for="slideshow-speed">Speed</label>
+    <input id="slideshow-speed" type="range" min="1000" max="10000" value="3000" step="100" onchange="changeTiming(this.value)">
+    
+    <!-- Random/Sequential Toggle -->
+    <label for="slide-mode-toggle">Rand</label>
+    <input id="slide-mode-toggle" type="checkbox" onchange="toggleSlideMode()">
+    
+    <!-- Text Size Control -->
+    <button onclick="decreaseFontSize()">-</button>
+    <label for="text-size-slider">TxtSz</label>
+    <button onclick="increaseFontSize()">+</button>
+  </div>
+  <div class="prev-next-controls">
+    <!-- Manual Slide Controls -->
+    <button onclick="prevSlide()">Prev</button>
     <label for="start-slide">Start@</label>
     <input id="start-slide" type="number" min="1" max="9" value="1" onchange="changeStartSlide(this.value)">
-    <button class="button-prev" onclick="prevSlide()"><</button>
-    <button class="button-next" onclick="nextSlide()">></button>
-    <button class="button-rand" onclick="toggleSlideMode()">Rand</button>
-    <label for="slideshow-speed">Speed</label>
-    <button onclick="decreaseSpeed()">-</button>
-    <button onclick="increaseSpeed()">+</button>
-    <label for="text-size-slider">Txt</label>
-    <button onclick="decreaseFontSize()">-</button>
-    <button onclick="increaseFontSize()">+</button>
+    <button onclick="nextSlide()">Next</button>
   </div>
 
   <script>
@@ -136,7 +107,7 @@
     let isRandomMode = false;
     let currentSlideIndex = 0;
     const slideshowContainer = document.querySelector('.slideshow-container');
-    const startSlideInput = document.getElementById('start-slide');
+    const startSlideInput = document.getElementById('start-slide'); 
 
     function createSlide(data) {
       const slide = document.createElement('div');
@@ -158,8 +129,6 @@
 
     function toggleSlideshow() {
       isPaused = !isPaused;
-      const pauseButton = document.querySelector('.button-pause');
-      pauseButton.classList.toggle('active', isPaused);
       if (isPaused) {
         clearInterval(slideshowInterval);
       } else {
@@ -177,8 +146,6 @@
 
     function toggleSlideMode() {
       isRandomMode = !isRandomMode;
-      const randButton = document.querySelector('.button-rand');
-      randButton.classList.toggle('active', isRandomMode);
       currentSlideIndex = parseInt(startSlideInput.value) - 1;
       nextSlide();
     }
@@ -237,20 +204,6 @@
       document.body.style.fontSize = currentFontSize + 'px';
     }
 
-    function decreaseSpeed() {
-      let currentSpeed = parseInt(document.querySelector('#slideshow-speed').value);
-      currentSpeed -= 100;
-      document.querySelector('#slideshow-speed').value = currentSpeed;
-      changeTiming(currentSpeed);
-    }
-
-    function increaseSpeed() {
-      let currentSpeed = parseInt(document.querySelector('#slideshow-speed').value);
-      currentSpeed += 100;
-      document.querySelector('#slideshow-speed').value = currentSpeed;
-      changeTiming(currentSpeed);
-    }
-
     // Initial setup
     slidesData.forEach(createSlide);
     nextSlide();
@@ -258,6 +211,7 @@
   </script>
 </body>
 </html>
+
 
 
 
