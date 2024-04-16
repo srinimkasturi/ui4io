@@ -38,9 +38,9 @@
       justify-content: space-between;
       align-items: center;
       position: fixed;
-      bottom: 10px;
-      left: 10px;
-      right: 10px;
+      bottom: 10px; /* Adjust position to the bottom */
+      left: 50%;
+      transform: translateX(-50%);
       margin: 0 auto;
       background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent background for controls */
       padding: 5px;
@@ -60,32 +60,63 @@
       font-weight: bold; /* Font style for label */
       margin-right: 5px; /* Add space between label and slider */
     }
+    .prev-next-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 300px;
+      margin: 0 auto; /* Add margin between the two divs */
+    }
+    .prev-next-controls button {
+      background-color: #c1e1ff;
+      border: none;
+      color: #555;
+      padding: 8px 16px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 4px 2px;
+      cursor: pointer;
+      border-radius: 8px;
+    }
+    .pause-button {
+      background-color: #c1e1ff;
+      border: none;
+      color: #555;
+      padding: 8px 16px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 4px 2px;
+      cursor: pointer;
+      border-radius: 8px;
+    }
+    .active {
+      background-color: #b4f1b0 !important; /* Pale green color */
+    }
   </style>
 </head>
 <body>
   <div class="slideshow-container"></div>
-  <div class="controls">
+  <div class="controls"> <!-- Add margin-bottom to create space -->
     <!-- Slide Show Controls -->
-    <label for="slideshow-toggle">||</label>
-    <input type="checkbox" id="slideshow-toggle" onchange="toggleSlideshow()">
-    <label for="slideshow-speed">Speed</label>
-    <input id="slideshow-speed" type="range" min="1000" max="10000" value="3000" step="100" onchange="changeTiming(this.value)">
-    
-    <!-- Random/Sequential Toggle -->
-    <label for="slide-mode-toggle">Rand</label>
-    <input id="slide-mode-toggle" type="checkbox" onchange="toggleSlideMode()">
-    
-    <!-- Text Size Control -->
-    <button onclick="decreaseFontSize()">-</button>
-    <label for="text-size-slider">TxtSz</label>
-    <button onclick="increaseFontSize()">+</button>
-  </div>
-  <div class="prev-next-controls">
-    <!-- Manual Slide Controls -->
-    <button onclick="prevSlide()">Prev</button>
-    <label for="start-slide">Start@</label>
+    <button class="pause-button" onclick="toggleSlideshow()">||</button>
+    <button class="pause-button" onclick="toggleSlideMode()">Rand</button>
+    <label for="start-slide">@</label>
     <input id="start-slide" type="number" min="1" max="9" value="1" onchange="changeStartSlide(this.value)">
-    <button onclick="nextSlide()">Next</button>
+    <!-- Manual Slide Controls -->
+    <button onclick="prevSlide()"><</button>
+    <button onclick="nextSlide()">></button>
+    <!-- Speed Control -->
+    <button onclick="decreaseSpeed()" style="background-color: #c1e1ff;">-</button>
+    <label for="slideshow-speed">X</label>
+    <button onclick="increaseSpeed()" style="background-color: #c1e1ff;">+</button>
+    <!-- Text Size Control -->
+    <button onclick="decreaseFontSize()" style="background-color: #c1e1ff;">-</button>
+    <label for="text-size-slider">Txt</label>
+    <button onclick="increaseFontSize()" style="background-color: #c1e1ff;">+</button>
   </div>
 
   <script>
@@ -106,6 +137,8 @@
     let isPaused = false;
     let isRandomMode = false;
     let currentSlideIndex = 0;
+    let slideshowSpeed = 3000;
+    let fontSize = 16;
     const slideshowContainer = document.querySelector('.slideshow-container');
     const startSlideInput = document.getElementById('start-slide'); 
 
@@ -134,20 +167,24 @@
       } else {
         resumeSlideshow();
       }
+      updateButtonStyles();
     }
 
     function pauseSlideshow() {
       clearInterval(slideshowInterval);
+      updateButtonStyles();
     }
 
     function resumeSlideshow() {
-      slideshowInterval = setInterval(nextSlide, getCurrentTiming());
+      slideshowInterval = setInterval(nextSlide, slideshowSpeed);
+      updateButtonStyles();
     }
 
     function toggleSlideMode() {
       isRandomMode = !isRandomMode;
       currentSlideIndex = parseInt(startSlideInput.value) - 1;
       nextSlide();
+      updateButtonStyles();
     }
 
     function nextSlide() {
@@ -176,32 +213,59 @@
     function prevSlide() {
       currentSlideIndex = (currentSlideIndex - 1 + slidesData.length) % slidesData.length;
       nextSlide();
+      updateButtonStyles();
     }
 
     function changeStartSlide(value) {
       currentSlideIndex = parseInt(value) - 1;
       nextSlide();
+      updateButtonStyles();
     }
 
     function changeTiming(value) {
+      slideshowSpeed = parseInt(value);
       clearInterval(slideshowInterval);
-      slideshowInterval = setInterval(nextSlide, value);
+      resumeSlideshow();
+      updateButtonStyles();
     }
 
     function getCurrentTiming() {
-      return parseInt(document.querySelector('#slideshow-speed').value);
+      return slideshowSpeed;
     }
 
     function increaseFontSize() {
-      let currentFontSize = parseInt(document.body.style.fontSize) || 16;
-      currentFontSize += 2;
-      document.body.style.fontSize = currentFontSize + 'px';
+      fontSize += 2;
+      document.body.style.fontSize = fontSize + 'px';
     }
 
     function decreaseFontSize() {
-      let currentFontSize = parseInt(document.body.style.fontSize) || 16;
-      currentFontSize -= 2;
-      document.body.style.fontSize = currentFontSize + 'px';
+      fontSize -= 2;
+      document.body.style.fontSize = fontSize + 'px';
+    }
+
+    function increaseSpeed() {
+      slideshowSpeed += 100;
+      changeTiming(slideshowSpeed);
+    }
+
+    function decreaseSpeed() {
+      slideshowSpeed -= 100;
+      changeTiming(slideshowSpeed);
+    }
+
+    function updateButtonStyles() {
+      const pauseButton = document.querySelector('.pause-button');
+      const randButton = document.querySelector('.rand-button');
+      if (isPaused) {
+        pauseButton.classList.remove('active');
+      } else {
+        pauseButton.classList.add('active');
+      }
+      if (isRandomMode) {
+        randButton.classList.add('active');
+      } else {
+        randButton.classList.remove('active');
+      }
     }
 
     // Initial setup
@@ -211,6 +275,7 @@
   </script>
 </body>
 </html>
+
 
 
 
