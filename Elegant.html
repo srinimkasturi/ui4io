@@ -96,6 +96,349 @@
     .active {
       background-color: #b4f1b0 !important; /* Pale green color */
     }
+    .debugging {
+      position: fixed;
+      bottom: 10px;
+      left: 10px;
+      padding: 5px;
+      background-color: rgba(255, 255, 255, 0.5);
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body>
+  <div class="slideshow-container"></div>
+  <div class="controls"> <!-- Add margin-bottom to create space -->
+    <!-- Slide Show Controls -->
+    <button class="pause-button" onclick="toggleSlideshow()">||</button>
+    <button class="pause-button" onclick="toggleSlideMode()">Rand</button>
+    <label for="start-slide">@</label>
+    <input id="start-slide" type="number" min="1" max="9" value="1" onchange="changeStartSlide(this.value)">
+    <!-- Manual Slide Controls -->
+    <button onclick="prevSlide()"><</button>
+    <button onclick="nextSlide()">></button>
+    <!-- Speed Control -->
+    <button onclick="decreaseSpeed()" style="background-color: #c1e1ff;">-</button>
+    <label for="slideshow-speed">X</label>
+    <button onclick="increaseSpeed()" style="background-color: #c1e1ff;">+</button>
+    <!-- Text Size Control -->
+    <button onclick="decreaseFontSize()" style="background-color: #c1e1ff;">-</button>
+    <label for="text-size-slider">Txt</label>
+    <button onclick="increaseFontSize()" style="background-color: #c1e1ff;">+</button>
+  </div>
+  <div class="prev-next-controls">
+    <!-- Manual Slide Controls -->
+    <button onclick="prevSlide()">Previous</button>
+    <label for="start-slide">Start@</label>
+    <input id="start-slide" type="number" min="1" max="9" value="1" onchange="changeStartSlide(this.value)">
+    <button onclick="nextSlide()">Next</button>
+  </div>
+  <div class="debugging" id="debugging"></div>
+
+  <script>
+    const slidesData = [
+      ["0001:240205 Let a pooping dog poop!", "https://srinimkasturi.github.io/ui4io/Images/Fido0001image.png", "Help someone lighten their load, they will lighten the World’s load.", "Artwork (c) Sahaj Kasturi, content (c) Srinivasa Kasturi"],
+      ["0002:240205 Launchpad soars", "https://srinimkasturi.github.io/ui4io/Images/LaunchPad.jpg", "Launchpad takes a beating, but each launch makes it soar!!", "Image credit: NASA/Joel Kowsky, (c) Srinivasa Kasturi"],
+      ["0003:240205 What comes first chicken or egg?", "https://srinimkasturi.github.io/ui4io/Images/eggnchicken.png", "Depends on what you’ve ordered. History impacts answers!!", "Image prompt by and (c) Srinivasa Kasturi"],
+      ["0004:240205 Humor beings live longer!", "https://srinimkasturi.github.io/ui4io/Images/SolarFlaret.png", "Practice humor for perspective development!!", "Image prompt by and (c) Srinivasa Kasturi"],
+      ["0005:240215 Curtains create dark and bright lines", "https://srinimkasturi.github.io/ui4io/Images/CurtainsAndSunshine.jpg", "In Physics and Life, Interference creates dark areas and bright areas, look for both!!", "(c) Srinivasa Kasturi"],
+      ["0006:240215 Up as a noun makes a difference", "https://srinimkasturi.github.io/ui4io/Images/UpArrow.png", "In giving up, up is an adverb. In giving Up, it is a Noun of your choice, God/Science/Nature.", "(c) Srinivasa Kasturi"],
+      ["0007:240216 Eye peace, it matters", "https://srinimkasturi.github.io/ui4io/Images/EyeOnPeace.png", "Emotions will cloud our vision unless we learn to keep an eye on opportunities for peace.", "Image prompt by and (c) Srinivasa Kasturi"],
+      ["0008:240216 Hollow fallow makes shallow", "https://srinimkasturi.github.io/ui4io/Images/HollowFallowShallow.jpg", "Hollow distractions prevents deepening of fallowing time and leaves us with shallow restore", "(c) Srinivasa Kasturi"],
+      ["0009:240216 Change is inherent to currency", "https://srinimkasturi.github.io/ui4io/Images/ChangeAndCurrency.png", "All that is current will change, leverage it", "Image prompt by and (c) Srinivasa Kasturi"],
+      // Add more slide data arrays as needed
+    ];
+
+    let slideshowInterval;
+    let isPaused = false;
+    let isRandomMode = false;
+    let currentSlideIndex = 0;
+    let slideshowSpeed = 3000;
+    let fontSize = 16;
+    const slideshowContainer = document.querySelector('.slideshow-container');
+    const startSlideInput = document.getElementById('start-slide'); 
+    const debuggingDiv = document.getElementById('debugging');
+
+    function createSlide(data) {
+      const slide = document.createElement('div');
+      slide.className = 'slide';
+      slide.innerHTML = `
+        <p>${data[0]}</p>
+        <img src="${data[1]}" alt="Slide Image">
+        <p>${data[2]}</p>
+        <p>${data[3]}</p>
+        <div style="flex-grow: 1;"></div> <!-- Empty space below the content -->
+      `;
+      slideshowContainer.appendChild(slide);
+    }
+
+    function getRandomColor() {
+      const hue = Math.floor(Math.random() * 360); // Random hue value
+      return `hsl(${hue}, 70%, 90%)`; // Pale color with random hue
+    }
+
+    function toggleSlideshow() {
+      isPaused = !isPaused;
+      if (isPaused) {
+        clearInterval(slideshowInterval);
+      } else {
+        resumeSlideshow();
+      }
+      updateButtonStyles();
+    }
+
+    function pauseSlideshow() {
+      clearInterval(slideshowInterval);
+      updateButtonStyles();
+    }
+
+    function resumeSlideshow() {
+      slideshowInterval = setInterval(nextSlide, slideshowSpeed);
+      updateButtonStyles();
+    }
+
+    function toggleSlideMode() {
+      isRandomMode = !isRandomMode;
+      currentSlideIndex = parseInt(startSlideInput.value) - 1;
+      nextSlide();
+      updateButtonStyles();
+    }
+
+    function nextSlide() {
+      const slides = document.querySelectorAll('.slide');
+      slides.forEach((slide) => {
+        slide.style.backgroundColor = getRandomColor(); // Change background color
+      });
+
+      let nextIndex;
+      if (isRandomMode) {
+        nextIndex = Math.floor(Math.random() * slides.length); // Get random index
+        updateButtonStyles();
+      } else {
+        nextIndex = currentSlideIndex;
+        currentSlideIndex = (currentSlideIndex + 1) % slides.length;
+        updateButtonStyles();
+      }
+
+      slides.forEach((slide, i) => {
+        if (i === nextIndex) {
+          slide.style.display = 'flex'; /* Ensure slide is displayed */
+        } else {
+          slide.style.display = 'none';
+        }
+      });
+    }
+
+    function prevSlide() {
+      currentSlideIndex = (currentSlideIndex - 1 + slidesData.length) % slidesData.length;
+      nextSlide();
+      updateButtonStyles();
+    }
+
+    function changeStartSlide(value) {
+      currentSlideIndex = parseInt(value) - 1;
+      nextSlide();
+      updateButtonStyles();
+    }
+
+    function changeTiming(value) {
+      slideshowSpeed = parseInt(value);
+      clearInterval(slideshowInterval);
+      resumeSlideshow();
+      updateButtonStyles();
+    }
+
+    function getCurrentTiming() {
+      return slideshowSpeed;
+    }
+
+    function increaseFontSize() {
+      fontSize += 2;
+      document.body.style.fontSize = fontSize + 'px';
+    }
+
+    function decreaseFontSize() {
+      fontSize -= 2;
+      document.body.style.fontSize = fontSize + 'px';
+    }
+
+    function increaseSpeed() {
+      slideshowSpeed += 100;
+      changeTiming(slideshowSpeed);
+    }
+
+    function decreaseSpeed() {
+      slideshowSpeed -= 100;
+      changeTiming(slideshowSpeed);
+    }
+
+    function updateButtonStyles() {
+      const pauseButton = document.querySelector('.pause-button');
+      const randButton = document.querySelector('.rand-button');
+      if (isPaused) {
+        pauseButton.classList.add('active');
+      } else {
+        pauseButton.classList.remove('active');
+      }
+      if (isRandomMode) {
+        randButton.classList.add('active');
+      } else {
+        randButton.classList.remove('active');
+      }
+    }
+
+    // Initial setup
+    slidesData.forEach(createSlide);
+    nextSlide();
+    resumeSlideshow();
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slideshow</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      font-size: 16px; /* Initial font size */
+    }
+    .slideshow-container {
+      position: relative;
+      max-width: 100%;
+      overflow: hidden;
+      margin-bottom: 20px; /* Add space below the slideshow */
+    }
+    .slide {
+      display: none;
+      text-align: center;
+      padding: 20px;
+      height: 100vh; /* Set slide height to 100% of viewport height */
+      display: flex; /* Use flexbox for layout */
+      flex-direction: column; /* Stack elements vertically */
+      justify-content: center; /* Center elements vertically */
+    }
+    .slide img {
+      max-width: 100%;
+      max-height: 70%; /* Limit image height to 70% of slide height */
+      height: auto;
+      width: auto;
+      margin: 0 auto; /* Center image horizontally */
+    }
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      bottom: 10px; /* Adjust position to the bottom */
+      left: 50%;
+      transform: translateX(-50%);
+      margin: 0 auto;
+      background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent background for controls */
+      padding: 5px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+      white-space: nowrap; /* Keep controls in one line */
+    }
+    .controls button,
+    .controls input[type="range"],
+    .controls label {
+      margin: 3px; /* Add space between controls */
+      font-size: 10px; /* Font size for controls */
+      font-weight: bold; /* Font style for controls */
+    }
+    .controls label {
+      font-size: 8px; /* Font size for label */
+      font-weight: bold; /* Font style for label */
+      margin-right: 5px; /* Add space between label and slider */
+    }
+    .prev-next-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 300px;
+      margin: 0 auto; /* Add margin between the two divs */
+    }
+    .prev-next-controls button {
+      background-color: #c1e1ff;
+      border: none;
+      color: #555;
+      padding: 8px 16px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 4px 2px;
+      cursor: pointer;
+      border-radius: 8px;
+    }
+    .pause-button {
+      background-color: #c1e1ff;
+      border: none;
+      color: #555;
+      padding: 8px 16px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 4px 2px;
+      cursor: pointer;
+      border-radius: 8px;
+    }
+    .active {
+      background-color: #b4f1b0 !important; /* Pale green color */
+    }
   </style>
 </head>
 <body>
@@ -286,7 +629,7 @@
 
 
 
-<!--
+
 Update the provided code to include functionality for storing the last shown slide in a cookie on the browser side. Upon page load, if the cookie exists, use the value stored in it to display the last shown slide. If the cookie does not exist, create it and store the default value (0 in this case). Ensure that the cookie is updated with the index of the last shown slide every time a new slide is displayed. Additionally, adjust the layout to shrink the sliders by 50% so that all controls fit in one line even on a mobile phone.
 +
 Create a responsive slideshow with user-controlled timing, where the pause and resume functionalities are combined into one button. Additionally, include buttons for users to select between random and sequential slide display modes, and let users choose which slide number to start with when they choose sequential slides. Each slide should contain a text box, an image, another text box, and some empty space below. Random slides are shown, with each slide having a randomized pale background color. The slideshow should fit within the browser window without requiring scrolling, and images should maintain their aspect ratio. Users can adjust the slideshow speed and font size for better readability.
