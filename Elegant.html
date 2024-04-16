@@ -196,9 +196,11 @@
       let nextIndex;
       if (isRandomMode) {
         nextIndex = Math.floor(Math.random() * slides.length); // Get random index
+        updateButtonStyles();
       } else {
         nextIndex = currentSlideIndex;
         currentSlideIndex = (currentSlideIndex + 1) % slides.length;
+        updateButtonStyles();
       }
 
       slides.forEach((slide, i) => {
