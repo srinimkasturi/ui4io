@@ -129,16 +129,16 @@
     <label for="start-slide">@</label>
     <input id="start-slide" type="number" min="1" max="9" value="1" onchange="changeStartSlide(this.value)">
     <!-- Manual Slide Controls -->
-    <button onclick="prevSlide()"><</button>
-    <button onclick="nextSlide()">></button>
+    <button class="rand-button" onclick="prevSlide()"><</button>
+    <button class="rand-button" onclick="nextSlide()">></button>
     <!-- Speed Control -->
     <button onclick="decreaseSpeed()" style="background-color: #ECE4F7;">-</button>
     <label for="slideshow-speed">X</label>
     <button onclick="increaseSpeed()" style="background-color: #ECE4F7;">+</button>
     <!-- Text Size Control -->
-    <button onclick="decreaseFontSize()" style="background-color: #c1e1ff;">-</button>
+    <button class="rand-button" onclick="decreaseFontSize()" style="background-color: #c1e1ff;">-</button>
     <label for="text-size-slider">Txt</label>
-    <button onclick="increaseFontSize()" style="background-color: #c1e1ff;">+</button>
+    <button class="rand-button" onclick="increaseFontSize()" style="background-color: #c1e1ff;">+</button>
   </div>
   <div class="prev-next-controls">
     <!-- Manual Slide Controls -->
