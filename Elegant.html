@@ -109,6 +109,15 @@
     .active {
       background-color: #b4f1b0 !important; /* Pale green color */
     }
+    .debugging {
+      position: fixed;
+      bottom: 10px;
+      left: 10px;
+      padding: 5px;
+      background-color: rgba(255, 255, 255, 0.5);
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+   }
    
   </style>
 </head>
@@ -140,22 +149,7 @@
     <button onclick="nextSlide()">Next</button>
   </div>
   
-  <!--- Debug section
-  <script>
-  .debugging {
-      position: fixed;
-      bottom: 10px;
-      left: 10px;
-      padding: 5px;
-      background-color: rgba(255, 255, 255, 0.5);
-      border-radius: 5px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  </script>
-  <body>
   <div class="debugging" id="debugging"></div>
-  </body>
-  --->
 
   <script>
     const slidesData = [
